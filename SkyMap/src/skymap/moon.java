@@ -9,7 +9,10 @@ package skymap;
  *
  * @author Lindsey Harris
  */
+enum lunar_phase {
+    //Add Lunar Phases
+}
 
 public class moon extends space_object {
-    
+    lunar_phase phase;
 }

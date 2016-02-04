@@ -9,9 +9,16 @@ package skymap;
  *
  * @author Lindsey Harris
  */
+
+class coordinate {
+    int x;
+    int y;
+}
+
 public class space_object {
+    String name;
     float magnitude;
-    // Need way to figure out location
-    // To be continued...
+    coordinate location;
+    boolean isVisible;
 }
 

@@ -11,5 +11,5 @@ package skymap;
  */
 
 public class star extends space_object {
-    
+    String constellation_name;
 }
