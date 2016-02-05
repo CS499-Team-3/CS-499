@@ -1,0 +1,8 @@
+#gitignore - files ignored by git
+
+# NetBeans specific #
+SkyMap/nbproject/
+SkyMap/build
+.gitignore
+
+

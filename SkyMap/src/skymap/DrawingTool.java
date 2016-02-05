@@ -7,15 +7,8 @@ package skymap;
 
 /**
  *
- * @author Lindsey Harris
+ * @author Lindsey
  */
-enum lunar_phase {
-    NEW_MOON,
-    FIRST_QUARTER,
-    FULL_MOON,
-    LAST_QUARTER
-}
-
-public class moon extends space_object {
-    lunar_phase phase;
+public class DrawingTool {
+    
 }
