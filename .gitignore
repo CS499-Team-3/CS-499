@@ -1,19 +1,8 @@
 #gitignore - files ignored by git
 
 # NetBeans specific #
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
+SkyMap/nbproject/
+SkyMap/build
+.gitignore
 
-# Class Files #
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
 
