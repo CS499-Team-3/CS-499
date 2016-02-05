@@ -15,7 +15,7 @@ class coordinate {
     int y;
 }
 
-public class space_object {
+public class SpaceObject {
     String name;
     float magnitude;
     coordinate location;
