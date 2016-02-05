@@ -1,0 +1,291 @@
+/**
+ * Created by Zein on 2/4/2016.
+ */
+
+import java.util.*;
+import java.math.*;
+
+public class planetFormulas {
+    final double PI = 3.142;
+    final double RADS = PI/180.0;
+    final double DEGS = 180/PI;
+
+    double julianDateOfGivenPhase(double year) {
+        //formula
+        /*JD = 2415020.75933 + (29.53058868 * k) + (0.0001178 * T2) –
+         (0.000000155 * T3) + (0.00033 * sin((166.56 + (132.87 * T) –
+         (0.009173 * T2)) * RAD) */
+
+        //Caluculate K value used in formula
+        int k = 0;
+        double kvalue = ((year - 1900) * 12.3685);
+        float kfloat = (float) kvalue;
+        k = Math.round(kfloat);
+
+        //calculate t value
+        double t = k / 1236.85;
+
+        double julianDate;
+
+        //get the sin value in radians
+        double sinValue = 166.56 + (132.87 * t);
+        sinValue = sinValue - (0.009173 * Math.pow(t, 2));
+        sinValue = Math.toRadians(sinValue);
+        sinValue = Math.sin(sinValue);
+
+        //peform calculations, broken down into parts
+        julianDate = 2415020.75933 + (29.53058868 * k);
+        julianDate = julianDate + (0.0001178 * Math.pow(t, 2));
+        julianDate = julianDate - (0.000000155 * Math.pow(t, 3));
+        julianDate = julianDate + (0.00033 * sinValue);
+
+        return julianDate;
+    }
+
+    double Mod2Pi(double X){
+        double B = X/(2*PI);
+        double abs_floorB;
+        double A;
+        if(B >=0){
+            abs_floorB = Math.floor(B);
+        }
+        else {
+            abs_floorB = Math.ceil(B);
+        }
+
+        A = ((2*PI)*(B-abs_floorB));
+        if (A < 0){
+            A = (2*PI)+A;
+        }
+
+        return A;
+    }
+
+    void Mercury(double year)
+    {   //cy = JD/36525 where Julian Day counted from 2000
+        double cy = this.julianDateOfGivenPhase(year);
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((252.25084+538101628.29*cy/3600)*RADS);
+        a = 0.38709893 + 0.00000066*cy;
+        e = 0.20563069 + 0.00002527*cy;
+        i = (7.00487 - 23.51 * cy/3600) * RADS;
+        w = (77.45645 + 573.57 *cy/3600) *RADS;
+        Omega = (48.33167 - 446.30* cy/3600) *RADS;
+
+        System.out.println("MERCURY");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void Venus(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((181.97973+210664136.06*cy/3600)*RADS);
+        a = 0.7233199 + 0.00000092*cy;
+        e = 0.00677323 + 0.00004938*cy;
+        i = (3.39471 - 2.86 * cy/3600) * RADS;
+        w = (131.53298 + 108.80 *cy/3600) *RADS;
+        Omega = (76.68069 - 996.89 * cy/3600) *RADS;
+
+        System.out.println("VENUS");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void EarthAndSun(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((100.46435+129597740.63 *cy/3600)*RADS);
+        a = 1.00000011 + 0.00000005*cy;
+        e = 0.01671022 + 0.00003804*cy;
+        i = (0.00005 - 46.96 * cy/3600) * RADS;
+        w = (102.94719 + 1198.28 *cy/3600) *RADS;
+        Omega = (-11.26064 - 18228.25 * cy/3600) *RADS;
+
+        System.out.println("EARTH AND SUN");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void Mars(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((355.45332 + 68905103.78 *cy/3600)*RADS);
+        a = 1.52366231 - 0.00007221 *cy;
+        e = 0.09341233 + 0.00011902 *cy;
+        i = (1.85061 - 25.47 * cy/3600) * RADS;
+        w = (336.04084 + 1560.78 *cy/3600) *RADS;
+        Omega = (49.57854 - 1020.19 * cy/3600) *RADS;
+
+        System.out.println("MARS");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void Jupiter(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((34.40438 + 10925078.35 *cy/3600)*RADS);
+        a = 5.20336301 + 0.00060737 * cy;
+        e = 0.00677323 + 0.00004938 * cy;
+        i = (1.30530 - 4.15 * cy/3600) * RADS;
+        w = (14.75385 + 839.93 * cy/3600) *RADS;
+        Omega = (100.55615 + 1217.17 * cy/3600) *RADS;
+
+        System.out.println("Jupiter");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void Saturn(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((49.94432 + 4401052.95 *cy/3600)*RADS);
+        a = 9.53707032 - 0.00301530 *cy;
+        e = 0.05415060 - 0.00036762 *cy;
+        i = (2.48446 + 6.11 * cy/3600) * RADS;
+        w = (92.43194 - 1948.89 *cy/3600) *RADS;
+        Omega = (113.71504 - 1591.05 * cy/3600) *RADS;
+
+        System.out.println("SATURN");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void Uranus(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((313.23218 + 154247.79*cy/3600)*RADS);
+        a = 19.19126393 + 0.00152025*cy;
+        e = 0.04716771 - 0.00019150*cy;
+        i = (170.96424 + 1312.56 * cy/3600) * RADS;
+        w = (170.96424 + 1312.56 *cy/3600) *RADS;
+        Omega = (74.22988 - 1681.40 * cy/3600) *RADS;
+
+        System.out.println("URANUS");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void Neptune(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((304.88003 + 786449.21 *cy/3600)*RADS);
+        a = 30.06896348 - 0.00125196 *cy;
+        e = 0.00858587 + 0.00002510 *cy;
+        i = (1.76917 - 3.64 * cy/3600) * RADS;
+        w = (44.97135 - 844.43 *cy/3600) *RADS;
+        Omega = (131.72169 - 151.25 * cy/3600) *RADS;
+
+        System.out.println("NEPTUNE");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+    void Pluto(double year){
+        double cy = this.julianDateOfGivenPhase(year); //cy = JD/36525 where Julian Day counted from 2000
+        double L;   //Mean longitude of planet
+        double a;   // semimajor axis of the orbit
+        double e;   //eccentricity of the orbit
+        double i;   // inclination on the plane of the ecliptic
+        double w;   // argument of perihelion
+        double Omega;   //Longitude of ascending node
+
+        L = this.Mod2Pi((238.92881 + 522747.90 *cy/3600)*RADS);
+        a = 39.48168677 - 0.000076912 *cy;
+        e = 0.24880766 + 0.00006465 *cy;
+        i = (17.14175 + 11.07 * cy/3600) * RADS;
+        w = (224.06676 - 132.25 *cy/3600) *RADS;
+        Omega = (110.30347 - 37.33 * cy/3600) *RADS;
+
+        System.out.println("PLUTO");
+        System.out.println("L = " + L);
+        System.out.println("a = " + a);
+        System.out.println("e = " + e);
+        System.out.println("i = " + i);
+        System.out.println("w = " + w);
+        System.out.println("Omega = " + Omega);
+    }
+
+
+}
