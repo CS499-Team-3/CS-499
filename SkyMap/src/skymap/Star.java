@@ -10,6 +10,6 @@ package skymap;
  * @author Lindsey Harris
  */
 
-public class Star extends space_object {
+public class Star extends SpaceObject {
     String constellation_name;
 }

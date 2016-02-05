@@ -16,6 +16,6 @@ enum lunar_phase {
     LAST_QUARTER
 }
 
-public class Moon extends space_object {
+public class Moon extends SpaceObject {
     lunar_phase phase;
 }

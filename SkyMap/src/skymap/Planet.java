@@ -10,7 +10,7 @@ package skymap;
  * @author Lindsey Harris
  */
 
-public class Planet extends space_object {
+public class Planet extends SpaceObject {
     public double semiMajor_axis;
     public double eccentricity;
     public double inclination;
