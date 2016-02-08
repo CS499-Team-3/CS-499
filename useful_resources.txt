@@ -1,0 +1,4 @@
+Useful resources:
+
+Exact Julian Date Calculator online
+http://aa.usno.navy.mil/data/docs/JulianDate.php
