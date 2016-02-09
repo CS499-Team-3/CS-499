@@ -18,4 +18,13 @@ enum lunar_phase {
 
 public class Moon extends SpaceObject {
     lunar_phase phase;
+    
+    public Moon()
+    {
+        super();
+    }
+    public Moon(String name)
+    {
+        super(name);
+    }
 }

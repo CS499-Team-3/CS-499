@@ -187,6 +187,51 @@ public class AstronomyCalculator {
         }
     }
     
+    public double getRightAscension(Planet planet, double julianDate)
+    {
+        Planet Earth = new Planet("Earth");
+        usePrecalculatedPlanetElems(planet, julianDate);
+        usePrecalculatedPlanetElems(Earth, julianDate);
+        
+        double m_earth = Mod2Pi(Earth.mean_longitude - Earth.perihelion);
+        double v_earth = TrueAnomFromMeanAnom(m_earth,Earth.eccentricity);
+        double r_earth = Earth.semiMajor_axis * 
+                         (1 - (Earth.eccentricity * Earth.eccentricity)) /
+                         (1 + (Earth.eccentricity * Math.cos(v_earth)));
+        double x_earth = r_earth * Math.cos(v_earth + Earth.perihelion);
+        double y_earth = r_earth * Math.sin(v_earth + Earth.perihelion);
+        double z_earth = 0.0;
+        
+        double m_planet = Mod2Pi(planet.mean_longitude - planet.perihelion);
+        double v_planet = TrueAnomFromMeanAnom(m_planet,planet.eccentricity);
+        double r_planet = planet.semiMajor_axis * 
+                         (1 - (planet.eccentricity * planet.eccentricity)) /
+                         (1 + (planet.eccentricity * Math.cos(v_planet)));
+        double x_p_helio = (r_planet * Math.cos(planet.mean_longitude) *
+                           Math.cos(v_planet + planet.perihelion - planet.mean_longitude)) -
+                           (Math.sin(planet.mean_longitude) * 
+                           Math.sin(v_planet + planet.perihelion - planet.mean_longitude)) *
+                           Math.cos(planet.inclination);
+        double y_p_helio = (r_planet * Math.sin(planet.mean_longitude) *
+                           Math.cos(v_planet + planet.perihelion - planet.mean_longitude)) +
+                           (Math.cos(planet.mean_longitude) * 
+                           Math.sin(v_planet + planet.perihelion - planet.mean_longitude) *
+                           Math.cos(planet.inclination));
+        double z_p_helio = r_planet * 
+                           Math.sin(v_planet + planet.perihelion - planet.mean_longitude) *
+                           Math.sin(planet.inclination);
+        double x_p_geo = x_p_helio - x_earth;
+        double y_p_geo = y_p_helio - y_earth;
+        double z_p_geo = z_p_helio - z_earth;
+        
+        double ecl = 23.439281 * RADS;
+        double xeq = x_p_geo;
+        double yeq = y_p_geo * Math.cos(ecl) - (z_p_geo * Math.sin(ecl));
+        double zeq = y_p_geo * Math.sin(ecl) + (z_p_geo * Math.cos(ecl));
+        double right_ascension = Mod2Pi(Math.atan2(yeq, xeq)) * DEGS;
+        return right_ascension;
+    }
+    
     private void RightAscDegToHrMinSec(double RA, double hr, double min, double sec) {
         hr = (RA/15.0);
         hr = (int) hr;

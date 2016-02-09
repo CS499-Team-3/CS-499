@@ -20,7 +20,11 @@ public class Planet extends SpaceObject {
     
     public Planet()
     {
-        
+        super();
+    }
+    public Planet(String name)
+    {
+        super(name);
     }
     
     public void set_semiMajor_axis(double axis)

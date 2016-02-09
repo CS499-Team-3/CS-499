@@ -20,5 +20,23 @@ public class SpaceObject {
     float magnitude;
     coordinate location;
     boolean isVisible;
+    
+    public SpaceObject()
+    {
+        this.name = "";
+        this.magnitude = 0;
+        this.location.x = -1;
+        this.location.y = -1;
+        this.isVisible = false;
+    }
+    
+    public SpaceObject(String objName)
+    {
+        this.name = objName;
+        this.magnitude = 0;
+        this.location.x = -1;
+        this.location.y = -1;
+        this.isVisible = false;
+    }
 }
 
