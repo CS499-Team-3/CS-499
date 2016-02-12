@@ -10,15 +10,22 @@ package skymap;
  * @author Lindsey Harris
  */
 
-class coordinate {
-    int x;
-    int y;
+class Coordinate {
+    double x;
+    double y;
+    double z;
+    
+    Coordinate() {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
 }
 
 public class SpaceObject {
     String name;
     float magnitude;
-    coordinate location;
+    Coordinate location;
     boolean isVisible;
     
     public SpaceObject()

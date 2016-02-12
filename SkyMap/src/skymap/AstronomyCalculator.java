@@ -189,6 +189,25 @@ public class AstronomyCalculator {
     
     public double getRightAscension(Planet planet, double julianDate)
     {
+        Coordinate coord = getRectEquatCoord(planet, julianDate);
+        double right_ascension = Mod2Pi(Math.atan2(coord.y, coord.x)) * DEGS;
+        return right_ascension;
+    }
+    
+    public double getDeclination(Planet planet, double julianDate) {
+        Coordinate coord = getRectEquatCoord(planet, julianDate);
+        double declination = Math.atan(coord.z/Math.sqrt((coord.x*coord.x)+(coord.y*coord.y)))*DEGS;
+        return declination;
+    }
+    
+    public double getDistance(Planet planet, double julianDate) {
+        Coordinate coord = getRectEquatCoord(planet,julianDate);
+        double dist = Math.sqrt((coord.x*coord.x)+
+                                (coord.y*coord.y)+
+                                (coord.z*coord.z));
+        return dist; // in AUs
+    }
+    private Coordinate getRectEquatCoord(Planet planet, double julianDate) {
         Planet Earth = new Planet("Earth");
         usePrecalculatedPlanetElems(planet, julianDate);
         usePrecalculatedPlanetElems(Earth, julianDate);
@@ -228,8 +247,11 @@ public class AstronomyCalculator {
         double xeq = x_p_geo;
         double yeq = y_p_geo * Math.cos(ecl) - (z_p_geo * Math.sin(ecl));
         double zeq = y_p_geo * Math.sin(ecl) + (z_p_geo * Math.cos(ecl));
-        double right_ascension = Mod2Pi(Math.atan2(yeq, xeq)) * DEGS;
-        return right_ascension;
+        Coordinate coord = new Coordinate();
+        coord.x = xeq;
+        coord.y = yeq;
+        coord.z = zeq;
+        return coord;
     }
     
     private void RightAscDegToHrMinSec(double RA, double hr, double min, double sec) {
