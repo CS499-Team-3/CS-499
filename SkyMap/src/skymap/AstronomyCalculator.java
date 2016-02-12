@@ -73,12 +73,11 @@ public class AstronomyCalculator {
          + (Math.floor(275.0 * MM / 9.0))
          + DD - 730531.5 + HH/24.0;
          */
-        double relativeJulian;
-
-        relativeJulian = (367 * year)
-                - Math.floor(7.0 * (year + Math.floor((month + 9.0 / 12)) / 4.0))
-                + (Math.floor(275.0 * month / 9.0)) + day - 730531 + hour / 24.0;
-
+        
+        double relativeJulian = (367 * year) - 
+            (Math.floor(7.0 * (year + Math.floor((month + 9.0)/12))/4.0)) +
+            (Math.floor(275.0 * month/9.0)) + day - 730531.5 + hour/24.0;
+        
         return relativeJulian;
     }
 
