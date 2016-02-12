@@ -12,4 +12,13 @@ package skymap;
 
 public class Star extends SpaceObject {
     String constellation_name;
+    
+    public Star()
+    {
+        super();
+    }
+    public Star(String name)
+    {
+        super(name);
+    }
 }

@@ -62,24 +62,59 @@ public class AstronomyCalculator {
 
         return exactJulian;
     }
+
     /**
      * Calculates the Julian Date relative to 2000.
      */
-    double calRelativeJulian(int year, int month, int day, int hour, int min, int sec)
-    {
+    double calRelativeJulian(int year, int month, int day, int hour, int min, int sec) {
         /*
-        JD = (367 * YYYY) 
-	- (Math.floor(7.0 * (YYYY + Math.floor((MM + 9.0)/12.0))/4.0))
-	+ (Math.floor(275.0 * MM / 9.0))
-	+ DD - 730531.5 + HH/24.0;
-        */
-        double relativeJulian;
+         JD = (367 * YYYY) 
+         - (Math.floor(7.0 * (YYYY + Math.floor((MM + 9.0)/12.0))/4.0))
+         + (Math.floor(275.0 * MM / 9.0))
+         + DD - 730531.5 + HH/24.0;
+         */
         
-        relativeJulian = (367 * year) 
-                - Math.floor(7.0 * (year + Math.floor((month + 9.0/12))/4.0)) +
-                (Math.floor(275.0 * month / 9.0)) + day - 730531 + hour/24.0;
+        double relativeJulian = (367 * year) - 
+            (Math.floor(7.0 * (year + Math.floor((month + 9.0)/12))/4.0)) +
+            (Math.floor(275.0 * month/9.0)) + day - 730531.5 + hour/24.0;
         
         return relativeJulian;
+    }
+
+    /*phaseValue corresponds with what lunar phase we need to calculate, 0 for
+     new moon, 0.25 for first quarter, 0.50 for full moon, and 0.75 for the last
+     quarter */
+    double julianDateOfGivenPhase(double year, double phaseValue) {
+        //formula
+        /*JD = 2415020.75933 + (29.53058868 * k) + (0.0001178 * T2) – 
+         (0.000000155 * T3) + (0.00033 * sin((166.56 + (132.87 * T) – 
+         (0.009173 * T2)) * RAD) */
+
+        //Caluculate K value used in formula
+        double k = 0;
+        double kvalue = ((year - 1900) * 12.3685);
+        float kfloat = (float) kvalue;
+        k = Math.round(kfloat);
+        k = k + phaseValue;
+
+        //calculate t value
+        double t = k / 1236.85;
+
+        double julianDate;
+
+        //get the sin value in radians
+        double sinValue = 166.56 + (132.87 * t);
+        sinValue = sinValue - (0.009173 * Math.pow(t, 2));
+        sinValue = Math.toRadians(sinValue);
+        sinValue = Math.sin(sinValue);
+
+        //peform calculations, broken down into parts
+        julianDate = 2415020.75933 + (29.53058868 * k);
+        julianDate = julianDate + (0.0001178 * Math.pow(t, 2));
+        julianDate = julianDate - (0.000000155 * Math.pow(t, 3));
+        julianDate = julianDate + (0.00033 * sinValue);
+
+        return julianDate;
     }
 
     public boolean usePrecalculatedPlanetElems(Planet planet, double julianDate) {
@@ -186,37 +221,104 @@ public class AstronomyCalculator {
             return Math.ceil(x);
         }
     }
-    
-    private void RightAscDegToHrMinSec(double RA, double hr, double min, double sec) {
-        hr = (RA/15.0);
-        hr = (int) hr;
-        min = ((RA/15.0) - hr)*(60.0);
-        min = (int) min;
-        sec = ((((RA/15.0) - hr)*(60.0)) - min)*(60.0);
+
+    public double getRightAscension(Planet planet, double julianDate) {
+        Coordinate coord = getRectEquatCoord(planet, julianDate);
+        double right_ascension = Mod2Pi(Math.atan2(coord.y, coord.x)) * DEGS;
+        return right_ascension;
     }
-    
+
+    public double getDeclination(Planet planet, double julianDate) {
+        Coordinate coord = getRectEquatCoord(planet, julianDate);
+        double declination = Math.atan(coord.z / Math.sqrt((coord.x * coord.x) + (coord.y * coord.y))) * DEGS;
+        return declination;
+    }
+
+    public double getDistance(Planet planet, double julianDate) {
+        Coordinate coord = getRectEquatCoord(planet, julianDate);
+        double dist = Math.sqrt((coord.x * coord.x)
+                + (coord.y * coord.y)
+                + (coord.z * coord.z));
+        return dist; // in AUs
+    }
+
+    private Coordinate getRectEquatCoord(Planet planet, double julianDate) {
+        Planet Earth = new Planet("Earth");
+        usePrecalculatedPlanetElems(planet, julianDate);
+        usePrecalculatedPlanetElems(Earth, julianDate);
+
+        double m_earth = Mod2Pi(Earth.mean_longitude - Earth.perihelion);
+        double v_earth = TrueAnomFromMeanAnom(m_earth, Earth.eccentricity);
+        double r_earth = Earth.semiMajor_axis
+                * (1 - (Earth.eccentricity * Earth.eccentricity))
+                / (1 + (Earth.eccentricity * Math.cos(v_earth)));
+        double x_earth = r_earth * Math.cos(v_earth + Earth.perihelion);
+        double y_earth = r_earth * Math.sin(v_earth + Earth.perihelion);
+        double z_earth = 0.0;
+
+        double m_planet = Mod2Pi(planet.mean_longitude - planet.perihelion);
+        double v_planet = TrueAnomFromMeanAnom(m_planet, planet.eccentricity);
+        double r_planet = planet.semiMajor_axis
+                * (1 - (planet.eccentricity * planet.eccentricity))
+                / (1 + (planet.eccentricity * Math.cos(v_planet)));
+        double x_p_helio = (r_planet * Math.cos(planet.mean_longitude)
+                * Math.cos(v_planet + planet.perihelion - planet.mean_longitude))
+                - (Math.sin(planet.mean_longitude)
+                * Math.sin(v_planet + planet.perihelion - planet.mean_longitude))
+                * Math.cos(planet.inclination);
+        double y_p_helio = (r_planet * Math.sin(planet.mean_longitude)
+                * Math.cos(v_planet + planet.perihelion - planet.mean_longitude))
+                + (Math.cos(planet.mean_longitude)
+                * Math.sin(v_planet + planet.perihelion - planet.mean_longitude)
+                * Math.cos(planet.inclination));
+        double z_p_helio = r_planet
+                * Math.sin(v_planet + planet.perihelion - planet.mean_longitude)
+                * Math.sin(planet.inclination);
+        double x_p_geo = x_p_helio - x_earth;
+        double y_p_geo = y_p_helio - y_earth;
+        double z_p_geo = z_p_helio - z_earth;
+
+        double ecl = 23.439281 * RADS;
+        double xeq = x_p_geo;
+        double yeq = y_p_geo * Math.cos(ecl) - (z_p_geo * Math.sin(ecl));
+        double zeq = y_p_geo * Math.sin(ecl) + (z_p_geo * Math.cos(ecl));
+        Coordinate coord = new Coordinate();
+        coord.x = xeq;
+        coord.y = yeq;
+        coord.z = zeq;
+        return coord;
+    }
+
+    private void RightAscDegToHrMinSec(double RA, double hr, double min, double sec) {
+        hr = (RA / 15.0);
+        hr = (int) hr;
+        min = ((RA / 15.0) - hr) * (60.0);
+        min = (int) min;
+        sec = ((((RA / 15.0) - hr) * (60.0)) - min) * (60.0);
+    }
+
     private void DecDegToDegMinSec(double dec, int deg, double min, double sec) {
         deg = (int) deg;
-        min = (dec - deg)*(60.0);
+        min = (dec - deg) * (60.0);
         min = (int) min;
-        sec = (((dec - deg)*(60.0)) - min)*(60.0);
+        sec = (((dec - deg) * (60.0)) - min) * (60.0);
     }
-    
+
     private double TrueAnomFromMeanAnom(double M, double e) {
-        double E = M + e*Math.sin(M)*(1.0 + e*Math.cos(M));
+        double E = M + e * Math.sin(M) * (1.0 + e * Math.cos(M));
         double E1 = 0;
         do {
             E1 = E;
-            E = E1 - (E1 - e*Math.sin(E1) - M)/(1 - e*Math.cos(E1));
-        } while(Math.abs(E - E1) > (1.0e-12));
-        
-        double V = 2*Math.atan(Math.sqrt(1 + e))*Math.tan(0.5*E);
+            E = E1 - (E1 - e * Math.sin(E1) - M) / (1 - e * Math.cos(E1));
+        } while (Math.abs(E - E1) > (1.0e-12));
+
+        double V = 2 * Math.atan(Math.sqrt(1 + e)) * Math.tan(0.5 * E);
         if (V < 0) {
-            V = V + (2*Math.PI);
+            V = V + (2 * Math.PI);
         }
         return V;
     }
-    
+
     private void AltAndAzimOfPlanet(double lat, double lon, double RA, double dec, double az, double alt) {
         if (lat < 0) {
             lat = lat * -1.0;
@@ -229,31 +331,31 @@ public class AstronomyCalculator {
         //if (hourAngle < 0) {
         //    hourAngle += 360;
         //}
-        double decRad = dec * (Math.PI/180.0);
-        double latRad = lat * (Math.PI/180.0);
-        double hrRad = hourAngle * (Math.PI/180.0);
-        
+        double decRad = dec * (Math.PI / 180.0);
+        double latRad = lat * (Math.PI / 180.0);
+        double hrRad = hourAngle * (Math.PI / 180.0);
+
         // Calculate altitude in radians
-        double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) + (Math.cos(decRad)*Math.cos(latRad)*Math.cos(hrRad));
+        double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) + (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
         alt = Math.abs(sin_alt);
-        
+
         // Calculate azimuth in radians (handle inside of a try...catch)
         try {
-          double cos_az = (Math.sin(decRad) - Math.sin(alt)*Math.sin(latRad))/(Math.cos(alt)*Math.cos(latRad));
-          az = Math.acos(cos_az);
+            double cos_az = (Math.sin(decRad) - Math.sin(alt) * Math.sin(latRad)) / (Math.cos(alt) * Math.cos(latRad));
+            az = Math.acos(cos_az);
         } catch (Exception e) {
-          az = 0;
-        }       
-        
+            az = 0;
+        }
+
         // Convert altitude and azimuth to degrees
-        alt = alt * (180.0/Math.PI);
-        az = az * (180.0/Math.PI);
-        
+        alt = alt * (180.0 / Math.PI);
+        az = az * (180.0 / Math.PI);
+
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
-        }      
+        }
     }
-    
+
     // Calculating the Mean Sidereal Time
     private void MeanSiderealTime(int year, int month, int day, int hour, int min, int sec) {
         // global variable lon? or passed in?
@@ -268,48 +370,47 @@ public class AstronomyCalculator {
         double c = Math.floor(365.25 * year);
         double d = Math.floor(30.6001 * (month + 1));
         // Get days since J2000.0
-        double jd = b + c + d - 730550.5 + day + (hour + min/60 + sec/3600) / 24;
+        double jd = b + c + d - 730550.5 + day + (hour + min / 60 + sec / 3600) / 24;
         // Get Julian centuries since J2000.0
         double jt = jd / 36525.0;
         // Calculate initial Mean Sidereal Time (mst)
-        double mst = 280.46061837 + (360.98564736629 * jd) + (0.000387933 * Math.pow(jt, 2)) - (Math.pow(jt, 3)/38710000)+ lon;
+        double mst = 280.46061837 + (360.98564736629 * jd) + (0.000387933 * Math.pow(jt, 2)) - (Math.pow(jt, 3) / 38710000) + lon;
         // Clip mst to range 0.0 to 360.0
         if (mst > 0.0) {
-            while(mst > 360.0) {
+            while (mst > 360.0) {
                 mst -= 360.0;
-            }            
+            }
         } else {
-            while(mst < 0.0) {
+            while (mst < 0.0) {
                 mst += 360.0;
             }
         }
         // Result is Mean Sidereal Time for the location given by Lat, Lon
     }
-    
+
     // Calculating Exact Julian Day
-    
     /*private double ExactJulianDay(int day, int month, int year, Date dt) {
-        Calendar calendar = new GregorianCalendar(year, month, day);
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-        double JD = 0.0;
-        int YYYY = year;
-        int MM = month;
-        long DD = day;
-        double y = 0;
-        double m = 0;
-        double A = 0;
-        double B = 0;
+     Calendar calendar = new GregorianCalendar(year, month, day);
+     calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+     double JD = 0.0;
+     int YYYY = year;
+     int MM = month;
+     long DD = day;
+     double y = 0;
+     double m = 0;
+     double A = 0;
+     double B = 0;
         
-        //Date date = dt;
+     //Date date = dt;
         
-        if(MM > 2) {
-            y = YYYY;
-            m = MM;
-        } else {
-            y = YYYY - 1;
-            m = MM + 12;
-        }
+     if(MM > 2) {
+     y = YYYY;
+     m = MM;
+     } else {
+     y = YYYY - 1;
+     m = MM + 12;
+     }
         
-        return JD;
-    }   */
+     return JD;
+     }   */
 }
