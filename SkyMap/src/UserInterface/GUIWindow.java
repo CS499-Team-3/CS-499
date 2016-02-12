@@ -8,7 +8,7 @@ package UserInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import javax.swing.*;
 
@@ -24,6 +24,7 @@ public final class GUIWindow extends JFrame{
     JTextField dayField, monthField, yearField, latField, longField;
     JLabel dateLbl, latLbl, longLbl, backslashLbl1, backslashLbl2;
     public GUIWindow() {
+        setExtendedState(Frame.MAXIMIZED_BOTH);
         btnPanel1 = new JPanel();
         jpegPanel = new JPanel();
         btnPanel2 = new JPanel();
@@ -56,21 +57,25 @@ public final class GUIWindow extends JFrame{
         skyMapScrollPane = new JScrollPane(jpegPanel);
         skyMapScrollPane.setPreferredSize(new Dimension(100, 100));
         setTitle("SkyMap");
-        setMinimumSize(new Dimension(500, 500)); // Full-Screen Size
+        setMinimumSize(new Dimension(500, 500));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setLayout(new BorderLayout());        
         jpegPanel.setMinimumSize(new Dimension(800, 800));
-        btnPanel1.setLayout(new GridLayout(3,1,1,1));
-
+        btnPanel1.setLayout(new GridLayout(3, 1, 1, 1));        
         btnPanel1.setPreferredSize(new Dimension(50, 75));
         btnPanel1.add(datePanel);
         btnPanel1.add(latPanel);
         btnPanel1.add(longPanel);
+        btnPanel2.setLayout(new GridLayout(2, 1, 1, 1));
+        btnPanel2.add(generateMapBtn);
+        btnPanel2.add(saveBtn);
         add(skyMapScrollPane, BorderLayout.CENTER);
         JPanel mainBtnPanel = new JPanel();
         mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
         mainBtnPanel.add(btnPanel1);
+        mainBtnPanel.add(new JPanel());
+        mainBtnPanel.add(btnPanel2);
         add(mainBtnPanel, BorderLayout.SOUTH);       
         
     }

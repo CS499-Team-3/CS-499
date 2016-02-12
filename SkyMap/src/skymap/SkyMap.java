@@ -5,6 +5,8 @@
  */
 package skymap;
 
+import UserInterface.GUIWindow;
+
 /**
  *
  * @author Lindsey
@@ -15,7 +17,7 @@ public class SkyMap {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        GUIWindow window = new GUIWindow();
     }
     
 }
