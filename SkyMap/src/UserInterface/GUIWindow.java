@@ -67,7 +67,11 @@ public final class GUIWindow extends JFrame{
         btnPanel1.add(datePanel);
         btnPanel1.add(latPanel);
         btnPanel1.add(longPanel);
-        add(skyMapScrollPane, BorderLayout.PAGE_START);
-        add(btnPanel1, BorderLayout.SOUTH);
+        add(skyMapScrollPane, BorderLayout.CENTER);
+        JPanel mainBtnPanel = new JPanel();
+        mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
+        mainBtnPanel.add(btnPanel1);
+        add(mainBtnPanel, BorderLayout.SOUTH);       
+        
     }
 }
