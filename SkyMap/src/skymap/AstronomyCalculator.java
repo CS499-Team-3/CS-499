@@ -73,12 +73,48 @@ public class AstronomyCalculator {
          + (Math.floor(275.0 * MM / 9.0))
          + DD - 730531.5 + HH/24.0;
          */
-        
-        double relativeJulian = (367 * year) - 
-            (Math.floor(7.0 * (year + Math.floor((month + 9.0)/12))/4.0)) +
-            (Math.floor(275.0 * month/9.0)) + day - 730531.5 + hour/24.0;
-        
+
+        double relativeJulian = (367 * year)
+                - (Math.floor(7.0 * (year + Math.floor((month + 9.0) / 12)) / 4.0))
+                + (Math.floor(275.0 * month / 9.0)) + day - 730531.5 + hour / 24.0;
+
         return relativeJulian;
+    }
+
+    /*Function takes year, month and day and converts it to a decimal format
+     to be used in the lunar phase functions. */
+    double year2Decimal(int year, int month, int day) {
+        double decYear = 0;
+        double daysOver365 = 0;
+        double daysPassed = 0;
+        //find the decimal part of the year
+        //days passed in the year / 365
+
+        //find the number of days passed from each month
+        for (int i = month - 1; i != 0; i--) {
+            if (i % 2 == 0) // month is even
+            {
+                if (i == 2) //add for Feb
+                {
+                    daysPassed = daysPassed + 28;
+                } else {
+                    daysPassed = daysPassed + 30;
+                }
+            }
+            else //month is odd
+            {
+                daysPassed = daysPassed + 31;
+            }
+
+        }
+
+        //now do calculation of days/365
+        daysPassed = daysPassed + day;
+        daysOver365 = daysPassed / 365;
+
+        //add daysOver365 to decYear
+        decYear = year + daysOver365;
+        return decYear;
     }
 
     /*phaseValue corresponds with what lunar phase we need to calculate, 0 for
