@@ -4,11 +4,16 @@
  * and open the template in the editor.
  */
 package skymap;
-
+import java.util.List;
 /**
  *
  * @author Lindsey
  */
 public class SkyBox {
+    List<SpaceObject> skyList;
     
+    public SkyBox()
+    {
+        
+    }
 }
