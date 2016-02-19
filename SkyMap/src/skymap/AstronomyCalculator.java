@@ -83,7 +83,7 @@ public class AstronomyCalculator {
 
     /*Function takes year, month and day and converts it to a decimal format
      to be used in the lunar phase functions. */
-    double year2Decimal(int year, int month, int day) {
+    double date2Decimal(int year, int month, int day) {
         double decYear = 0;
         double daysOver365 = 0;
         double daysPassed = 0;
@@ -92,16 +92,18 @@ public class AstronomyCalculator {
 
         //find the number of days passed from each month
         for (int i = month - 1; i != 0; i--) {
-            if (i % 2 == 0) // month is even
+            
+            //if Month has 30 days
+            if (i == 4 || i == 6 || i == 9 || i == 11) {
+                daysPassed = daysPassed + 30;
+            } 
+            
+            else if (i == 2) //add for Feb
             {
-                if (i == 2) //add for Feb
-                {
-                    daysPassed = daysPassed + 28;
-                } else {
-                    daysPassed = daysPassed + 30;
-                }
-            }
-            else //month is odd
+                daysPassed = daysPassed + 28;
+            } 
+            
+            else // month has 31 days
             {
                 daysPassed = daysPassed + 31;
             }
