@@ -32,8 +32,8 @@ public class SpaceObject {
     {
         this.name = "";
         this.magnitude = 0;
-        this.location.x = -1;
-        this.location.y = -1;
+      //  this.location.x = -1;
+      //  this.location.y = -1;
         this.isVisible = false;
     }
     
@@ -41,8 +41,8 @@ public class SpaceObject {
     {
         this.name = objName;
         this.magnitude = 0;
-        this.location.x = -1;
-        this.location.y = -1;
+       // this.location.x = -1;
+        //this.location.y = -1;
         this.isVisible = false;
     }
 }
