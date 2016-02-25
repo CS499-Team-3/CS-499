@@ -5,20 +5,24 @@
  */
 package skymap;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 import java.util.List;
 /**
  *
  * @author Lindsey
  */
-public abstract class DrawingTool extends Graphics
+public class DrawingTool 
 {
     Image background;
     Color c;
+    
     public DrawingTool()
     {
         
     }
+    
+    
     
     public void set_background(Image background)
     {
@@ -31,13 +35,13 @@ public abstract class DrawingTool extends Graphics
         this.c = color;
     }
     
-    public boolean draw_circle(int x, int y, int radius)
+    public boolean draw_circle(Graphics g, int x, int y, int radius)
     {
         int diameter = radius * 2;
         x = x-radius;
         y = y-radius;
-        setColor(c);
-        this.fillOval(x, y, diameter, diameter);
+        g.setColor(c);
+        g.fillOval(x, y, diameter, diameter);
         return true;
     }
     
@@ -45,4 +49,10 @@ public abstract class DrawingTool extends Graphics
     {
         return true;
     }
+    
+    public void createLabel(Graphics g, String label, int x, int y) {         
+         g.drawString(label, x, y);
+     }
+    
+    
 }

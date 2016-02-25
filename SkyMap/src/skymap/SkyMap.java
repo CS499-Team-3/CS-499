@@ -5,7 +5,7 @@
  */
 package skymap;
 
-//import UserInterface.GUIWindow;
+import UserInterface.GUIWindow;
 import java.util.Scanner;
 
 /**
@@ -19,7 +19,7 @@ public class SkyMap {
      */
     public static void main(String[] args) {
 
-        //GUIWindow window = new GUIWindow();
+        GUIWindow window = new GUIWindow();
 
         // TODO code application logic here
 
