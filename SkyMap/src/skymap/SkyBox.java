@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class SkyBox {
     List<SpaceObject> skyList;
-    
+
     //implemented as a singleton, since there should only be one SkyBox
     //private static instance
     private static SkyBox SB = null;

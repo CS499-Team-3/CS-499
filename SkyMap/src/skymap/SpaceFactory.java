@@ -7,8 +7,21 @@ package skymap;
 
 /**
  *
- * @author Lindsey
+ * @author Zein Sleiman
  */
+
 public class SpaceFactory {
+
+    public static SpaceObject makeSpaceObject(String type){
+        if(type.equals("planet")) {
+            return new Planet();
+        }
+        else if(type.equals("star")){
+            return new Star();
+        }
+        else{
+            return null;
+        }
+    }
     
 }
