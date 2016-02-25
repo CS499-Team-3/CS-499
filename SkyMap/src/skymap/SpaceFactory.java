@@ -17,6 +17,7 @@ public class SpaceFactory {
             return new Planet();
         }
         else if(type.equals("star")){
+            System.out.println("Made a new star");
             return new Star();
         }
         else{
