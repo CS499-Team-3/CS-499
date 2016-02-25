@@ -6,3 +6,4 @@ SkyMap/build
 .gitignore
 
 
+/SkyMap/dist/
