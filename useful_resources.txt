@@ -5,3 +5,6 @@ http://aa.usno.navy.mil/data/docs/JulianDate.php
 
 Moon phases
 http://www.moonconnection.com/moon_phases_calendar.phtml
+
+altitude-azimuth
+http://www.astronomynotes.com/nakedeye/s6.htm
