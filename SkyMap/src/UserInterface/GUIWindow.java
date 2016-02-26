@@ -34,21 +34,13 @@ public final class GUIWindow extends JFrame{
     SpinnerDateModel hourModel, minuteModel, secondModel;
     JLabel dateLbl, latLbl, longLbl, backslashLbl1, backslashLbl2;
     public GUIWindow() {
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = image.createGraphics();
-        AstroDraw drawingTool;
-        drawingTool = new AstroDraw();
-        //drawingTool.set_background_color(graphics, image, Color.BLACK);
-        drawingTool.draw_circle(graphics, 10, 10, 10);
-        drawingTool.set_color(Color.BLACK);
-        drawingTool.draw_circle(graphics, 15, 15, 10);
-        String lab = "label";
-        drawingTool.createLabel(graphics, lab, 20, 20);
+        AstroDraw astroDraw = new AstroDraw();
+        astroDraw.drawSkyMap();
+        BufferedImage skyMapImg = astroDraw.getImage();
         setExtendedState(Frame.MAXIMIZED_BOTH);
         btnPanel1 = new JPanel();
         jpegPanel = new JPanel();
-        JLabel label = new JLabel(new ImageIcon(image));
-        //label.setPreferredSize(new Dimension(500, 700));
+        JLabel label = new JLabel(new ImageIcon(skyMapImg));
         jpegPanel.add(label);
         btnPanel2 = new JPanel();
         datePanel = new JPanel();
@@ -107,7 +99,7 @@ public final class GUIWindow extends JFrame{
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(new JPanel());
         mainBtnPanel.add(btnPanel2);
-        add(mainBtnPanel, BorderLayout.SOUTH);       
+        add(mainBtnPanel, BorderLayout.SOUTH);        
         
     }
 }

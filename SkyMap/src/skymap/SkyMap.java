@@ -25,9 +25,9 @@ public class SkyMap {
 
         //testing the SpaceFactory class
 
-        SpaceFactory factory = new SpaceFactory();
+        //SpaceFactory factory = new SpaceFactory();
 
-        SpaceObject x = factory.makeSpaceObject("planet");
+        //SpaceObject x = factory.makeSpaceObject("planet");
 
 
     }

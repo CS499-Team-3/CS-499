@@ -18,6 +18,7 @@ public class AstroDraw
 {
     Image background;
     Color c;
+    BufferedImage image;
     
     public AstroDraw()
     {
@@ -59,6 +60,20 @@ public class AstroDraw
          g.drawString(label, x, y);
      }
     
-        
+    public void drawSkyMap() {
+        image = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();       
+        set_background_color(graphics, image, new Color(0x000080));
+        set_color(Color.WHITE);
+        draw_circle(graphics, 100, 100, 7);        
+        draw_circle(graphics, 300, 500, 5);
+        createLabel(graphics, "Star", 290, 520);
+    }  
+
+    public BufferedImage getImage() {
+        return image;
+    }
+    
+    
     
 }
