@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.*;
-import skymap.DrawingTool;
+import skymap.AstroDraw;
 import sun.util.calendar.CalendarDate;
 
 /**
@@ -36,8 +36,8 @@ public final class GUIWindow extends JFrame{
     public GUIWindow() {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
-        DrawingTool drawingTool;
-        drawingTool = new DrawingTool();
+        AstroDraw drawingTool;
+        drawingTool = new AstroDraw();
         //drawingTool.set_background_color(graphics, image, Color.BLACK);
         drawingTool.draw_circle(graphics, 10, 10, 10);
         drawingTool.set_color(Color.BLACK);

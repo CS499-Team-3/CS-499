@@ -14,12 +14,12 @@ import java.util.List;
  *
  * @author Lindsey
  */
-public class DrawingTool 
+public class AstroDraw 
 {
     Image background;
     Color c;
     
-    public DrawingTool()
+    public AstroDraw()
     {
         
     }

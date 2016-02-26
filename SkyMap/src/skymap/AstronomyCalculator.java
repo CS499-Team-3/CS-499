@@ -280,7 +280,7 @@ public class AstronomyCalculator {
         return dist; // in AUs
     }
 
-    private Coordinate getRectEquatCoord(Planet planet, double julianDate) {
+    public Coordinate getRectEquatCoord(Planet planet, double julianDate) {
         Planet Earth = new Planet("Earth");
         usePrecalculatedPlanetElems(planet, julianDate);
         usePrecalculatedPlanetElems(Earth, julianDate);
