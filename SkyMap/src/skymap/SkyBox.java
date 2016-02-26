@@ -11,14 +11,12 @@ import java.util.*;
  * @author Joseph, Lindsey
  */
 public class SkyBox {
-    List<SpaceObject> skyList;
+    private List<Star> starList = new ArrayList();
+    private List<Planet> planetList = new ArrayList();
 
     //implemented as a singleton, since there should only be one SkyBox
     //private static instance
     private static SkyBox SB = null;
-    
-    //Java list object to hold SpaceObjects
-    private final List<SpaceObject> SkyList = new ArrayList<>();
     
     //private constructor
     private SkyBox()
@@ -38,15 +36,24 @@ public class SkyBox {
     }
     
     //function to get the entire list
-    public List<SpaceObject> getSkyBoxList()
+    public List<Star> getStarList()
     {
-        return SkyList;
+        return starList;
+    }
+    
+    public List<Planet> getPlanetList()
+    {
+        return planetList;
     }
     
     //function to add to the Skylist, used to populate the SkyBox
-    public boolean addSpaceObject(SpaceObject SO)
+    public void addStar(Star S)
     {
-        SkyList.add(SO);
-        return true;  //true value sent to determine if opertaion was successful
+        starList.add(S);
+    }
+    
+    public void addPlanet(Planet P)
+    {
+        planetList.add(P);
     }
 }

@@ -9,20 +9,20 @@ package skymap;
  *
  * @author Zein Sleiman
  */
-
 public class SpaceFactory {
 
-    public static SpaceObject makeSpaceObject(String type){
-        if(type.equals("planet")) {
-            return new Planet();
-        }
-        else if(type.equals("star")){
-            System.out.println("Made a new star");
-            return new Star();
-        }
-        else{
-            return null;
-        }
+    //function to make a star
+    public Star makeStar(int ID, int h, double hd, double hr, String g,
+            String bf, String pn, double ra, double DEC, double dist, double MAG,
+            double aMag, String s, double ci) {
+            Star newStar = new Star(ID, h, hd, hr, g, bf, pn, ra, DEC, dist, MAG, 
+                    aMag, s, ci);
+            return newStar;
     }
-    
+
+    public static Planet makePlanet() {
+        Planet p = new Planet();
+        return p;
+    }
+
 }

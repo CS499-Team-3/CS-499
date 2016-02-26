@@ -39,6 +39,12 @@ public class DataParser {
         // TODO code application logic here
         InputStream IS = SkyMap.class.getResourceAsStream("hyg.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(IS));
+        
+        //get the instance of SkyBox
+        SkyBox starBox = SkyBox.getSkyBox();
+        
+        //make a SpaceFactory
+        SpaceFactory sf = new SpaceFactory();
 
         try {
             //read the first line that contains the labels
@@ -57,41 +63,46 @@ public class DataParser {
                 if (!dataList.get(1).isEmpty()) {
                     Integer.parseInt(dataList.get(1));
                 }
-                long HD = 0;
-                long HR = 0;
+                double HD = 0;
+                double HR = 0;
 
                 //check to see if HD is empty, if it is, leave as 0
                 if (!dataList.get(2).isEmpty()
                         && !dataList.get(2).contentEquals(" ")) {
-                    HD = Long.parseLong(dataList.get(2));
+                    HD = Double.parseDouble(dataList.get(2));
                 }
 
                 //check to see if HR is empty, if it is, leave as 0
                 if (!dataList.get(3).isEmpty()
                         && !dataList.get(3).contentEquals(" ")
                         && !dataList.get(3).contentEquals("-")) {
-                    HR = Long.parseLong(dataList.get(3));
+                    HR = Double.parseDouble(dataList.get(3));
                 }
 
                 String Gliese = dataList.get(4);
                 String BayerFlam = dataList.get(5);
                 String ProperName = dataList.get(6);
-                Double RA = Double.parseDouble(dataList.get(7));
-                Double Distance = Double.parseDouble(dataList.get(8));
-                float Mag = Float.parseFloat(dataList.get(9));
-                float absMag = Float.parseFloat(dataList.get(10));
-                String Spect = dataList.get(11);
+                double RA = Double.parseDouble(dataList.get(7));
+                double dec = Double.parseDouble(dataList.get(8));
+                double Distance = Double.parseDouble(dataList.get(9));
+                double Mag = Double.parseDouble(dataList.get(10));
+                double absMag = Double.parseDouble(dataList.get(11));
+                String Spect = dataList.get(12);
 
-                float colorInd = 0;
+                double colorInd = 0;
                 //check to see if colorInd is empty, if it is, leave as 0
-                if (!dataList.get(12).isEmpty()) {
-                    colorInd = Float.parseFloat(dataList.get(11));
+                if (!dataList.get(13).isEmpty()) {
+                    colorInd = Double.parseDouble(dataList.get(11));
                 }
 
                 if (Mag < 6) {
                     //Send information to the SpaceObject Factory
-                    SpaceObject testStar = null;
-                    testStar = SF.makeSpaceObject("star");
+                    Star tempStar = sf.makeStar(StarID, Hip, HD, HR,
+                            Gliese, BayerFlam, ProperName, RA, dec, Distance,
+                            Mag, absMag, Spect, colorInd);
+                    
+                    //put tempStar into SkyBox
+                    starBox.addStar(tempStar);
                 }
 
             }
