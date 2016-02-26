@@ -38,13 +38,17 @@ public final class GUIWindow extends JFrame{
         Graphics2D graphics = image.createGraphics();
         DrawingTool drawingTool;
         drawingTool = new DrawingTool();
+        //drawingTool.set_background_color(graphics, image, Color.BLACK);
         drawingTool.draw_circle(graphics, 10, 10, 10);
         drawingTool.set_color(Color.BLACK);
         drawingTool.draw_circle(graphics, 15, 15, 10);
+        String lab = "label";
+        drawingTool.createLabel(graphics, lab, 20, 20);
         setExtendedState(Frame.MAXIMIZED_BOTH);
         btnPanel1 = new JPanel();
         jpegPanel = new JPanel();
         JLabel label = new JLabel(new ImageIcon(image));
+        //label.setPreferredSize(new Dimension(500, 700));
         jpegPanel.add(label);
         btnPanel2 = new JPanel();
         datePanel = new JPanel();
