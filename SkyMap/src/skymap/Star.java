@@ -11,14 +11,50 @@ package skymap;
  */
 
 public class Star extends SpaceObject {
-    String constellation_name;
     
-    public Star()
+    //variables needed for the star, comes from csv file
+    String constellation_name;
+    private int starID;
+    private int hip;
+    private double HD;
+    private double HR;
+    private String gliese;
+    private String bayFlamsteed;
+    private String properName;
+    private double RA;
+    private double dec;
+    private double distance;
+    private double mag;
+    private double absMag;
+    private String spectrum;
+    private double colorIndex;
+    
+    public Star(int ID, int h, double hd, double hr, String g, String bf,
+            String pn, double ra, double DEC, double dist, double MAG,
+            double aMag, String s, double ci)
     {
         super();
+        starID = ID;
+        hip = h;
+        HD = hd;
+        HR = hr;
+        gliese = g;
+        bayFlamsteed = bf;
+        properName = pn;
+        RA = ra;
+        dec = DEC;
+        distance = dist;
+        mag = MAG;
+        absMag = aMag;
+        spectrum = s;
+        colorIndex = ci;
     }
     public Star(String name)
     {
         super(name);
+    }
+    
+    public double getMagnitude(){
+        return mag;
     }
 }
