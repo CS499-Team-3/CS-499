@@ -13,6 +13,7 @@ import java.util.*;
 public class SkyBox {
     private List<Star> starList = new ArrayList();
     private List<Planet> planetList = new ArrayList();
+    private Moon m = new Moon();
 
     //implemented as a singleton, since there should only be one SkyBox
     //private static instance
@@ -21,6 +22,24 @@ public class SkyBox {
     //private constructor
     private SkyBox()
     {
+        Planet Mercury = new Planet();
+        Planet Venus = new Planet();
+        Planet Earth = new Planet();
+        Planet Mars = new Planet();
+        Planet Jupiter = new Planet();
+        Planet Saturn = new Planet();
+        Planet Urans = new Planet();
+        Planet Neptune = new Planet();
+        
+        //now add each one to the planet list
+        planetList.add(Mercury);
+        planetList.add(Venus);
+        planetList.add(Earth);
+        planetList.add(Mars);
+        planetList.add(Jupiter);
+        planetList.add(Saturn);
+        planetList.add(Urans);
+        planetList.add(Neptune);
         
     }
     
