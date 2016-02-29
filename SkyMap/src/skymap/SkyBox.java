@@ -22,14 +22,14 @@ public class SkyBox {
     //private constructor
     private SkyBox()
     {
-        Planet Mercury = new Planet();
-        Planet Venus = new Planet();
-        Planet Earth = new Planet();
-        Planet Mars = new Planet();
-        Planet Jupiter = new Planet();
-        Planet Saturn = new Planet();
-        Planet Urans = new Planet();
-        Planet Neptune = new Planet();
+        Planet Mercury = new Planet("MERCURY");
+        Planet Venus = new Planet("VENUS");
+        Planet Earth = new Planet("EARTH");
+        Planet Mars = new Planet("MARS");
+        Planet Jupiter = new Planet("JUPITER");
+        Planet Saturn = new Planet("SATURN");
+        Planet Urans = new Planet("URANS");
+        Planet Neptune = new Planet("NEPTUNE");
         
         //now add each one to the planet list
         planetList.add(Mercury);
