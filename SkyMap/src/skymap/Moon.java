@@ -27,4 +27,8 @@ public class Moon extends SpaceObject {
     {
         super(name);
     }
+    public void setPhase(lunar_phase p)
+    {
+        phase = p;
+    }
 }

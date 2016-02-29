@@ -11,9 +11,9 @@ import java.util.*;
  * @author Joseph, Lindsey
  */
 public class SkyBox {
-    private List<Star> starList = new ArrayList();
-    private List<Planet> planetList = new ArrayList();
-    private Moon m = new Moon();
+    private static final List<Star> starList = new ArrayList();
+    private static final List<Planet> planetList = new ArrayList();
+    private static final Moon m = new Moon("MOON");
 
     //implemented as a singleton, since there should only be one SkyBox
     //private static instance
