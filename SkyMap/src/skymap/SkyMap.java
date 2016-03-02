@@ -18,6 +18,7 @@ public class SkyMap {
     public static void main(String[] args) {
 
         //GUIWindow window = new GUIWindow();
+        //Lindsey Tests
         Planet p = new Planet("sun");
         AstronomyCalculator c = new AstronomyCalculator();
         c.usePrecalculatedPlanetElems(p, 0);
