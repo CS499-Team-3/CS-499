@@ -5,11 +5,7 @@
  */
 package skymap;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import javax.swing.*;
-import java.util.List;
 /**
  *
  * @author Lindsey
@@ -19,6 +15,7 @@ public class AstroDraw
     Image background;
     Color c;
     BufferedImage image;
+    Graphics2D graphics;
     
     public AstroDraw()
     {
@@ -39,6 +36,8 @@ public class AstroDraw
     public void set_color(Color color)
     {
         this.c = color;
+        // not sure if the next line is necessary 
+        graphics.setColor(color);
     }
     
     public boolean draw_circle(Graphics g, int x, int y, int radius)
@@ -56,19 +55,102 @@ public class AstroDraw
         return true;
     }
     
-    public void createLabel(Graphics g, String label, int x, int y) {         
-         g.drawString(label, x, y);
+    public void createLabel(String label, int x, int y) {         
+         graphics.drawString(label, x, y);
      }
+    
+    public void drawStar(Graphics g, int x, int y, double magnitude) {
+        set_color(Color.WHITE);
+        draw_circle(g, x, y, (int) magnitude);
+    }
+    
+    public void drawPlanet(String planet) {
+        Color color = null;
+        int x = 0; 
+        int y = 0;
+        int radius = 0;
+        planet = planet.toLowerCase();
+        switch(planet) {
+            case "mercury":
+                color = new Color(0xFF6600);
+                // passing in temp values for testing
+                x = 250;
+                y = 350;
+                radius = 12;
+                break;
+            case "venus":
+                color = new Color(0xFFCC99);
+                // passing in temp values for testing
+                x = 450;
+                y = 250;
+                radius = 12;
+                break;
+            case "earth/sun":
+                color = new Color(0x009900);
+                // passing in temp values for testing
+                x = 150;
+                y = 550;
+                radius = 12;
+                break;
+            case "mars":
+                color = new Color(0xCC3300);
+                // passing in temp values for testing
+                x = 250;
+                y = 350;
+                radius = 12;
+                break;
+            case "jupiter":
+                color = new Color(0xFF9933);
+                // passing in temp values for testing
+                x = 200;
+                y = 210;
+                radius = 12;
+                break;
+            case "saturn":
+                color = new Color(0xFF3333);
+                // passing in temp values for testing
+                x = 410;
+                y = 350;
+                radius = 12;
+                break;
+            case "uranus":
+                color = new Color(0x00FF99);
+                // passing in temp values for testing
+                x = 100;
+                y = 350;
+                radius = 12;
+                break;
+            case "neptune":
+                color = new Color(0x0099CC);
+                // passing in temp values for testing
+                x = 500;
+                y = 70;
+                radius = 12;
+                break;
+            case "pluto":
+                color = new Color(0x996633);
+                // passing in temp values for testing
+                x = 70;
+                y = 200;
+                radius = 12;
+                break;
+            default: break;
+        }
+        set_color(color);
+        draw_circle(graphics, x, y, radius);
+    }
     
     public void drawSkyMap() {
         image = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = image.createGraphics();       
+        graphics = image.createGraphics();       
         set_background_color(graphics, image, new Color(0x000080));
-        set_color(Color.WHITE);
-        draw_circle(graphics, 100, 100, 7);        
-        draw_circle(graphics, 300, 500, 5);
-        createLabel(graphics, "Star", 290, 520);
-    }  
+        drawStar(graphics, 100, 250, 10);
+        //createLabel("Star", 90, 350);
+        drawPlanet("Mercury");
+        set_color(Color.BLACK);
+        createLabel("Mercury", 230, 372);
+    } 
+    
 
     public BufferedImage getImage() {
         return image;
