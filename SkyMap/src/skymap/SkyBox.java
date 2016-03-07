@@ -65,6 +65,11 @@ public class SkyBox {
         return planetList;
     }
     
+    public Moon getMoon()
+    {
+        return m;
+    }
+    
     //function to add to the Skylist, used to populate the SkyBox
     public void addStar(Star S)
     {

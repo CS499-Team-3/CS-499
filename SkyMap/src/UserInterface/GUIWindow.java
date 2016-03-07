@@ -44,8 +44,7 @@ public final class GUIWindow extends JFrame{
         jpegPanel.add(label);
         btnPanel2 = new JPanel();
         datePanel = new JPanel();
-        timePanel = new JPanel();
-   
+        timePanel = new JPanel(); 
 
 //        hourModel = new SpinnerDateModel(new Date(), 1, 12, Calendar.HOUR_OF_DAY);
 //        hourSpinner = new JSpinner(hourModel);
