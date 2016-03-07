@@ -92,18 +92,14 @@ public class AstronomyCalculator {
 
         //find the number of days passed from each month
         for (int i = month - 1; i != 0; i--) {
-            
+
             //if Month has 30 days
             if (i == 4 || i == 6 || i == 9 || i == 11) {
                 daysPassed = daysPassed + 30;
-            } 
-            
-            else if (i == 2) //add for Feb
+            } else if (i == 2) //add for Feb
             {
                 daysPassed = daysPassed + 28;
-            } 
-            
-            else // month has 31 days
+            } else // month has 31 days
             {
                 daysPassed = daysPassed + 31;
             }
@@ -153,6 +149,55 @@ public class AstronomyCalculator {
         julianDate = julianDate + (0.00033 * sinValue);
 
         return julianDate;
+    }
+
+    //calculates the closest moon phase so that the moon can be plotted with the
+    //most accurate phase.  Takes the date and calls date2Decimal
+    public void calculateClosestPhase(int year, int month, int day) {
+        
+        //variables needed
+        double date = date2Decimal(year, month, day);
+        double tempDate;
+        double temp;
+        double lowestValue = 0;
+        double phaseValue = 0.0;
+        double julianDate = calExactJulianDate(year, month, day);
+        SkyBox sb = SkyBox.getSkyBox();  //get the SkyBox
+        Moon m = sb.getMoon();
+
+        //for each phase, determine the Julian date of it and see which one is
+        //closer
+        for (double i = 0.0; i < 1; i = i + 0.25) {
+            tempDate = julianDateOfGivenPhase(date, i);
+
+            //see how close the date of phase is to the current date
+            temp = Math.abs(tempDate - julianDate);
+            if (lowestValue == 0) {
+                lowestValue = temp;
+                phaseValue = i;
+            } else if (lowestValue > temp) {
+                lowestValue = temp;
+                phaseValue = i;
+            }
+        }
+        
+        //now set the moon_phase based on phaseValue
+        if(phaseValue == 0.0)
+        {
+            m.setPhase(lunar_phase.NEW_MOON);
+        }
+        else if(phaseValue == 0.25)
+        {
+            m.setPhase(lunar_phase.FIRST_QUARTER);
+        }
+        else if(phaseValue == 0.50)
+        {
+            m.setPhase(lunar_phase.FULL_MOON);
+        }
+        else
+        {
+            m.setPhase(lunar_phase.LAST_QUARTER);
+        }
     }
 
     public boolean usePrecalculatedPlanetElems(Planet planet, double julianDate) {
