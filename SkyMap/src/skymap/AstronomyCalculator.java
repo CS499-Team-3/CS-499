@@ -381,7 +381,7 @@ public class AstronomyCalculator {
     }
 
     private void DecDegToDegMinSec(double dec, int deg, double min, double sec) {
-        deg = (int) deg;
+        deg = (int) dec;
         min = (dec - deg) * (60.0);
         min = (int) min;
         sec = (((dec - deg) * (60.0)) - min) * (60.0);
@@ -392,7 +392,7 @@ public class AstronomyCalculator {
         double E1 = 0;
         do {
             E1 = E;
-            E = E1 - (E1 - e * Math.sin(E1) - M) / (1 - e * Math.cos(E1));
+            E = E1 - ((E1 - e * Math.sin(E1) - M) / (1 - e * Math.cos(E1)));
         } while (Math.abs(E - E1) > (1.0e-12));
 
         double V = 2 * Math.atan(Math.sqrt(1 + e)) * Math.tan(0.5 * E);
