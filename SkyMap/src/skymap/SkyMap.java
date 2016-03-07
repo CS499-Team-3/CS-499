@@ -18,43 +18,10 @@ public class SkyMap {
     public static void main(String[] args) {
 
         //GUIWindow window = new GUIWindow();
-        //Lindsey Tests
-        Planet p = new Planet("sun");
+        Planet p = new Planet("earth");
         AstronomyCalculator c = new AstronomyCalculator();
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-        
-        p = new Planet("mercury");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-
-        p = new Planet("venus");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-
-        p = new Planet("earth");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-
-        p = new Planet("mars");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-
-        p = new Planet("jupiter");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-        
-        p = new Planet("saturn");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-        
-        p = new Planet("uranus");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
-
-        p = new Planet("neptune");
-        c.usePrecalculatedPlanetElems(p, 0);
-        testLindseysFunctions(p,0);
+        c.usePrecalculatedPlanetElems(p, 2448000.5); // 2415128.5
+        testLindseysFunctions(p,2448000.5);
 
         // TODO code application logic here
 
