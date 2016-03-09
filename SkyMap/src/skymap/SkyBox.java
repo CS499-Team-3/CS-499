@@ -5,6 +5,7 @@
  */
 package skymap;
 import java.util.*;
+import java.awt.Color;
 
 /**
  *
@@ -75,4 +76,11 @@ public class SkyBox {
     {
         planetList.add(P);
     }
+    
+    //returns the moon
+    public Moon getMoon()
+    {
+        return m;
+    }
+    
 }
