@@ -156,7 +156,7 @@ public class AstronomyCalculator {
     public void calculateClosestPhase(int year, int month, int day) {
         
         //variables needed
-        double date = date2Decimal(year, month, day);
+        double date = date2Decimal(year, month, (day-15));
         double tempDate;
         double temp;
         double lowestValue = 0;
