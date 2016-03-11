@@ -24,10 +24,13 @@ public class AstronomyCalculator {
      * @param month - month Jan - Dec ( 1 - 12)
      * @param day - Day converted to day.hours for example 9:00 AM on the 15 of
      * a month is 15 + 9/24 = 15.375
+     * @param hours - the hours in military time i.e. 13 = 1 o'clock
+     * @param minutes - the minutes that passed by in the hour, part of the time
      * @return - Returns the exact Julian Date
      */
     //might need to be changed based on how user enters hours and mins
-    public double calExactJulianDate(int year, int month, double day) {
+    public double calExactJulianDate(int year, int month, double day, double hours,
+            double minutes) {
         //variables needed
         int y;
         int m;
@@ -58,7 +61,7 @@ public class AstronomyCalculator {
 
         //perform calculation
         exactJulian = ((int) (365.25 * y)) + ((int) (30.6001 * (m + 1)))
-                + day + 1720994.5 + b;
+                + (day + hours/24 + (minutes/1440)) + 1720994.5 + b;
 
         return exactJulian;
     }
@@ -161,7 +164,7 @@ public class AstronomyCalculator {
         double temp;
         double lowestValue = 0;
         double phaseValue = 0.0;
-        double julianDate = calExactJulianDate(year, month, day);
+        double julianDate = calExactJulianDate(year, month, day, 0, 0);
         SkyBox sb = SkyBox.getSkyBox();  //get the SkyBox
         Moon m = sb.getMoon();
 
@@ -387,9 +390,9 @@ public class AstronomyCalculator {
         double yeq = y_p_geo * Math.cos(ecl) - (z_p_geo * Math.sin(ecl));
         double zeq = y_p_geo * Math.sin(ecl) + (z_p_geo * Math.cos(ecl));
         Coordinate coord = new Coordinate();
-        coord.x = roundToTwoPlaces(xeq);
-        coord.y = roundToTwoPlaces(yeq);
-        coord.z = roundToTwoPlaces(zeq);
+        //coord.x = roundToTwoPlaces(xeq);
+        //coord.y = roundToTwoPlaces(yeq);
+        //coord.z = roundToTwoPlaces(zeq);
         return coord;
     }
 
