@@ -80,12 +80,5 @@ public class SkyBox {
     public void addPlanet(Planet P)
     {
         planetList.add(P);
-    }
-    
-    //returns the moon
-    public Moon getMoon()
-    {
-        return m;
-    }
-    
+    }  
 }
