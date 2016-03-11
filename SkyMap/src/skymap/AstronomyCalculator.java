@@ -199,9 +199,9 @@ public class AstronomyCalculator {
             m.setPhase(lunar_phase.LAST_QUARTER);
         }
     }
-
-    public boolean usePrecalculatedPlanetElems(Planet planet, double julianDate) {
-        double cy = getCY(julianDate);
+//make sure you pass in RELATIVE julian date!
+    public boolean usePrecalculatedPlanetElems(Planet planet, double reljulianDate) {
+        double cy = getCY(reljulianDate);
         if (null != planet.name.toUpperCase()) {
             switch (planet.name.toUpperCase()) {
                 case "MERCURY":
