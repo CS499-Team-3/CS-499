@@ -417,33 +417,33 @@ public class AstronomyCalculator {
         sec = (((dec - deg) * (60.0)) - min) * (60.0);
     }
 
-    private double TrueAnomFromMeanAnom(double M, double e) {
-        double E = M + e * Math.sin(M) * (1.0 + e * Math.cos(M));
+    private double TrueAnomFromMeanAnom(double meanAnom, double eccent) {
+        double E = meanAnom + eccent * Math.sin(meanAnom) * (1.0 + eccent * Math.cos(meanAnom));
         double E1 = 0;
         do {
             E1 = E;
-            E = E1 - ((E1 - e * Math.sin(E1) - M) / (1 - e * Math.cos(E1)));
+            E = E1 - ((E1 - eccent * Math.sin(E1) - meanAnom) / (1 - eccent * Math.cos(E1)));
         } while (Math.abs(E - E1) > (1.0e-12));
 
-        double V = 2 * Math.atan(Math.sqrt(1 + e)) * Math.tan(0.5 * E);
+        double V = 2 * Math.atan(Math.sqrt(1 + eccent)) * Math.tan(0.5 * E);
         if (V < 0) {
             V = V + (2 * Math.PI);
         }
         return V;
     }
 
-    private void AltAndAzimOfPlanet(double lat, double lon, double RA, double dec, double az, double alt) {
+    private double getAlt(double lat, double lon, double RA, double dec, double az, double alt, double jd) {
         if (lat < 0) {
             lat = lat * -1.0;
         }
         if (lon < 0) {
             lon = lon * -1.0;
         }
-        double hourAngle = 0;
-        //double hourAngle = meanSiderealTime() - RA
-        //if (hourAngle < 0) {
-        //    hourAngle += 360;
-        //}
+
+        double hourAngle = MeanSiderealTime(jd, lon) - RA;
+        if (hourAngle < 0) {
+            hourAngle += 360;
+        }
         double decRad = dec * (Math.PI / 180.0);
         double latRad = lat * (Math.PI / 180.0);
         double hrRad = hourAngle * (Math.PI / 180.0);
@@ -451,7 +451,17 @@ public class AstronomyCalculator {
         // Calculate altitude in radians
         double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) + (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
         alt = Math.abs(sin_alt);
-
+        return alt;
+    }
+    
+    private double getAz(double lat, double lon, double RA, double dec, double az, double alt, double jd) {
+        double hourAngle = MeanSiderealTime(jd, lon) - RA;
+        if (hourAngle < 0) {
+            hourAngle += 360;
+        }
+        double decRad = dec * (Math.PI / 180.0);
+        double latRad = lat * (Math.PI / 180.0);
+        double hrRad = hourAngle * (Math.PI / 180.0);
         // Calculate azimuth in radians (handle inside of a try...catch)
         try {
             double cos_az = (Math.sin(decRad) - Math.sin(alt) * Math.sin(latRad)) / (Math.cos(alt) * Math.cos(latRad));
@@ -460,30 +470,17 @@ public class AstronomyCalculator {
             az = 0;
         }
 
-        // Convert altitude and azimuth to degrees
-        alt = alt * (180.0 / Math.PI);
+        // Convert azimuth to degrees
         az = az * (180.0 / Math.PI);
 
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
-        }
+        }        
+        return az;
     }
 
-    // Calculating the Mean Sidereal Time
-    private void MeanSiderealTime(int year, int month, int day, int hour, int min, int sec) {
-        // global variable lon? or passed in?
-        double lon = 0;
-        // Adjust month and year if needed
-        if (month <= 2) {
-            year = year - 1;
-            month = month + 12;
-        }
-        double a = Math.floor(year / 100.0);
-        double b = 2 - a + Math.floor(a / 4);
-        double c = Math.floor(365.25 * year);
-        double d = Math.floor(30.6001 * (month + 1));
-        // Get days since J2000.0
-        double jd = b + c + d - 730550.5 + day + (hour + min / 60 + sec / 3600) / 24;
+        // Calculating the Mean Sidereal Time
+    private double MeanSiderealTime(double jd, double lon) {
         // Get Julian centuries since J2000.0
         double jt = jd / 36525.0;
         // Calculate initial Mean Sidereal Time (mst)
@@ -499,31 +496,6 @@ public class AstronomyCalculator {
             }
         }
         // Result is Mean Sidereal Time for the location given by Lat, Lon
+        return mst;
     }
-
-    // Calculating Exact Julian Day
-    /*private double ExactJulianDay(int day, int month, int year, Date dt) {
-     Calendar calendar = new GregorianCalendar(year, month, day);
-     calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-     double JD = 0.0;
-     int YYYY = year;
-     int MM = month;
-     long DD = day;
-     double y = 0;
-     double m = 0;
-     double A = 0;
-     double B = 0;
-        
-     //Date date = dt;
-        
-     if(MM > 2) {
-     y = YYYY;
-     m = MM;
-     } else {
-     y = YYYY - 1;
-     m = MM + 12;
-     }
-        
-     return JD;
-     }   */
 }

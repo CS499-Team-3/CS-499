@@ -59,18 +59,21 @@ public class AstroDraw
          graphics.drawString(label, x, y);
      }
     
-    public void drawStar(Graphics g, int x, int y, double magnitude) {
+     public void drawStar(Star star) {
         set_color(Color.WHITE);
-        draw_circle(g, x, y, (int) magnitude);
+        int x = (int) star.location.x;
+        int y = (int) star.location.y;
+        int magnitude = (int) star.getMagnitude();
+        draw_circle(graphics, x, y, magnitude);
     }
     
-    public void drawPlanet(String planet) {
+    public void drawPlanet(Planet planet) {
         Color color = null;
         int x = 0; 
         int y = 0;
         int radius = 0;
-        planet = planet.toLowerCase();
-        switch(planet) {
+        String planetName = planet.name.toLowerCase();
+        switch(planetName) {
             case "mercury":
                 color = new Color(0xFF6600);
                 // passing in temp values for testing
@@ -144,9 +147,9 @@ public class AstroDraw
         image = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_ARGB);
         graphics = image.createGraphics();       
         set_background_color(graphics, image, new Color(0x000080));
-        drawStar(graphics, 100, 250, 10);
+        Planet planet = new Planet("Mercury");
+        drawPlanet(planet);
         //createLabel("Star", 90, 350);
-        drawPlanet("Mercury");
         set_color(Color.BLACK);
         createLabel("Mercury", 230, 372);
     } 
