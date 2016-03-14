@@ -417,7 +417,7 @@ public class AstronomyCalculator {
         sec = (((dec - deg) * (60.0)) - min) * (60.0);
     }
 
-    private double TrueAnomFromMeanAnom(double meanAnom, double eccent) {
+    public double TrueAnomFromMeanAnom(double meanAnom, double eccent) {
         double E = meanAnom + eccent * Math.sin(meanAnom) * (1.0 + eccent * Math.cos(meanAnom));
         double E1 = 0;
         do {
@@ -425,13 +425,14 @@ public class AstronomyCalculator {
             E = E1 - ((E1 - eccent * Math.sin(E1) - meanAnom) / (1 - eccent * Math.cos(E1)));
         } while (Math.abs(E - E1) > (1.0e-12));
 
-        double V = 2 * Math.atan(Math.sqrt(1 + eccent)) * Math.tan(0.5 * E);
+        double V = 2 * Math.atan(Math.sqrt((1 + eccent)/(1 - eccent)) * Math.tan(0.5 * E));
         if (V < 0) {
             V = V + (2 * Math.PI);
         }
         return V;
     }
 
+    // test before use
     private double getAlt(double lat, double lon, double RA, double dec, double az, double alt, double jd) {
         if (lat < 0) {
             lat = lat * -1.0;
@@ -454,6 +455,7 @@ public class AstronomyCalculator {
         return alt;
     }
     
+    // test before use
     private double getAz(double lat, double lon, double RA, double dec, double az, double alt, double jd) {
         double hourAngle = MeanSiderealTime(jd, lon) - RA;
         if (hourAngle < 0) {
@@ -479,7 +481,6 @@ public class AstronomyCalculator {
         return az;
     }
 
-        // Calculating the Mean Sidereal Time
     private double MeanSiderealTime(double jd, double lon) {
         // Get Julian centuries since J2000.0
         double jt = jd / 36525.0;
