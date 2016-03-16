@@ -150,7 +150,7 @@ public class AstroDraw
         Planet planet = new Planet("Mercury");
         drawPlanet(planet);
         //createLabel("Star", 90, 350);
-        set_color(Color.BLACK);
+        set_color(Color.WHITE);
         createLabel("Mercury", 230, 372);
     } 
     

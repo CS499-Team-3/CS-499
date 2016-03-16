@@ -11,8 +11,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
-import java.util.Calendar;
-import java.util.Date;
 import javax.swing.*;
 import skymap.AstroDraw;
 
@@ -20,81 +18,108 @@ import skymap.AstroDraw;
  *
  * @author Emma
  */
-// GUI - full screen window
-public final class GUIWindow extends JFrame{
-    JPanel jpegPanel, btnPanel1, btnPanel2, datePanel, timePanel, latPanel, longPanel;
+
+public final class GUIWindow extends JFrame{    
+    
+    
+    
+    JPanel timePanel = new JPanel();
+    JPanel latPanel = new JPanel();
+    JPanel longPanel = new JPanel();
+    JPanel mainBtnPanel = new JPanel();
     JScrollPane skyMapScrollPane;
-    JButton saveBtn, generateMapBtn;
-    JTextField dayField, monthField, yearField, latField, longField;
+    JTextField dayField, monthField, yearField;
     JSpinner hourSpinner, minuteSpinner, secondSpinner;
     SpinnerDateModel hourModel, minuteModel, secondModel;
-    JLabel dateLbl, latLbl, longLbl, backslashLbl1, backslashLbl2;
+    JLabel dateLbl, backslashLbl1, backslashLbl2;
+    JPanel btnPanel1 = new JPanel();
+    JPanel btnPanel2 = new JPanel(); 
+    JButton saveBtn = new JButton("Save");
+    JButton generateMapBtn = new JButton("Generate Map");    
+    JTextField longField = new JTextField("0"); 
+    JLabel longLbl =  new JLabel("Long: "); 
+    JTextField latField = new JTextField("0");              
+    JLabel latLbl = new JLabel("Lat: "); 
+    
     public GUIWindow() {
+        // Draw SkyMap
         AstroDraw astroDraw = new AstroDraw();
         astroDraw.drawSkyMap();
         BufferedImage skyMapImg = astroDraw.getImage();
+        
+        // Set window properties
         setExtendedState(Frame.MAXIMIZED_BOTH);
-        btnPanel1 = new JPanel();
-        jpegPanel = new JPanel();
+        setTitle("SkyMap");
+        setMinimumSize(new Dimension(500, 500));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        setLayout(new BorderLayout());   
+
+        // Make JPEG panel        
+        JPanel jpegPanel = new JPanel();
         JLabel label = new JLabel(new ImageIcon(skyMapImg));
         jpegPanel.add(label);
-        btnPanel2 = new JPanel();
-        datePanel = new JPanel();
-        timePanel = new JPanel(); 
-
-//        hourModel = new SpinnerDateModel(new Date(), 1, 12, Calendar.HOUR_OF_DAY);
-//        hourSpinner = new JSpinner(hourModel);
-        minuteSpinner = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.YEAR));
+        skyMapScrollPane = new JScrollPane(jpegPanel);
+        skyMapScrollPane.setPreferredSize(new Dimension(100, 100));             
+        jpegPanel.setMinimumSize(new Dimension(800, 800));        
+        
+        // Add scroll pane and main panel to window
+        add(skyMapScrollPane, BorderLayout.CENTER);        
+        add(makeMainPanel(), BorderLayout.SOUTH);        
+    }
+    public JPanel makeDatePanel() {
+        /* minuteSpinner = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.YEAR));
         secondSpinner = new JSpinner();
-
-        saveBtn = new JButton("Save");
-        generateMapBtn = new JButton("Generate Map");
+        timePanel = new JPanel(); 
+        hourModel = new SpinnerDateModel(new Date(), 1, 12, Calendar.HOUR_OF_DAY);
+        hourSpinner = new JSpinner(hourModel); */
+        
+        dateLbl = new JLabel("Date: ");
         dayField = new JTextField("DD");
         monthField = new JTextField("MM");
         yearField = new JTextField("YYYY");
-        latField = new JTextField("0");
-        longField = new JTextField("0");
-        dateLbl = new JLabel("Date: ");
-        latLbl = new JLabel("Lat: ");
-        longLbl =  new JLabel("Long: ");
         backslashLbl1 = new JLabel("/");  
         backslashLbl2 = new JLabel("/");
-        latPanel = new JPanel();
-        longPanel = new JPanel();
+        
+        JPanel datePanel = new JPanel();
         datePanel.add(dateLbl);
         datePanel.add(dayField);
         datePanel.add(backslashLbl1);
         datePanel.add(monthField);
         datePanel.add(backslashLbl2);
         datePanel.add(yearField);
+        
+        return datePanel;
+    }
+    
+    public JPanel makeLatPanel() {                             
         latPanel.add(latLbl);
-        latPanel.add(latField);
+        latPanel.add(latField);        
+        return latPanel;
+    }
+    
+    public JPanel makeLongPanel() {
         longPanel.add(longLbl);
         longPanel.add(longField);
-        skyMapScrollPane = new JScrollPane(jpegPanel);
-        skyMapScrollPane.setPreferredSize(new Dimension(100, 100));
-        setTitle("SkyMap");
-        setMinimumSize(new Dimension(500, 500));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        setLayout(new BorderLayout());        
-        jpegPanel.setMinimumSize(new Dimension(800, 800));
+        return longPanel;
+    }
+    
+    public JPanel makeMainPanel() {        
         btnPanel1.setLayout(new GridLayout(2, 2, 1, 1));        
         btnPanel1.setPreferredSize(new Dimension(50, 75));
-        btnPanel1.add(datePanel);
+        btnPanel1.add(makeDatePanel());        
+        btnPanel1.add(makeLatPanel());
+        btnPanel1.add(makeLongPanel());
         
-        btnPanel1.add(latPanel);
-        btnPanel1.add(longPanel);
         btnPanel2.setLayout(new GridLayout(2, 1, 1, 1));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
-        add(skyMapScrollPane, BorderLayout.CENTER);
-        JPanel mainBtnPanel = new JPanel();
+        
         mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(new JPanel());
         mainBtnPanel.add(btnPanel2);
-        add(mainBtnPanel, BorderLayout.SOUTH);        
         
+        return mainBtnPanel;
     }
 }
