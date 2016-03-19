@@ -17,18 +17,42 @@ public class AstronomyCalculator {
     public AstronomyCalculator() {
 
     }
+    
+    //function that converts a time with AM/PM to military time
+    public int time2Milarary(int hour, String am_pm)
+    {
+        if(am_pm.contentEquals("AM") && hour != 12)
+        {
+            //no need to convert if it is AM and not midnight
+            return hour;
+        }
+        else if(am_pm.contentEquals("AM") && hour == 12)
+        {
+            return 0; //0 is midnight in military time
+        }
+        //if PM and after 12, add 1 to time
+        else if(am_pm.contentEquals("PM") && hour == 12)
+        {
+            return hour;  //12 is noon in military time
+        }
+        else
+        {
+            return hour + 12;
+        }
+        
+    }
 
     /**
      *
      * @param year - the year user entered
      * @param month - month Jan - Dec ( 1 - 12)
-     * @param day - Day converted to day.hours for example 9:00 AM on the 15 of
-     * a month is 15 + 9/24 = 15.375
+     * @param day - Day that will be converted to day.hours for example 9:00 AM 
+     * on the 15 of a month is 15 + 9/24 = 15.375
      * @param hours - the hours in military time i.e. 13 = 1 o'clock
      * @param minutes - the minutes that passed by in the hour, part of the time
      * @return - Returns the exact Julian Date
      */
-    //might need to be changed based on how user enters hours and mins
+    //Pass in day as just the day value, not as a decimal
     public double calExactJulianDate(int year, int month, double day, double hours,
             double minutes) {
         //variables needed
@@ -120,7 +144,10 @@ public class AstronomyCalculator {
 
     /*phaseValue corresponds with what lunar phase we need to calculate, 0 for
      new moon, 0.25 for first quarter, 0.50 for full moon, and 0.75 for the last
-     quarter */
+     quarter 
+    
+    year is a decimal, so that function takes the date after it has been converted
+    from date2decimal*/
     double julianDateOfGivenPhase(double year, double phaseValue) {
         //formula
         /*JD = 2415020.75933 + (29.53058868 * k) + (0.0001178 * T2) – 
