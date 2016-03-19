@@ -13,6 +13,10 @@ package skymap;
 public class Star extends SpaceObject {
     
     //variables needed for the star, comes from csv file
+    double RA;
+    double dec;
+    double mag;
+    
     String constellation_name;
     private int starID;
     private int hip;
@@ -21,10 +25,7 @@ public class Star extends SpaceObject {
     private String gliese;
     private String bayFlamsteed;
     private String properName;
-    private double RA;
-    private double dec;
     private double distance;
-    private double mag;
     private double absMag;
     private String spectrum;
     private double colorIndex;

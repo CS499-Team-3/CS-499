@@ -5,6 +5,8 @@
  */
 package skymap;
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 /**
  *
@@ -60,9 +62,13 @@ public class AstroDraw
      }
     
      public void drawStar(Star star) {
+        if(star.location.z < 0)
+        {
+            return;
+        }
         set_color(Color.WHITE);
-        int x = (int) star.location.x;
-        int y = (int) star.location.y;
+        int x = (int) (star.location.x * 10000) + 1200;//constants TBD
+        int y = (int) (star.location.y * 10000) + 1650;//constants TBD
         int magnitude = (int) star.getMagnitude();
         draw_circle(graphics, x, y, magnitude);
     }
@@ -147,11 +153,27 @@ public class AstroDraw
         image = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_ARGB);
         graphics = image.createGraphics();       
         set_background_color(graphics, image, new Color(0x000080));
-        Planet planet = new Planet("Mercury");
-        drawPlanet(planet);
-        //createLabel("Star", 90, 350);
+        
+        SkyBox sBox = SkyBox.getSkyBox();
+        List<Planet> pList = new ArrayList(); 
+        pList = sBox.getPlanetList();
+        List<Star> sList = new ArrayList();
+        sList = sBox.getStarList();
+        
+        System.out.println(sList.size());
+        
         set_color(Color.WHITE);
-        createLabel("Mercury", 230, 372);
+        //draw stars
+        for(int i = 0; i < sList.size(); i++)
+        {
+            Star s = sList.get(i);
+            drawStar(s);
+            //System.out.println("star x: "+s.location.x +"\nstar y: "+s.location.y);
+        }
+//        Planet planet = new Planet("Mercury");
+//        drawPlanet(planet);
+//        //createLabel("Star", 90, 350);
+//        createLabel("Mercury", 230, 372);
     } 
     
 

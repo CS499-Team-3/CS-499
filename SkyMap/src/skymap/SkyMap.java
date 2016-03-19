@@ -16,7 +16,8 @@ public class SkyMap {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+        DataParser parser = DataParser.getParser();
+        parser.readFile();
         GUIWindow window = new GUIWindow();
 
     }

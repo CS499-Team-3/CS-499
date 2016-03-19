@@ -17,36 +17,28 @@ public class AstronomyCalculator {
     public AstronomyCalculator() {
 
     }
-    
+
     //function that converts a time with AM/PM to military time
-    public int time2Milarary(int hour, String am_pm)
-    {
-        if(am_pm.contentEquals("AM") && hour != 12)
-        {
+    public int time2Milarary(int hour, String am_pm) {
+        if (am_pm.contentEquals("AM") && hour != 12) {
             //no need to convert if it is AM and not midnight
             return hour;
-        }
-        else if(am_pm.contentEquals("AM") && hour == 12)
-        {
+        } else if (am_pm.contentEquals("AM") && hour == 12) {
             return 0; //0 is midnight in military time
-        }
-        //if PM and after 12, add 1 to time
-        else if(am_pm.contentEquals("PM") && hour == 12)
-        {
+        } //if PM and after 12, add 1 to time
+        else if (am_pm.contentEquals("PM") && hour == 12) {
             return hour;  //12 is noon in military time
-        }
-        else
-        {
+        } else {
             return hour + 12;
         }
-        
+
     }
 
     /**
      *
      * @param year - the year user entered
      * @param month - month Jan - Dec ( 1 - 12)
-     * @param day - Day that will be converted to day.hours for example 9:00 AM 
+     * @param day - Day that will be converted to day.hours for example 9:00 AM
      * on the 15 of a month is 15 + 9/24 = 15.375
      * @param hours - the hours in military time i.e. 13 = 1 o'clock
      * @param minutes - the minutes that passed by in the hour, part of the time
@@ -85,7 +77,7 @@ public class AstronomyCalculator {
 
         //perform calculation
         exactJulian = ((int) (365.25 * y)) + ((int) (30.6001 * (m + 1)))
-                + (day + hours/24 + (minutes/1440)) + 1720994.5 + b;
+                + (day + hours / 24 + (minutes / 1440)) + 1720994.5 + b;
 
         return exactJulian;
     }
@@ -184,9 +176,9 @@ public class AstronomyCalculator {
     //calculates the closest moon phase so that the moon can be plotted with the
     //most accurate phase.  Takes the date and calls date2Decimal
     public void calculateClosestPhase(int year, int month, int day) {
-        
+
         //variables needed
-        double date = date2Decimal(year, month, (day-15));
+        double date = date2Decimal(year, month, (day - 15));
         double tempDate;
         double temp;
         double lowestValue = 0;
@@ -210,26 +202,20 @@ public class AstronomyCalculator {
                 phaseValue = i;
             }
         }
-        
+
         //now set the moon_phase based on phaseValue
-        if(phaseValue == 0.0)
-        {
+        if (phaseValue == 0.0) {
             m.setPhase(lunar_phase.NEW_MOON);
-        }
-        else if(phaseValue == 0.25)
-        {
+        } else if (phaseValue == 0.25) {
             m.setPhase(lunar_phase.FIRST_QUARTER);
-        }
-        else if(phaseValue == 0.50)
-        {
+        } else if (phaseValue == 0.50) {
             m.setPhase(lunar_phase.FULL_MOON);
-        }
-        else
-        {
+        } else {
             m.setPhase(lunar_phase.LAST_QUARTER);
         }
     }
 //make sure you pass in RELATIVE julian date!
+
     public boolean usePrecalculatedPlanetElems(Planet planet, double reljulianDate) {
         double cy = getCY(reljulianDate);
         if (null != planet.name.toUpperCase()) {
@@ -337,24 +323,26 @@ public class AstronomyCalculator {
 
     public double getRightAscension(Planet planet, double julianDate) {
         Coordinate coord = getRectEquatCoord(planet, julianDate);
-        double right_ascension = Mod2Pi(Math.atan2(coord.y,coord.x)) * DEGS;
+        double right_ascension = Mod2Pi(Math.atan2(coord.y, coord.x)) * DEGS;
         return right_ascension;
+    }
+
+    public Coordinate getPosition(double RA, double dec) {
+        Coordinate coord = new Coordinate();
+        coord.x = Math.cos(RA) * Math.cos(dec);
+        coord.y = Math.sin(RA) * Math.cos(dec);
+        coord.z = Math.sin(dec);
+        return coord;
     }
 
     public double getDeclination(Planet planet, double julianDate) {
         Coordinate coord = getRectEquatCoord(planet, julianDate);
-        if ((coord.x == 0) && (coord.y == 0))
-        {
-            if(coord.z > 0)
-            {
+        if ((coord.x == 0) && (coord.y == 0)) {
+            if (coord.z > 0) {
                 return 90.0;
-            }
-            else if(coord.z < 0)
-            {
+            } else if (coord.z < 0) {
                 return 270.0;
-            }
-            else
-            {
+            } else {
                 return 0.0;
             }
         }
@@ -377,37 +365,36 @@ public class AstronomyCalculator {
 
         double m_earth = Mod2Pi(Earth.mean_longitude - Earth.perihelion);
         double v_earth = TrueAnomFromMeanAnom(m_earth, Earth.eccentricity);
-        double r_earth = Earth.semiMajor_axis * 
-                        (1 - (Earth.eccentricity * Earth.eccentricity)) /
-                        (1 + (Earth.eccentricity * Math.cos(v_earth)));
+        double r_earth = Earth.semiMajor_axis
+                * (1 - (Earth.eccentricity * Earth.eccentricity))
+                / (1 + (Earth.eccentricity * Math.cos(v_earth)));
         double x_earth = r_earth * Math.cos(v_earth + Earth.perihelion);
         double y_earth = r_earth * Math.sin(v_earth + Earth.perihelion);
         double z_earth = 0.0;
 
         double m_planet = Mod2Pi(planet.mean_longitude - planet.perihelion);
         double v_planet = TrueAnomFromMeanAnom(m_planet, planet.eccentricity);
-        double r_planet = planet.semiMajor_axis *
-                         (1 - (planet.eccentricity * planet.eccentricity)) /
-                         (1 + (planet.eccentricity * Math.cos(v_planet)));
-        double x_p_helio =  r_planet * 
-                            (Math.cos(planet.longitude_ascending) *
-                                Math.cos(v_planet + planet.perihelion - 
-                                         planet.longitude_ascending) -
-                                Math.sin(planet.longitude_ascending) * 
-                                Math.sin(v_planet + planet.perihelion -
-                                         planet.longitude_ascending) *
-                                Math.cos(planet.inclination)
-                            );
-        double y_p_helio =  r_planet * (Math.sin(planet.longitude_ascending) *
-                                Math.cos(v_planet + planet.perihelion - 
-                                         planet.longitude_ascending) +
-                                Math.cos(planet.longitude_ascending) *
-                                Math.sin(v_earth + planet.perihelion -
-                                         planet.longitude_ascending) *
-                                Math.cos(planet.inclination));
-        double z_p_helio =  r_planet * (Math.sin(v_planet + planet.perihelion -
-                                                 planet.longitude_ascending) *
-                            Math.sin(planet.inclination));
+        double r_planet = planet.semiMajor_axis
+                * (1 - (planet.eccentricity * planet.eccentricity))
+                / (1 + (planet.eccentricity * Math.cos(v_planet)));
+        double x_p_helio = r_planet
+                * (Math.cos(planet.longitude_ascending)
+                * Math.cos(v_planet + planet.perihelion
+                        - planet.longitude_ascending)
+                - Math.sin(planet.longitude_ascending)
+                * Math.sin(v_planet + planet.perihelion
+                        - planet.longitude_ascending)
+                * Math.cos(planet.inclination));
+        double y_p_helio = r_planet * (Math.sin(planet.longitude_ascending)
+                * Math.cos(v_planet + planet.perihelion
+                        - planet.longitude_ascending)
+                + Math.cos(planet.longitude_ascending)
+                * Math.sin(v_earth + planet.perihelion
+                        - planet.longitude_ascending)
+                * Math.cos(planet.inclination));
+        double z_p_helio = r_planet * (Math.sin(v_planet + planet.perihelion
+                - planet.longitude_ascending)
+                * Math.sin(planet.inclination));
         double x_p_geo = x_p_helio - x_earth;
         double y_p_geo = y_p_helio - y_earth;
         double z_p_geo = z_p_helio - z_earth;
@@ -423,12 +410,11 @@ public class AstronomyCalculator {
         return coord;
     }
 
-    private double roundToTwoPlaces(double d)
-    {
-        int temp = (int)(d * 100);
-        return (float)temp / 100.0;
+    private double roundToTwoPlaces(double d) {
+        int temp = (int) (d * 100);
+        return (float) temp / 100.0;
     }
-    
+
     private void RightAscDegToHrMinSec(double RA, double hr, double min, double sec) {
         hr = (RA / 15.0);
         hr = (int) hr;
@@ -452,7 +438,7 @@ public class AstronomyCalculator {
             E = E1 - ((E1 - eccent * Math.sin(E1) - meanAnom) / (1 - eccent * Math.cos(E1)));
         } while (Math.abs(E - E1) > (1.0e-12));
 
-        double V = 2 * Math.atan(Math.sqrt((1 + eccent)/(1 - eccent)) * Math.tan(0.5 * E));
+        double V = 2 * Math.atan(Math.sqrt((1 + eccent) / (1 - eccent)) * Math.tan(0.5 * E));
         if (V < 0) {
             V = V + (2 * Math.PI);
         }
@@ -481,7 +467,7 @@ public class AstronomyCalculator {
         alt = Math.abs(sin_alt);
         return alt;
     }
-    
+
     // test before use
     private double getAz(double lat, double lon, double RA, double dec, double az, double alt, double jd) {
         double hourAngle = MeanSiderealTime(jd, lon) - RA;
@@ -504,7 +490,7 @@ public class AstronomyCalculator {
 
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
-        }        
+        }
         return az;
     }
 
