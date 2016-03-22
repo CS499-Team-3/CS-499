@@ -29,9 +29,6 @@ public class SkyMap {
         GUIWindow window = new GUIWindow();
     }
 
-    public static void doSomething(SpaceObject object){
-        System.out.println("You made an object.");
-    }
 
     public static void testPlanetElementFunctions(Planet planet)
     {
@@ -39,7 +36,7 @@ public class SkyMap {
 
         double d2d = calc.date2Decimal(2016, 3, 11);
         System.out.println("Date2Decimal: " + d2d);
-        double reljd = calc.calRelativeJulian(2016, 3, 11, 3, 4, 0);
+        double reljd = calc.calRelativeJulian(1997, 8, 8, 16, 4, 0);
         System.out.println("JulianDate: " + reljd);
         System.out.println(planet.name);
         calc.usePrecalculatedPlanetElems(planet, reljd);
@@ -51,6 +48,8 @@ public class SkyMap {
         System.out.println("Longitude Ascending: " + planet.longitude_ascending);
 
     }
+
+
     
     public static void testLindseysFunctions(Planet planet, double julianDate)
     {
