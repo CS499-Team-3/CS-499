@@ -321,9 +321,10 @@ public class AstronomyCalculator {
         }
     }
 
-    public double getRightAscension(Planet planet, double julianDate) {
-        Coordinate coord = getRectEquatCoord(planet, julianDate);
-        double right_ascension = Mod2Pi(Math.atan2(coord.y, coord.x)) * DEGS;
+
+    public double getRightAscension(Planet planet, double relJulianDate) {
+        Coordinate coord = getRectEquatCoord(planet, relJulianDate);
+        double right_ascension = Mod2Pi(Math.atan2(coord.y,coord.x)) * DEGS;
         return right_ascension;
     }
 
@@ -335,8 +336,8 @@ public class AstronomyCalculator {
         return coord;
     }
 
-    public double getDeclination(Planet planet, double julianDate) {
-        Coordinate coord = getRectEquatCoord(planet, julianDate);
+    public double getDeclination(Planet planet, double relJulianDate) {
+        Coordinate coord = getRectEquatCoord(planet, relJulianDate);
         if ((coord.x == 0) && (coord.y == 0)) {
             if (coord.z > 0) {
                 return 90.0;
@@ -358,10 +359,10 @@ public class AstronomyCalculator {
         return dist; // in AUs
     }
 
-    public Coordinate getRectEquatCoord(Planet planet, double julianDate) {
+    public Coordinate getRectEquatCoord(Planet planet, double relJulianDate) {
         Planet Earth = new Planet("Earth");
-        usePrecalculatedPlanetElems(planet, julianDate);
-        usePrecalculatedPlanetElems(Earth, julianDate);
+        usePrecalculatedPlanetElems(planet, relJulianDate);
+        usePrecalculatedPlanetElems(Earth, relJulianDate);
 
         double m_earth = Mod2Pi(Earth.mean_longitude - Earth.perihelion);
         double v_earth = TrueAnomFromMeanAnom(m_earth, Earth.eccentricity);
@@ -404,9 +405,9 @@ public class AstronomyCalculator {
         double yeq = y_p_geo * Math.cos(ecl) - (z_p_geo * Math.sin(ecl));
         double zeq = y_p_geo * Math.sin(ecl) + (z_p_geo * Math.cos(ecl));
         Coordinate coord = new Coordinate();
-        //coord.x = roundToTwoPlaces(xeq);
-        //coord.y = roundToTwoPlaces(yeq);
-        //coord.z = roundToTwoPlaces(zeq);
+        coord.x = xeq;
+        coord.y = yeq;
+        coord.z = zeq;
         return coord;
     }
 

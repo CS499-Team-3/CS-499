@@ -16,15 +16,53 @@ public class SkyMap {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
         DataParser parser = DataParser.getParser();
         parser.readFile();
         GUIWindow window = new GUIWindow();
 
+
+        // TODO code application logic here
+
+        Planet Mercury = new Planet("MERCURY");
+        Planet Venus = new Planet("VENUS");
+        Planet Earth = new Planet("EARTH");
+        Planet Mars = new Planet("MARS");
+        Planet Jupiter = new Planet("JUPITER");
+        Planet Saturn = new Planet("SATURN");
+        Planet Uranus = new Planet("URANUS");
+        Planet Neptune = new Planet("NEPTUNE");
+        Planet Pluto = new Planet("PLUTO");
+
+        //GUIWindow window = new GUIWindow();
+        //GUIWindow window = new GUIWindow();
+        //Lindsey Tests
+        Planet p = new Planet("sun");
+        AstronomyCalculator c = new AstronomyCalculator();
+        c.usePrecalculatedPlanetElems(p, 2448000.5); // 2415128.5
+        testLindseysFunctions(p,2448000.5);
+
+
+//        testPlanetElementFunctions(Mercury);
+//        System.out.println();
+//        testPlanetElementFunctions(Mars);
+//        System.out.println();
+//        testPlanetElementFunctions(Jupiter);
+//        System.out.println();
+//        testPlanetElementFunctions(Saturn);
+//        System.out.println();
+//        testPlanetElementFunctions(Uranus);
+//        System.out.println();
+//        testPlanetElementFunctions(Pluto);
+//        System.out.println();
+//        testPlanetElementFunctions(Neptune);
+//        System.out.println();
+//        testPlanetElementFunctions(Earth);
+
+
+
     }
 
-    public static void doSomething(SpaceObject object){
-        System.out.println("You made an object.");
-    }
 
     public static void testPlanetElementFunctions(Planet planet)
     {
@@ -32,7 +70,7 @@ public class SkyMap {
 
         double d2d = calc.date2Decimal(2016, 3, 11);
         System.out.println("Date2Decimal: " + d2d);
-        double reljd = calc.calRelativeJulian(2016, 3, 11, 3, 4, 0);
+        double reljd = calc.calRelativeJulian(1997, 8, 8, 16, 4, 0);
         System.out.println("JulianDate: " + reljd);
         System.out.println(planet.name);
         calc.usePrecalculatedPlanetElems(planet, reljd);
@@ -44,6 +82,8 @@ public class SkyMap {
         System.out.println("Longitude Ascending: " + planet.longitude_ascending);
 
     }
+
+
     
     public static void testLindseysFunctions(Planet planet, double julianDate)
     {
