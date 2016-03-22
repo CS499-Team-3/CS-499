@@ -29,7 +29,7 @@ public class SkyBox {
         Planet Mars = new Planet("MARS");
         Planet Jupiter = new Planet("JUPITER");
         Planet Saturn = new Planet("SATURN");
-        Planet Urans = new Planet("URANS");
+        Planet Uranus = new Planet("URANUS");
         Planet Neptune = new Planet("NEPTUNE");
         
         //now add each one to the planet list
@@ -39,7 +39,7 @@ public class SkyBox {
         planetList.add(Mars);
         planetList.add(Jupiter);
         planetList.add(Saturn);
-        planetList.add(Urans);
+        planetList.add(Uranus);
         planetList.add(Neptune);
         
     }

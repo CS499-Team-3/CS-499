@@ -6,6 +6,7 @@
 package skymap;
 
 import UserInterface.GUIWindow;
+import java.util.List;
 /**
  *
  * @author Lindsey and Zein
@@ -16,10 +17,16 @@ public class SkyMap {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        AstronomyCalculator calc = new AstronomyCalculator();
         DataParser parser = DataParser.getParser();
         parser.readFile();
+        SkyBox planetBox = SkyBox.getSkyBox();
+        List<Planet> planetList = planetBox.getPlanetList();
+        for(int i = 0; i < planetList.size(); i++)
+        {
+            System.out.println(planetList.get(i).name + "\n");
+        }
         GUIWindow window = new GUIWindow();
-
     }
 
     public static void doSomething(SpaceObject object){
