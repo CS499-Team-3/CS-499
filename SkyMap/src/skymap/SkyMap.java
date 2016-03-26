@@ -18,13 +18,15 @@ public class SkyMap {
      */
     public static void main(String[] args) {
         AstronomyCalculator calc = new AstronomyCalculator();
+        double julianDate = 0.0;
         DataParser parser = DataParser.getParser();
         parser.readFile();
         SkyBox planetBox = SkyBox.getSkyBox();
         List<Planet> planetList = planetBox.getPlanetList();
         for(int i = 0; i < planetList.size(); i++)
         {
-            System.out.println(planetList.get(i).name + "\n");
+            calc.usePrecalculatedPlanetElems(planetList.get(i), julianDate);
+            planetList.get(i).location = calc.getRectEquatCoord(planetList.get(i), julianDate);  
         }
         GUIWindow window = new GUIWindow();
     }

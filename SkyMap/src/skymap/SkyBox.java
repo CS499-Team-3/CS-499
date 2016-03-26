@@ -25,7 +25,7 @@ public class SkyBox {
     {
         Planet Mercury = new Planet("MERCURY");
         Planet Venus = new Planet("VENUS");
-        Planet Earth = new Planet("EARTH");
+        Planet Sun = new Planet("SUN");
         Planet Mars = new Planet("MARS");
         Planet Jupiter = new Planet("JUPITER");
         Planet Saturn = new Planet("SATURN");
@@ -35,7 +35,7 @@ public class SkyBox {
         //now add each one to the planet list
         planetList.add(Mercury);
         planetList.add(Venus);
-        planetList.add(Earth);
+        planetList.add(Sun);
         planetList.add(Mars);
         planetList.add(Jupiter);
         planetList.add(Saturn);
