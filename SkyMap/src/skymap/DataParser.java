@@ -101,8 +101,6 @@ public class DataParser {
                     Star tempStar = sf.makeStar(StarID, Hip, HD, HR,
                             Gliese, BayerFlam, ProperName, RA, dec, Distance,
                             Mag, absMag, Spect, colorInd);
-                    AstronomyCalculator calc = new AstronomyCalculator();
-                    tempStar.location = calc.getPosition(tempStar.RA, tempStar.dec);
                     //put tempStar into SkyBox
                     starBox.addStar(tempStar);
                 }

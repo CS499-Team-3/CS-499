@@ -62,18 +62,23 @@ public class AstroDraw
      }
     
      public void drawStar(Star star) {
-        if(star.location.z < 0)
+        if(star.location.x < 0)
         {
             return;
         }
         set_color(Color.WHITE);
-        int x = (int) (star.location.x * 10000) + 1200;//constants TBD
-        int y = (int) (star.location.y * 10000) + 1650;//constants TBD
+        int x = (int) (star.location.y * 5000) + 1200;//constants TBD
+        int y = (int) (star.location.z * 5000) + 1650;//constants TBD
         int magnitude = (int) star.getMagnitude();
         draw_circle(graphics, x, y, magnitude);
     }
     
     public void drawPlanet(Planet planet) {
+        if(planet.location.x < 0)
+        {
+            planet.isVisible = false;
+            return;
+        }
         Color color = null;
         int x; 
         int y;
@@ -110,8 +115,8 @@ public class AstroDraw
             default: 
                 break;
         }
-        x = (int)(planet.location.x * 10000)+1200;
-        y = (int)(planet.location.y * 10000)+1650;
+        x = (int)(planet.location.y * 100)+1200;
+        y = (int)(planet.location.z * 100)+1650;
         set_color(color);
         draw_circle(graphics, x, y, radius);
     }
@@ -139,14 +144,21 @@ public class AstroDraw
         }
         for(int i = 0; i < pList.size(); i++)
         {
-            if(pList.get(i).name.toUpperCase().equalsIgnoreCase("EARTH"))
+            Planet p = pList.get(i);
+            p.isVisible = true;
+            if(p.name.toUpperCase().equalsIgnoreCase("EARTH"))
             {}
             else
             {
-               drawPlanet(pList.get(i)); 
-               createLabel(pList.get(i).name, 
-                        (int)(pList.get(i).location.x*10000+1200),
-                        (int)(pList.get(i).location.y*10000+1662));
+                drawPlanet(p); 
+                if(p.isVisible)
+                {
+                    createLabel(p.name,(int)(p.location.y*100+1180),
+                                (int)(p.location.z*100+1660));
+                }
+                System.out.println(p.name+":\nx: "+p.location.x+
+                                   "\ny: "+p.location.y+"\nz: "+
+                                   p.location.z+"\n\n");
             }
             
         }

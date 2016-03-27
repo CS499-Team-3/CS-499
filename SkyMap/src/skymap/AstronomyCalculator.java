@@ -328,11 +328,14 @@ public class AstronomyCalculator {
         return right_ascension;
     }
 
-    public Coordinate getPosition(double RA, double dec) {
+    public Coordinate getPosition(Star s, double relativeDate) {
         Coordinate coord = new Coordinate();
-        coord.x = Math.cos(RA) * Math.cos(dec);
-        coord.y = Math.sin(RA) * Math.cos(dec);
-        coord.z = Math.sin(dec);
+        Planet earth = new Planet("EARTH");
+        usePrecalculatedPlanetElems(earth, relativeDate);
+        earth.location = getRectEquatCoord(earth, relativeDate);
+        coord.x = Math.cos(s.RA) * Math.cos(s.dec) - earth.location.x;
+        coord.y = Math.sin(s.RA) * Math.cos(s.dec) - earth.location.y;
+        coord.z = Math.sin(s.dec) - earth.location.z;
         return coord;
     }
 
