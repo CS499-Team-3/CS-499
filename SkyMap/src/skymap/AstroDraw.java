@@ -52,8 +52,9 @@ public class AstroDraw
         return true;
     }
     
-    public boolean draw_line(double start_x, double start_y, double end_x, double end_y)
-    {
+    public boolean drawLine(Graphics g, double x1, double y1, double x2, double y2){
+        set_color(Color.WHITE);
+        g.drawLine((int)x1, (int)y1, (int)x2, (int)y2);
         return true;
     }
     
@@ -133,6 +134,9 @@ public class AstroDraw
         sList = sBox.getStarList();
         
         System.out.println(sList.size());
+
+        //testing drawLine function
+        drawLine(graphics, 1, 1, 1000, 1000);
         
         set_color(Color.WHITE);
         //draw stars
