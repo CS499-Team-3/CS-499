@@ -57,8 +57,10 @@ public class AstroDraw extends JFrame {
         g.fillOval(x, y, diameter, diameter);
         return true;
     }
-
-    public boolean draw_line(double start_x, double start_y, double end_x, double end_y) {
+    
+    public boolean drawLine(Graphics g, double x1, double y1, double x2, double y2){
+        set_color(Color.WHITE);
+        g.drawLine((int)x1, (int)y1, (int)x2, (int)y2);
         return true;
     }
 
