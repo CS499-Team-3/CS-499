@@ -37,7 +37,7 @@ public class SkyMap {
                     calc.getPosition(starList.get(i), julianDate);
         }
         AstroDraw ad = new AstroDraw();
-        ad.createOffScreenImage("offscreen.png");
+        ad.createOffScreenImage("offscreen.jpg");
         GUIWindow window = new GUIWindow();
     }
 
