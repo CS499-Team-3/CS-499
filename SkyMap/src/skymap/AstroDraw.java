@@ -173,12 +173,14 @@ public class AstroDraw extends JFrame {
         return image;
     }
 
+    //Function to create an offscreen image
     public void createOffScreenImage(String fname) {
+        //create the image
         Toolkit tk = Toolkit.getDefaultToolkit();
         offscreen = tk.createImage("fname");
-        //mwhile (offscreen.getWidth(this) < 0);  //wait for image to load
-
         offscreenImage = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_ARGB);
+        
+        //set class boolean to true so drawSkyMap draws to offscreen image
         drawOffScreenImage = true;
         
         //draw the skymap
@@ -186,13 +188,16 @@ public class AstroDraw extends JFrame {
         
         //save image
         saveOffScreenImage(fname);
+        
+        //set class boolean to false so that drawSkyMap draws to the screen again
         drawOffScreenImage = false;
     }
 
-    public void saveOffScreenImage(String fname) {
+    //saves an image to the harddrive, is called by create offscreen image
+    private void saveOffScreenImage(String fname) {
         File imgFile = new File(fname);
         try {
-            ImageIO.write(offscreenImage, "png", imgFile);
+            ImageIO.write(offscreenImage, "jpg", imgFile);
         } catch (Exception e) {
             System.out.println("Failed to write image to disk.");
         }
