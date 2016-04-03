@@ -28,7 +28,7 @@ public final class GUIWindow extends JFrame{
     
     JPanel timePanel = new JPanel();
     JPanel latPanel = new JPanel();
-    JPanel longPanel = new JPanel();
+    JPanel lonPanel = new JPanel();
     JPanel mainBtnPanel = new JPanel();
     JScrollPane skyMapScrollPane;
     JTextField dayField, monthField, yearField;
@@ -41,26 +41,35 @@ public final class GUIWindow extends JFrame{
     JPanel btnPanel2 = new JPanel(); 
     JButton saveBtn = new JButton("Save");
     JButton generateMapBtn = new JButton("Generate Map");     
-    JLabel longLbl =  new JLabel("Longitude: ");  
-    JComboBox latSignCombo;
-    JComboBox lonSignCombo = new JComboBox();
-    JComboBox latDegCombo;
-    JComboBox lonDegCombo = new JComboBox();
-    JComboBox latMinCombo;
-    JComboBox lonMinCombo = new JComboBox();
-    JComboBox latSecCombo;
-    JComboBox lonSecCombo = new JComboBox();
+    JLabel lonLbl =  new JLabel("Longitude: ");  
+    JComboBox latSignCombo, lonSignCombo, latDegCombo, lonDegCombo,
+            latMinCombo, lonMinCombo, latSecCombo, lonSecCombo;
     JLabel latLbl = new JLabel("Latitude: "); 
-    String latSign = "";
+    String latSign = null;
     Integer latDeg = 0;
     Integer latMin = 0;
     Integer latSec = 0;
+    String lonSign = null;
+    Integer lonDeg = 0;
+    Integer lonMin = 0;
+    Integer lonSec = 0;
+    String[] signs = { "+", "-" };
+    Integer[] degrees = new Integer[181];
+    Integer[] minsAndSeconds = new Integer[61];
     
     public GUIWindow() {
         // Draw SkyMap
         AstroDraw astroDraw = new AstroDraw();
         astroDraw.drawSkyMap();
         BufferedImage skyMapImg = astroDraw.getImage();
+        
+        // Create arrays for drop downs
+        for (int i = 0; i <= 180; i++) {
+            degrees[i] = i;
+        }
+        for (int i = 0; i <= 60; i++) {
+            minsAndSeconds[i] = i;
+        }
         
         // Set window properties
         setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -78,38 +87,23 @@ public final class GUIWindow extends JFrame{
         skyMapScrollPane.setPreferredSize(new Dimension(100, 100));             
         jpegPanel.setMinimumSize(new Dimension(800, 800));        
         
-        // Add scroll pane and main panel to window
-        add(skyMapScrollPane, BorderLayout.CENTER);        
+        // Add scroll pane and main panel to window 
+        add(skyMapScrollPane, BorderLayout.CENTER);
         add(makeMainPanel(), BorderLayout.SOUTH);   
         addListeners();
     }
     public JPanel makeDatePanel() {
-        /* minuteSpinner = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.YEAR));
-        secondSpinner = new JSpinner();
-        timePanel = new JPanel(); 
-        hourModel = new SpinnerDateModel(new Date(), 1, 12, Calendar.HOUR_OF_DAY);
-        hourSpinner = new JSpinner(hourModel); */
         spinnerModel = new SpinnerDateModel();
         
         dateLbl = new JLabel("Date: ");
-        //dayField = new JTextField("DD");
-        //monthField = new JTextField("MM");
-        //yearField = new JTextField("YYYY");
         daySpin = new JSpinner(spinnerModel);
         ((DefaultEditor) daySpin.getEditor()).getTextField().setEditable(false);
-        //monthSpin = new JSpinner();
-        //yearSpin = new JSpinner();
         
-        backslashLbl1 = new JLabel("/");  
-        backslashLbl2 = new JLabel("/");
+        //backslashLbl1 = new JLabel("/");  
+        //backslashLbl2 = new JLabel("/");
         
         JPanel datePanel = new JPanel();
         datePanel.add(dateLbl);
-        /*datePanel.add(dayField);
-        datePanel.add(backslashLbl1);
-        datePanel.add(monthField);
-        datePanel.add(backslashLbl2);
-        datePanel.add(yearField);*/
         datePanel.add(daySpin);
         
         return datePanel;
@@ -118,17 +112,8 @@ public final class GUIWindow extends JFrame{
     public JPanel makeLatPanel() { 
         latPanel.setPreferredSize(new Dimension(1000, 200));
         latPanel.add(latLbl);
-        String[] signs = { "+", "-" };
-        latSignCombo = new JComboBox(signs);
-        Integer[] degrees = new Integer[181];
-        for (int i = 0; i <= 180; i++) {
-            degrees[i] = i;
-        }
-        latDegCombo = new JComboBox(degrees);
-        Integer[] minsAndSeconds = new Integer[61];
-        for (int i = 0; i <= 60; i++) {
-            minsAndSeconds[i] = i;
-        }
+        latSignCombo = new JComboBox(signs);        
+        latDegCombo = new JComboBox(degrees);        
         latMinCombo = new JComboBox(minsAndSeconds);
         latSecCombo = new JComboBox(minsAndSeconds);
         latPanel.add(latSignCombo); 
@@ -138,25 +123,32 @@ public final class GUIWindow extends JFrame{
         return latPanel;
     }
     
-    public JPanel makeLongPanel() {
-        longPanel.add(longLbl);
-        //longPanel.add(longField);
-        return longPanel;
+    public JPanel makeLonPanel() {
+        lonPanel.setPreferredSize(new Dimension(1000, 200));
+        lonPanel.add(lonLbl);        
+        lonSignCombo = new JComboBox(signs);        
+        lonDegCombo = new JComboBox(degrees);        
+        lonMinCombo = new JComboBox(minsAndSeconds);
+        lonSecCombo = new JComboBox(minsAndSeconds);
+        lonPanel.add(lonSignCombo); 
+        lonPanel.add(lonDegCombo);
+        lonPanel.add(lonMinCombo);
+        lonPanel.add(lonSecCombo);
+        return lonPanel;
     }
     
     public JPanel makeMainPanel() {        
-        btnPanel1.setLayout(new GridLayout(1, 5, 1, 1));        
+        btnPanel1.setLayout(new GridLayout(1, 3, 1, 1));        
         btnPanel1.setPreferredSize(new Dimension(50, 75));
         btnPanel1.add(makeDatePanel());        
         btnPanel1.add(makeLatPanel());
-        btnPanel1.add(makeLongPanel());
+        btnPanel1.add(makeLonPanel());
         
         btnPanel2.setLayout(new GridLayout(2, 1, 1, 1));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
         
-        mainBtnPanel.setLayout(new GridLayout(1, 3, 1, 1));
-        //mainBtnPanel.add(new JPanel());
+        mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(new JPanel());
         mainBtnPanel.add(btnPanel2);
@@ -171,13 +163,26 @@ public final class GUIWindow extends JFrame{
             public void actionPerformed(ActionEvent ae) { 
                     latSign = (String) latSignCombo.getSelectedItem();
                     latDeg = (Integer) latDegCombo.getSelectedItem();
+                    if (latSign.equals("-")) {
+                        latDeg *= -1;
+                    }
                     latMin = (Integer) latMinCombo.getSelectedItem();
                     latSec = (Integer) latSecCombo.getSelectedItem();
                     System.out.println("Latitude:");
-                    System.out.println(latSign + latDeg + " " + latMin + ":" + 
+                    System.out.println(latDeg + " " + latMin + ":" + 
                             latSec);
+                    lonSign = (String) lonSignCombo.getSelectedItem();
+                    lonDeg = (Integer) lonDegCombo.getSelectedItem();
+                    if (lonSign.equals("-")) {
+                        lonDeg *= -1;
+                    }
+                    lonMin = (Integer) lonMinCombo.getSelectedItem();
+                    lonSec = (Integer) lonSecCombo.getSelectedItem();
+                    System.out.println("Longitude:");
+                    System.out.println(lonDeg + " " + lonMin + ":" + 
+                            lonSec);
             }
         });
-        //latDegField.addInputMethodListener(null);
+        
     }
 }
