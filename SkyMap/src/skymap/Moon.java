@@ -11,9 +11,13 @@ package skymap;
  */
 enum lunar_phase {
     NEW_MOON,
-    FIRST_QUARTER,
+    WAXING_QUARTER,
+    WAXING_HALF_MOON,
+    WAXING_THREE_QUARTER,
     FULL_MOON,
-    LAST_QUARTER
+    WANING_THREE_QUARTER,
+    WANING_HALF_MOON,
+    WANING_QUARTER
 }
 
 public class Moon extends SpaceObject {
