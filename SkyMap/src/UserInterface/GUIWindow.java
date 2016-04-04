@@ -8,10 +8,14 @@ package UserInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
+import javax.swing.JSpinner.DefaultEditor;
 import skymap.AstroDraw;
 
 /**
@@ -19,107 +23,198 @@ import skymap.AstroDraw;
  * @author Emma
  */
 
-public final class GUIWindow extends JFrame{    
-    
-    
+public final class GUIWindow extends JFrame{       
     
     JPanel timePanel = new JPanel();
     JPanel latPanel = new JPanel();
-    JPanel longPanel = new JPanel();
+    JPanel lonPanel = new JPanel();
     JPanel mainBtnPanel = new JPanel();
     JScrollPane skyMapScrollPane;
     JTextField dayField, monthField, yearField;
+    JSpinner dateSpin, monthSpin, yearSpin;
     JSpinner hourSpinner, minuteSpinner, secondSpinner;
     SpinnerDateModel hourModel, minuteModel, secondModel;
+    SpinnerDateModel spinnerModel;
     JLabel dateLbl, backslashLbl1, backslashLbl2;
     JPanel btnPanel1 = new JPanel();
     JPanel btnPanel2 = new JPanel(); 
     JButton saveBtn = new JButton("Save");
-    JButton generateMapBtn = new JButton("Generate Map");    
-    JTextField longField = new JTextField("0"); 
-    JLabel longLbl =  new JLabel("Long: "); 
-    JTextField latField = new JTextField("0");              
-    JLabel latLbl = new JLabel("Lat: "); 
+    JButton generateMapBtn = new JButton("Generate Map");     
+    JLabel lonLbl =  new JLabel("Longitude: ");  
+    JComboBox latSignCombo, lonSignCombo, latDegCombo, lonDegCombo,
+            latMinCombo, lonMinCombo, latSecCombo, lonSecCombo;
+    JLabel latLbl = new JLabel("Latitude: "); 
+    String latSign = null;
+    Integer latDeg = 0;
+    Integer latMin = 0;
+    Integer latSec = 0;
+    String lonSign = null;
+    Integer lonDeg = 0;
+    Integer lonMin = 0;
+    Integer lonSec = 0;
+    String[] signs = { "+", "-" };
+    String[] degrees = new String[182];
+    String[] mins = new String[62];
+    String[] seconds = new String[62];
+    Font comboFont = new Font(Font.DIALOG, Font.PLAIN, 12);
     
     public GUIWindow() {
-        // Draw SkyMap
-        AstroDraw astroDraw = new AstroDraw();
-        astroDraw.drawSkyMap();
-        BufferedImage skyMapImg = astroDraw.getImage();
-        
         // Set window properties
         setExtendedState(Frame.MAXIMIZED_BOTH);
         setTitle("SkyMap");
         setMinimumSize(new Dimension(500, 500));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setLayout(new BorderLayout());   
-
+        setLayout(new BorderLayout());    
+        
+        // Draw SkyMap
+        AstroDraw astroDraw = new AstroDraw();
+        astroDraw.drawSkyMap();
+        BufferedImage skyMapImg = astroDraw.getImage();
+        
+        // Create arrays for drop downs
+        degrees[0] = "Degrees";
+        for (int i = 1; i <= 181; i++) {
+            degrees[i] = Integer.toString(i-1);
+        }
+        mins[0] = "Minutes";
+        seconds[0] = "Seconds";
+        for (int i = 1; i <= 61; i++) {
+            mins[i] = String.valueOf(i-1);
+            seconds[i] = String.valueOf(i-1);
+        }
+       
         // Make JPEG panel        
         JPanel jpegPanel = new JPanel();
         JLabel label = new JLabel(new ImageIcon(skyMapImg));
         jpegPanel.add(label);
         skyMapScrollPane = new JScrollPane(jpegPanel);
-        skyMapScrollPane.setPreferredSize(new Dimension(100, 100));             
+        //skyMapScrollPane.setPreferredSize(new Dimension(100, 100));             
         jpegPanel.setMinimumSize(new Dimension(800, 800));        
         
-        // Add scroll pane and main panel to window
-        add(skyMapScrollPane, BorderLayout.CENTER);        
-        add(makeMainPanel(), BorderLayout.SOUTH);        
+        // Add scroll pane and main panel to window 
+        add(skyMapScrollPane, BorderLayout.CENTER);
+        add(makeMainPanel(), BorderLayout.SOUTH);   
+        addListeners();
     }
     public JPanel makeDatePanel() {
-        /* minuteSpinner = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.YEAR));
-        secondSpinner = new JSpinner();
-        timePanel = new JPanel(); 
-        hourModel = new SpinnerDateModel(new Date(), 1, 12, Calendar.HOUR_OF_DAY);
-        hourSpinner = new JSpinner(hourModel); */
+        spinnerModel = new SpinnerDateModel();
         
         dateLbl = new JLabel("Date: ");
-        dayField = new JTextField("DD");
-        monthField = new JTextField("MM");
-        yearField = new JTextField("YYYY");
-        backslashLbl1 = new JLabel("/");  
-        backslashLbl2 = new JLabel("/");
+        dateSpin = new JSpinner(spinnerModel);
+        ((DefaultEditor) dateSpin.getEditor()).getTextField().setEditable(false);
+        
         
         JPanel datePanel = new JPanel();
         datePanel.add(dateLbl);
-        datePanel.add(dayField);
-        datePanel.add(backslashLbl1);
-        datePanel.add(monthField);
-        datePanel.add(backslashLbl2);
-        datePanel.add(yearField);
+        datePanel.add(dateSpin);        
         
         return datePanel;
     }
     
-    public JPanel makeLatPanel() {                             
+    public JPanel makeLatPanel() { 
+        latPanel.setPreferredSize(new Dimension(325, 50));
         latPanel.add(latLbl);
-        latPanel.add(latField);        
+        latSignCombo = new JComboBox(signs);        
+        latDegCombo = new JComboBox(degrees);        
+        latMinCombo = new JComboBox(mins);
+        latSecCombo = new JComboBox(seconds);
+        // W = 101, H = 20
+        latSignCombo.setPreferredSize(new Dimension(35, 20));
+        latDegCombo.setPreferredSize(new Dimension(77, 20));
+        latMinCombo.setPreferredSize(new Dimension(77, 20));
+        latSecCombo.setPreferredSize(new Dimension(77, 20));        
+        
+        latSignCombo.setFont(comboFont);
+        latDegCombo.setFont(comboFont);
+        latMinCombo.setFont(comboFont);
+        latSecCombo.setFont(comboFont);
+        
+        latPanel.add(latSignCombo); 
+        latPanel.add(latDegCombo);
+        latPanel.add(latMinCombo);
+        latPanel.add(latSecCombo);
         return latPanel;
     }
     
-    public JPanel makeLongPanel() {
-        longPanel.add(longLbl);
-        longPanel.add(longField);
-        return longPanel;
+    public JPanel makeLonPanel() {
+        lonPanel.setPreferredSize(new Dimension(325, 50));
+        lonPanel.add(lonLbl);    
+        lonSignCombo = new JComboBox(signs);        
+        lonDegCombo = new JComboBox(degrees);        
+        lonMinCombo = new JComboBox(mins);
+        lonSecCombo = new JComboBox(seconds);
+        
+        lonSignCombo.setPreferredSize(new Dimension(35, 20));
+        lonDegCombo.setPreferredSize(new Dimension(77, 20));
+        lonMinCombo.setPreferredSize(new Dimension(77, 20));
+        lonSecCombo.setPreferredSize(new Dimension(77, 20));        
+        
+        lonSignCombo.setFont(comboFont);
+        lonDegCombo.setFont(comboFont);
+        lonMinCombo.setFont(comboFont);
+        lonSecCombo.setFont(comboFont);
+        
+        lonPanel.add(lonSignCombo); 
+        lonPanel.add(lonDegCombo);
+        lonPanel.add(lonMinCombo);
+        lonPanel.add(lonSecCombo);
+        return lonPanel;
     }
     
     public JPanel makeMainPanel() {        
-        btnPanel1.setLayout(new GridLayout(2, 2, 1, 1));        
-        btnPanel1.setPreferredSize(new Dimension(50, 75));
+        btnPanel1.setLayout(new BoxLayout(btnPanel1, BoxLayout.X_AXIS));        
+        btnPanel1.setPreferredSize(new Dimension(325, 50));
         btnPanel1.add(makeDatePanel());        
         btnPanel1.add(makeLatPanel());
-        btnPanel1.add(makeLongPanel());
+        btnPanel1.add(makeLonPanel());
         
-        btnPanel2.setLayout(new GridLayout(2, 1, 1, 1));
+        btnPanel2.setLayout(new BoxLayout(btnPanel2, BoxLayout.Y_AXIS));
+        btnPanel2.setPreferredSize(new Dimension(200, 50));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
         
-        mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
+        //mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
+        mainBtnPanel.setLayout(new BoxLayout(mainBtnPanel, BoxLayout.X_AXIS));
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(new JPanel());
         mainBtnPanel.add(btnPanel2);
         
         return mainBtnPanel;
+    }
+    
+    public void addListeners() {
+        generateMapBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) { 
+                    System.out.println(getWidth());
+                    if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
+                            && latSecCombo.getSelectedIndex() != 0 && lonDegCombo.getSelectedIndex() != 0
+                            && latMinCombo.getSelectedIndex() != 0 && latSecCombo.getSelectedIndex() != 0) {
+                        latDeg = Integer.parseInt((String) latDegCombo.getSelectedItem());
+                        if (latSignCombo.getSelectedItem().equals("-")) {
+                            latDeg *= -1;
+                        }
+                        latMin = Integer.parseInt((String) latMinCombo.getSelectedItem());
+                        latSec = Integer.parseInt((String) latSecCombo.getSelectedItem());
+                        System.out.println("Latitude:");
+                        System.out.println(latDeg + " " + latMin + ":" + 
+                                latSec);
+                        
+                        lonDeg = Integer.parseInt((String) lonDegCombo.getSelectedItem());
+
+                        if (lonSignCombo.getSelectedItem().equals("-")) {
+                            lonDeg *= -1;
+                        }
+                        lonMin = Integer.parseInt((String) lonMinCombo.getSelectedItem());
+                        lonSec = Integer.parseInt((String) lonSecCombo.getSelectedItem());
+                        System.out.println("Longitude:");
+                        System.out.println(lonDeg + " " + lonMin + ":" + 
+                                lonSec);
+                    }
+            }
+        });
+        
     }
 }

@@ -10,5 +10,7 @@ http://www.moongiant.com/phase/
 altitude-azimuth
 http://www.astronomynotes.com/nakedeye/s6.htm
 
+http://www.fourmilab.ch/cgi-bin/Yoursky
+
 calculate planet/star stuff for Lindsey
 http://www.stjarnhimlen.se/comp/tutorial.html
