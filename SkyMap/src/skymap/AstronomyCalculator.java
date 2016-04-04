@@ -333,9 +333,12 @@ public class AstronomyCalculator {
         Planet earth = new Planet("EARTH");
         usePrecalculatedPlanetElems(earth, relativeDate);
         earth.location = getRectEquatCoord(earth, relativeDate);
-        coord.x = Math.cos(s.RA) * Math.cos(s.dec) - earth.location.x;
-        coord.y = Math.sin(s.RA) * Math.cos(s.dec) - earth.location.y;
-        coord.z = Math.sin(s.dec) - earth.location.z;
+//        coord.x = Math.cos(s.RA) * Math.cos(s.dec) - earth.location.x;
+//        coord.y = Math.sin(s.RA) * Math.cos(s.dec) - earth.location.y;
+//        coord.z = Math.sin(s.dec) - earth.location.z;
+        coord.x = s.RA;
+        coord.y = s.dec;
+        coord.z = 10;
         return coord;
     }
 
