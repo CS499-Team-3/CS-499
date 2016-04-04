@@ -16,6 +16,9 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
 import skymap.AstroDraw;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -182,7 +185,37 @@ public final class GUIWindow extends JFrame{
                     System.out.println(lonDeg + " " + lonMin + ":" + 
                             lonSec);
             }
+            
         });
         
+        //action listener for the save button
+        saveBtn.addActionListener(new ActionListener(){
+            
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                //get a file chooser, add a filter for jpg only
+                JFileChooser c = new JFileChooser();
+                FileFilter filter = new FileNameExtensionFilter("jpg image files", "jpg");
+                c.setDialogTitle("Save StarMap as a JPEG");
+                c.setFileFilter(filter);
+                
+                //if user enters a correct filename
+                int saveValue = c.showSaveDialog(GUIWindow.this);
+                if(saveValue == JFileChooser.APPROVE_OPTION) {
+                    //Test the string for .jpg extention
+                    String fileName = (c.getSelectedFile().toString());
+                    if(fileName.contains(".jpg") == false)
+                    {
+                        fileName += ".jpg";
+                    }
+                    
+                    //get new instance of AstroDraw and create the offscreen image
+                    AstroDraw ad = new AstroDraw();
+                    ad.createOffScreenImage(fileName);
+                }
+            }
+        });
+       
     }
 }
