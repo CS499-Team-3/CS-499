@@ -13,6 +13,8 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
@@ -67,7 +69,6 @@ public final class GUIWindow extends JFrame{
         setTitle("SkyMap");
         setMinimumSize(new Dimension(500, 500));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
         setLayout(new BorderLayout());    
         
         // Draw SkyMap
@@ -99,14 +100,14 @@ public final class GUIWindow extends JFrame{
         add(skyMapScrollPane, BorderLayout.CENTER);
         add(makeMainPanel(), BorderLayout.SOUTH);   
         addListeners();
+        setVisible(true);
     }
     public JPanel makeDatePanel() {
         spinnerModel = new SpinnerDateModel();
         
         dateLbl = new JLabel("Date: ");
         dateSpin = new JSpinner(spinnerModel);
-        ((DefaultEditor) dateSpin.getEditor()).getTextField().setEditable(false);
-        
+        ((DefaultEditor) dateSpin.getEditor()).getTextField().setEditable(false);        
         
         JPanel datePanel = new JPanel();
         datePanel.add(dateLbl);
@@ -172,7 +173,7 @@ public final class GUIWindow extends JFrame{
         btnPanel1.add(makeLatPanel());
         btnPanel1.add(makeLonPanel());
         
-        btnPanel2.setLayout(new BoxLayout(btnPanel2, BoxLayout.Y_AXIS));
+        btnPanel2.setLayout(new BoxLayout(btnPanel2, BoxLayout.PAGE_AXIS));
         btnPanel2.setPreferredSize(new Dimension(200, 50));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
@@ -181,8 +182,7 @@ public final class GUIWindow extends JFrame{
         mainBtnPanel.setLayout(new BoxLayout(mainBtnPanel, BoxLayout.X_AXIS));
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(new JPanel());
-        mainBtnPanel.add(btnPanel2);
-        
+        mainBtnPanel.add(btnPanel2);   
         return mainBtnPanel;
     }
     
@@ -191,7 +191,6 @@ public final class GUIWindow extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent ae) { 
-                    System.out.println(getWidth());
                     if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
                             && latSecCombo.getSelectedIndex() != 0 && lonDegCombo.getSelectedIndex() != 0
                             && latMinCombo.getSelectedIndex() != 0 && latSecCombo.getSelectedIndex() != 0) {
