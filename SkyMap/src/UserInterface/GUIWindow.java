@@ -8,10 +8,12 @@ package UserInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -217,10 +219,14 @@ public final class GUIWindow extends JFrame{
         btnPanel2.setPreferredSize(new Dimension(200, 50)); 
         saveBtn = new JButton("Save");
         generateMapBtn = new JButton("Generate Map");
+        saveBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateMapBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         generateMapBtn.setPreferredSize(new Dimension(77, 20));
         saveBtn.setPreferredSize(new Dimension(77, 20));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
+        JPanel btns = new JPanel();
+        
         
         //mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
         mainBtnPanel.setLayout(new BoxLayout(mainBtnPanel, BoxLayout.X_AXIS));
