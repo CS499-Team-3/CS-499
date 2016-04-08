@@ -156,7 +156,8 @@ public class AstroDraw extends JFrame {
             image = offscreenImage;
         }
         graphics = image.createGraphics();
-        set_background_color(graphics, image, new Color(0x000080));
+        //new Color(0x000080)
+        set_background_color(graphics, image, new Color(0x000000));
 
         SkyBox sBox = SkyBox.getSkyBox();
         List<Planet> pList = new ArrayList();
