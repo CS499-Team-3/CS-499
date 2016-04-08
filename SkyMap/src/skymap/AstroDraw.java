@@ -13,6 +13,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import java.io.File;
 import javax.imageio.ImageIO;
+import java.awt.image.RescaleOp;
 
 /**
  *
@@ -57,11 +58,10 @@ public class AstroDraw extends JFrame {
         g.fillOval(x, y, diameter, diameter);
         return true;
     }
-    
-    public boolean drawLine(Graphics g, double x1, double y1, double x2, double y2)
-    {
+
+    public boolean drawLine(Graphics g, double x1, double y1, double x2, double y2) {
         set_color(Color.WHITE);
-        g.drawLine((int)x1, (int)y1, (int)x2, (int)y2);
+        g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
         return true;
     }
 
@@ -77,7 +77,7 @@ public class AstroDraw extends JFrame {
 //        int x = (int) (star.location.y * 5000) + 1200;//constants TBD
 //        int y = (int) (star.location.z * 5000) + 1650;//constants TBD
         int magnitude = (int) star.getMagnitude();
-        draw_circle(graphics, (int)(star.location.x*100), (int)(star.location.y*-100), magnitude);
+        draw_circle(graphics, (int) (star.location.x * 100), (int) (star.location.y * -100), magnitude);
     }
 
     public void drawPlanet(Planet planet) {
@@ -122,21 +122,19 @@ public class AstroDraw extends JFrame {
             default:
                 break;
         }
-        x = (int)(planet.location.y * 100)+1200;
-        y = (int)(planet.location.z * 100)+1650;
+        x = (int) (planet.location.y * 100) + 1200;
+        y = (int) (planet.location.z * 100) + 1650;
         //TODO: use RA and dec as x, y
         // Add RA and dec to planet
         set_color(color);
         draw_circle(graphics, x, y, radius);
     }
-    
-    public void drawMoon(Moon m)
-    {
-        int x = (int)(m.location.y * 100)+1200;
-        int y = (int)(m.location.z * 100)+1650;
+
+    public void drawMoon(Moon m) {
+        int x = (int) (m.location.y * 100) + 1200;
+        int y = (int) (m.location.z * 100) + 1650;
         set_color(Color.cyan); //TBD
-        switch (m.phase)
-        {
+        switch (m.phase) {
             case NEW_MOON:
                 break;
             case FIRST_QUARTER:
@@ -149,7 +147,6 @@ public class AstroDraw extends JFrame {
                 break;
         }
     }
-
 
     public void drawSkyMap() {
 
@@ -203,28 +200,34 @@ public class AstroDraw extends JFrame {
         //create the image
         Toolkit tk = Toolkit.getDefaultToolkit();
         offscreen = tk.createImage("fname");
-        offscreenImage = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_ARGB);
-        
+        offscreenImage = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_RGB);
+
         //set class boolean to true so drawSkyMap draws to offscreen image
         drawOffScreenImage = true;
-        
+
+        //set up filter to ensure the colors of the image are accerate
+        RescaleOp op = new RescaleOp(1.1f, 0.0f, null);
+
         //draw the skymap
         drawSkyMap();
         
+        //run the image through the filter
+        BufferedImage tempImage = op.filter(offscreenImage, null);
+
         //save image
-        saveOffScreenImage(fname);
-        
+        saveOffScreenImage(fname, tempImage);
+
         //set class boolean to false so that drawSkyMap draws to the screen again
         drawOffScreenImage = false;
     }
 
     //saves an image to the harddrive, is called by create offscreen image
-    private void saveOffScreenImage(String fname) {
+    private void saveOffScreenImage(String fname, BufferedImage temp) {
         File imgFile = new File(fname);
         try {
-            ImageIO.write(offscreenImage, "jpg", imgFile);
+            ImageIO.write(temp, "jpg", imgFile);
         } catch (Exception e) {
-            System.out.println("Failed to write image to disk.");
+
         }
     }
 
