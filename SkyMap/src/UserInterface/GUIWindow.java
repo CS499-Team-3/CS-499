@@ -93,7 +93,7 @@ public final class GUIWindow extends JFrame{
         setTitle("SkyMap");
         setMinimumSize(new Dimension(1200, 500));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());    
+        setLayout(new BorderLayout()); 
         
         // Create arrays for drop downs
         degrees[0] = "Degrees";
@@ -126,6 +126,7 @@ public final class GUIWindow extends JFrame{
         add(makeMainPanel(), BorderLayout.SOUTH);   
         addListeners();
         setVisible(true);
+        saveBtn.setEnabled(false);
     }
     
     public JPanel makeMoonPanel() {   
@@ -287,6 +288,7 @@ public final class GUIWindow extends JFrame{
                     mGraphics.fillRect(0, 0, moonImage.getWidth(), moonImage.getHeight());
                     moonLabel.setIcon(new ImageIcon(moonImage));
                     moonPanel.add(moonLabel);
+                    saveBtn.setEnabled(true);
             }
             
         });
