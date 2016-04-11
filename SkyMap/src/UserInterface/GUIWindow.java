@@ -14,14 +14,18 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
 import skymap.AstroDraw;
@@ -79,7 +83,7 @@ public final class GUIWindow extends JFrame{
     Font comboFont = new Font(Font.DIALOG, Font.PLAIN, 12);
     Date date = null;
     
-    public GUIWindow() {
+    public GUIWindow() throws IOException {
         // Look & Feel
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -111,16 +115,17 @@ public final class GUIWindow extends JFrame{
         }
        
         // Temporary Splash Screen
-        BufferedImage splashScreen = new BufferedImage(1345, 635, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = splashScreen.createGraphics();
-        g.setColor(Color.darkGray);
+        //BufferedImage splashScreen = new BufferedImage(1345, 635, BufferedImage.TYPE_INT_ARGB);              
+        //Graphics2D g = splashScreen.createGraphics();
+// ImageIcon icon = new ImageIcon(myImg);
+        /*g.setColor(Color.darkGray);
         g.fillRect(0, 0, splashScreen.getWidth(), splashScreen.getHeight());
         g.setColor(Color.WHITE);
         g.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
-        g.drawString("SkyMap", 630, 300);
+        g.drawString("SkyMap", 630, 300);        
+        skyMapImg = splashScreen;*/
         jpegPanel = new JPanel();
-        skyMapImg = splashScreen;
-        label = new JLabel(new ImageIcon(skyMapImg));
+        label = new JLabel(new ImageIcon(this.getClass().getResource("/Images/8bit-starwars-resized.jpg")));
         jpegPanel.add(label);
         skyMapScrollPane = new JScrollPane(jpegPanel); 
         
