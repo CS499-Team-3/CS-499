@@ -17,7 +17,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
 import skymap.AstroDraw;
@@ -77,7 +81,6 @@ public final class GUIWindow extends JFrame{
     
     public GUIWindow() {
         // Look & Feel
-        //UIManager.put("Rootpane.background", Color.GRAY);
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -132,7 +135,7 @@ public final class GUIWindow extends JFrame{
         moonPanel.setPreferredSize(new Dimension(40, 40));
         moonLabel = new JLabel();
         moonLabel.setPreferredSize(new Dimension(40, 40));
-        moonLabel.setBorder(new EtchedBorder());
+        moonLabel.setBorder(new EtchedBorder());       
         moonPanel.add(moonLabel);
         return moonPanel;
     }
@@ -210,13 +213,10 @@ public final class GUIWindow extends JFrame{
         btnPanel1.add(makeLatPanel());
         btnPanel1.add(makeLonPanel());
         btnPanel1.add(makeMoonPanel());
-        //JPanel blankPanel = new JPanel();
-        //blankPanel.setPreferredSize(new Dimension(55, 40));
-        
         
         btnPanel2.setLayout(new BoxLayout(btnPanel2, BoxLayout.Y_AXIS));
         //btnPanel2.setBackground(Color.DARK_GRAY);
-        btnPanel2.setPreferredSize(new Dimension(200, 50)); 
+        btnPanel2.setPreferredSize(new Dimension(210, 50)); 
         saveBtn = new JButton("Save");
         generateMapBtn = new JButton("Generate Map");
         saveBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -225,13 +225,11 @@ public final class GUIWindow extends JFrame{
         saveBtn.setPreferredSize(new Dimension(77, 20));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
-        JPanel btns = new JPanel();
         
-        
-        //mainBtnPanel.setLayout(new GridLayout(1, 2, 1, 1));
         mainBtnPanel.setLayout(new BoxLayout(mainBtnPanel, BoxLayout.X_AXIS));
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(btnPanel2);   
+        //mainBtnPanel.add(new JPanel());
         return mainBtnPanel;
     }
     
@@ -240,10 +238,9 @@ public final class GUIWindow extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent ae) {                
-                    date = spinnerModel.getDate();
-                    //long time = date.getTime();
-                    //SimpleDateFormat format = new SimpleDateFormat("YYYY");
-                    //Date year = format.parse(date.toString());
+                    String date = spinnerModel.getDate().toString();
+                         
+               
                     //System.out.println("year: " + year);
                     System.out.println("Date: " + date/* + " Time: " + time*/);
                     if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
@@ -280,13 +277,11 @@ public final class GUIWindow extends JFrame{
                     skyMapScrollPane.getViewport().add(mapJPEGpanel);
                     
                     // Update Moon Panel
-                    moonPanel.remove(0);
                     moonImage = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
                     mGraphics = moonImage.createGraphics();
                     mGraphics.setColor(Color.BLACK);
                     mGraphics.fillRect(0, 0, moonImage.getWidth(), moonImage.getHeight());
                     moonLabel.setIcon(new ImageIcon(moonImage));
-                    moonPanel.add(moonLabel);
             }
             
         });
