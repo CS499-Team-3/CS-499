@@ -15,7 +15,7 @@ package skymap;
 public class SpaceObject {
     String name;
     float magnitude;
-    Coordinate location;
+    public Coordinate location;
     boolean isVisible;
     
     public SpaceObject()
