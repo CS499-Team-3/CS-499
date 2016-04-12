@@ -118,8 +118,8 @@ public class AstroDraw extends JFrame {
             default:
                 break;
         }
-        x = (int) (planet.location.x * 100);//+1250;
-        y = (int) (planet.location.y * -100);//+1650;
+        x = (int) (planet.location.x*8)+1200;
+        y = (int) (planet.location.y*8)+1650;
         set_color(color);
         draw_circle(graphics, x, y, radius);
     }
@@ -175,8 +175,8 @@ public class AstroDraw extends JFrame {
             } else {
                 drawPlanet(p);
                 if (p.isVisible) {
-                    createLabel(p.name, (int) (p.location.x * 100),
-                            (int) (p.location.y * -100));
+                    createLabel(p.name, (int) (p.location.x * 8)+1190,
+                            (int) (p.location.y * -8)+1650);
                 }
             }
 
