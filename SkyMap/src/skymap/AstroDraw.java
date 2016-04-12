@@ -81,10 +81,6 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawPlanet(Planet planet) {
-        if (planet.location.x < 0) {
-            planet.isVisible = false;
-            return;
-        }
         AstronomyCalculator calc = new AstronomyCalculator();
         Color color = null;
         int x;
@@ -122,8 +118,8 @@ public class AstroDraw extends JFrame {
             default:
                 break;
         }
-        x = (int) (planet.location.y * 100) + 1200;
-        y = (int) (planet.location.z * 100) + 1650;
+        x = (int) (planet.location.x * 100) + 1200;
+        y = (int) (planet.location.y * 100) + 1650;
         //TODO: use RA and dec as x, y
         // Add RA and dec to planet
         set_color(color);

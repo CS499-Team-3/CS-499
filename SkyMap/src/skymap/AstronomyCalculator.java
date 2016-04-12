@@ -85,7 +85,7 @@ public class AstronomyCalculator {
     /**
      * Calculates the Julian Date relative to 2000.
      */
-    double calRelativeJulian(int year, int month, int day, int hour, int min, int sec) {
+    public double calRelativeJulian(int year, int month, int day, int hour, int min, int sec) {
         /*
          JD = (367 * YYYY) 
          - (Math.floor(7.0 * (YYYY + Math.floor((MM + 9.0)/12.0))/4.0))

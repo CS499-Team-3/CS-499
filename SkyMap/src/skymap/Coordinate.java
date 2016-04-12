@@ -10,8 +10,8 @@ package skymap;
  * @author Lindsey
  */
 public class Coordinate {
-    double x;
-    double y;
+    public double x;
+    public double y;
     double z;
 
     Coordinate() {

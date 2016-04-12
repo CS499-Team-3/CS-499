@@ -27,7 +27,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileFilter;
 import java.util.*;
 import skymap.AstronomyCalculator;
-        
+import skymap.Planet;
+import skymap.SkyBox;
+import skymap.Star;
+import skymap.SpaceObject;
+
 /**
  *
  * @author Emma
@@ -241,7 +245,7 @@ public final class GUIWindow extends JFrame {
                 SimpleDateFormat df = new SimpleDateFormat("MM dd YYYY hh mm ss a");
                 Date userDate = spinnerModel.getDate();
                 String userDateString = df.format(userDate);
-                
+
                 //Parse the date, place them in the correct variables
                 List<String> dateList = Arrays.asList(userDateString.split(" "));
                 int month = Integer.parseInt((dateList.get(0)));
@@ -251,11 +255,32 @@ public final class GUIWindow extends JFrame {
                 int minutes = Integer.parseInt((dateList.get(4)));
                 int seconds = Integer.parseInt((dateList.get(5)));
                 String am_pm = dateList.get(6);
-                
+
                 //convert hours to military time
                 AstronomyCalculator ac = new AstronomyCalculator();
-                hour = ac.time2Milarary(hour, am_pm);               
+                hour = ac.time2Milarary(hour, am_pm);
+
+                //calculate exact Julian and Relative Julian dates
+                double exactJulian = ac.calExactJulianDate(year, month, day, hour, minutes);
+                double relativeJulian = ac.calRelativeJulian(year, month, day, hour, minutes, seconds);
+
+                //get a skybox, set the values for planets and stars
+                SkyBox skyBox = SkyBox.getSkyBox();
+                List<Planet> planetList = skyBox.getPlanetList();
+                List<Star> starList = skyBox.getStarList();
                 
+                //for each planet in the Skybox, set the values
+                for (int i = 0; i < planetList.size(); i++) {
+                    ac.usePrecalculatedPlanetElems(planetList.get(i), relativeJulian);
+                    planetList.get(i).location.x = ac.getRightAscension(planetList.get(i), relativeJulian);
+                    planetList.get(i).location.y = (-1 * ac.getDeclination(planetList.get(i), relativeJulian));
+                }
+                //for each star in the Skybox, set the values
+                for (int i = 0; i < starList.size(); i++) {
+                    starList.get(i).location
+                            = ac.getPosition(starList.get(i), relativeJulian);
+                }
+
                 if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
                         && latSecCombo.getSelectedIndex() != 0 && lonDegCombo.getSelectedIndex() != 0
                         && latMinCombo.getSelectedIndex() != 0 && latSecCombo.getSelectedIndex() != 0) {
