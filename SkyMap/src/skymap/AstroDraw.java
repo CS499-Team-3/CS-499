@@ -118,17 +118,15 @@ public class AstroDraw extends JFrame {
             default:
                 break;
         }
-        x = (int) (planet.location.x * 100) + 1200;
-        y = (int) (planet.location.y * 100) + 1650;
-        //TODO: use RA and dec as x, y
-        // Add RA and dec to planet
+        x = (int) (planet.location.x * 100);
+        y = (int) (planet.location.y * -100);
         set_color(color);
         draw_circle(graphics, x, y, radius);
     }
 
     public void drawMoon(Moon m) {
-        int x = (int) (m.location.y * 100) + 1200;
-        int y = (int) (m.location.z * 100) + 1650;
+        int x = (int) (m.location.x * 100);
+        int y = (int) (m.location.y * 100);
         set_color(Color.cyan); //TBD
         switch (m.phase) {
             case NEW_MOON:
@@ -177,12 +175,9 @@ public class AstroDraw extends JFrame {
             } else {
                 drawPlanet(p);
                 if (p.isVisible) {
-                    createLabel(p.name, (int) (p.location.y * 100 + 1180),
-                            (int) (p.location.z * 100 + 1660));
+                    createLabel(p.name, (int) (p.location.x * 100),
+                            (int) (p.location.y * -100));
                 }
-                System.out.println(p.name + ":\nx: " + p.location.x
-                        + "\ny: " + p.location.y + "\nz: "
-                        + p.location.z + "\n\n");
             }
 
         }

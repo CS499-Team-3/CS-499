@@ -332,12 +332,22 @@ public class AstronomyCalculator {
         Coordinate coord = new Coordinate();
         Planet earth = new Planet("EARTH");
         usePrecalculatedPlanetElems(earth, relativeDate);
-        earth.location = getRectEquatCoord(earth, relativeDate);
-//        coord.x = Math.cos(s.RA) * Math.cos(s.dec) - earth.location.x;
-//        coord.y = Math.sin(s.RA) * Math.cos(s.dec) - earth.location.y;
-//        coord.z = Math.sin(s.dec) - earth.location.z;
-        coord.x = s.RA;
-        coord.y = s.dec;
+        earth.location.x = getRightAscension(earth,relativeDate);
+        earth.location.y = getDeclination(earth,relativeDate);
+        coord.x = s.RA - earth.location.x;
+        coord.y = s.dec - earth.location.y;
+        coord.z = 10;
+        return coord;
+    }
+    
+    public Coordinate getPlanetPos(Planet p, double relativeDate) {
+        Coordinate coord = new Coordinate();
+        Planet earth = new Planet("EARTH");
+        usePrecalculatedPlanetElems(earth, relativeDate);
+        earth.location.x = getRightAscension(earth,relativeDate);
+        earth.location.y = getDeclination(earth,relativeDate);
+        coord.x = getRightAscension(p,relativeDate) - earth.location.x;
+        coord.y = getDeclination(p,relativeDate) - earth.location.y;
         coord.z = 10;
         return coord;
     }

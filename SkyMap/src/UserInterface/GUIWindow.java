@@ -272,8 +272,7 @@ public final class GUIWindow extends JFrame {
                 //for each planet in the Skybox, set the values
                 for (int i = 0; i < planetList.size(); i++) {
                     ac.usePrecalculatedPlanetElems(planetList.get(i), relativeJulian);
-                    planetList.get(i).location.x = ac.getRightAscension(planetList.get(i), relativeJulian);
-                    planetList.get(i).location.y = (-1 * ac.getDeclination(planetList.get(i), relativeJulian));
+                    planetList.get(i).location = ac.getPlanetPos(planetList.get(i), relativeJulian);
                 }
                 //for each star in the Skybox, set the values
                 for (int i = 0; i < starList.size(); i++) {
