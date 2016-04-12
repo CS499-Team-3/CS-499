@@ -334,8 +334,8 @@ public class AstronomyCalculator {
         usePrecalculatedPlanetElems(earth, relativeDate);
         earth.location.x = getRightAscension(earth,relativeDate);
         earth.location.y = getDeclination(earth,relativeDate);
-        coord.x = s.RA - earth.location.x;
-        coord.y = s.dec - earth.location.y;
+        coord.x = s.RA;// - earth.location.x;
+        coord.y = s.dec;// - earth.location.y;
         coord.z = 10;
         return coord;
     }
@@ -346,8 +346,8 @@ public class AstronomyCalculator {
         usePrecalculatedPlanetElems(earth, relativeDate);
         earth.location.x = getRightAscension(earth,relativeDate);
         earth.location.y = getDeclination(earth,relativeDate);
-        coord.x = getRightAscension(p,relativeDate) - earth.location.x;
-        coord.y = getDeclination(p,relativeDate) - earth.location.y;
+        coord.x = getRightAscension(p,relativeDate);// - earth.location.x;
+        coord.y = getDeclination(p,relativeDate);// - earth.location.y;
         coord.z = 10;
         return coord;
     }

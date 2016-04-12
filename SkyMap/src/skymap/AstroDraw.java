@@ -118,8 +118,8 @@ public class AstroDraw extends JFrame {
             default:
                 break;
         }
-        x = (int) (planet.location.x * 100);
-        y = (int) (planet.location.y * -100);
+        x = (int) (planet.location.x * 100);//+1250;
+        y = (int) (planet.location.y * -100);//+1650;
         set_color(color);
         draw_circle(graphics, x, y, radius);
     }
