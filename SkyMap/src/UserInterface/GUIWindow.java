@@ -12,19 +12,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
 import skymap.AstroDraw;
@@ -34,7 +26,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileFilter;
 import java.util.*;
-
+import skymap.AstronomyCalculator;
+        
 /**
  *
  * @author Emma
@@ -259,7 +252,10 @@ public final class GUIWindow extends JFrame {
                 int seconds = Integer.parseInt((dateList.get(5)));
                 String am_pm = dateList.get(6);
                 
-                        
+                //convert hours to military time
+                AstronomyCalculator ac = new AstronomyCalculator();
+                hour = ac.time2Milarary(hour, am_pm);               
+                
                 if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
                         && latSecCombo.getSelectedIndex() != 0 && lonDegCombo.getSelectedIndex() != 0
                         && latMinCombo.getSelectedIndex() != 0 && latSecCombo.getSelectedIndex() != 0) {
