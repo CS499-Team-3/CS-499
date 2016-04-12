@@ -245,7 +245,7 @@ public final class GUIWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 //get and format the date
-                SimpleDateFormat df = new SimpleDateFormat("MM dd YYYY hh mm ss");
+                SimpleDateFormat df = new SimpleDateFormat("MM dd YYYY hh mm ss a");
                 Date userDate = spinnerModel.getDate();
                 String userDateString = df.format(userDate);
                 
@@ -257,6 +257,7 @@ public final class GUIWindow extends JFrame {
                 int hour = Integer.parseInt((dateList.get(3)));
                 int minutes = Integer.parseInt((dateList.get(4)));
                 int seconds = Integer.parseInt((dateList.get(5)));
+                String am_pm = dateList.get(6);
                 
                         
                 if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
