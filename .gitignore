@@ -1,6 +1,3 @@
-
-
-
 #gitignore - files ignored by git
 
 # NetBeans specific #
@@ -9,3 +6,4 @@ SkyMap/build
 .gitignore
 SkyMap/Thumbs.db
 /SkyMap/dist/
+offscreen.jpg

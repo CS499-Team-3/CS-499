@@ -25,6 +25,7 @@ public class SpaceObject {
       //  this.location.x = -1;
       //  this.location.y = -1;
         this.isVisible = false;
+        location = new Coordinate();
     }
     
     public SpaceObject(String objName)
@@ -34,6 +35,7 @@ public class SpaceObject {
        // this.location.x = -1;
         //this.location.y = -1;
         this.isVisible = false;
+        location = new Coordinate();
     }
 }
 
