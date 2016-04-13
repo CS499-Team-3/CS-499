@@ -6,4 +6,4 @@ SkyMap/build
 .gitignore
 SkyMap/Thumbs.db
 /SkyMap/dist/
-offscreen.jpg
+SkyMap/offscreen.jpg
