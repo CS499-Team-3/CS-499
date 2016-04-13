@@ -5,7 +5,6 @@
  */
 package skymap;
 import java.util.*;
-import java.awt.Color;
 
 /**
  *
@@ -15,6 +14,10 @@ public class SkyBox {
     private static final List<Star> starList = new ArrayList();
     private static final List<Planet> planetList = new ArrayList();
     private static final Moon m = new Moon("MOON");
+    
+    //the latitude and longitude that the user enters in.
+    public static double lat;
+    public static double lon;
 
     //implemented as a singleton, since there should only be one SkyBox
     //private static instance
