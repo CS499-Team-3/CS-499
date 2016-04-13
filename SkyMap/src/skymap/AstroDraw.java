@@ -6,14 +6,16 @@
 package skymap;
 
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.RescaleOp;
+
 
 /**
  *
@@ -65,6 +67,12 @@ public class AstroDraw extends JFrame {
         return true;
     }
 
+    public boolean drawRectangle(Graphics g, int x, int y, int width, int height, Color color){
+        g.setColor(color);
+        g.fillRect(x, y, width, height);
+        return true;
+    }
+
     public void createLabel(String label, int x, int y) {
         graphics.drawString(label, x, y + 15);
     }
@@ -78,6 +86,34 @@ public class AstroDraw extends JFrame {
 //        int y = (int) (star.location.z * 5000) + 1650;//constants TBD
         int magnitude = (int) star.getMagnitude();
         draw_circle(graphics, (int) (star.location.x * 100), (int) (star.location.y * -100), magnitude);
+    }
+
+    public void drawMoon(Moon moon, Graphics graphics){
+        //int x = (int)(moon.location.y* 5000) + 1200;
+        //int y = (int)(moon.location.z * 5000) + 1650;
+        //moon.setPhase(lunar_phase.LAST_QUARTER);
+        int diameter = 20;
+        if(moon.phase == lunar_phase.NEW_MOON){
+            graphics.setColor(Color.BLACK);
+            graphics.fillOval(8, 10, diameter, diameter);
+        }
+        else if(moon.phase == lunar_phase.FIRST_QUARTER){
+            graphics.setColor(Color.LIGHT_GRAY);
+            graphics.fillOval(8, 10, diameter, diameter);
+            graphics.setColor(Color.BLACK);
+            graphics.fillRect(0, 10, diameter, diameter);
+        }
+        else if(moon.phase == lunar_phase.LAST_QUARTER){
+            graphics.setColor(Color.LIGHT_GRAY);
+            graphics.fillOval(8, 10, diameter, diameter);
+            graphics.setColor(Color.BLACK);
+            graphics.fillRect(18, 10, diameter, diameter);
+
+        }
+        else{
+            graphics.setColor(Color.LIGHT_GRAY);
+            graphics.fillOval(8, 10, diameter, diameter);
+        }
     }
 
     public void drawPlanet(Planet planet) {
@@ -126,24 +162,6 @@ public class AstroDraw extends JFrame {
         draw_circle(graphics, x, y, radius);
     }
 
-    public void drawMoon(Moon m) {
-        int x = (int) (m.location.y * 100) + 1200;
-        int y = (int) (m.location.z * 100) + 1650;
-        set_color(Color.cyan); //TBD
-        switch (m.phase) {
-            case NEW_MOON:
-                break;
-            case FIRST_QUARTER:
-                break;
-            case FULL_MOON:
-                break;
-            case LAST_QUARTER:
-                break;
-            default:
-                break;
-        }
-    }
-
     public void drawSkyMap() {
 
         if (drawOffScreenImage == false) {
@@ -161,7 +179,16 @@ public class AstroDraw extends JFrame {
         List<Star> sList = new ArrayList();
         sList = sBox.getStarList();
 
+
         System.out.println(sList.size());
+
+        Moon moon = sBox.getMoon();
+        
+        System.out.println(sList.size());
+
+        //testing drawLine function
+        drawLine(graphics, 1, 1, 1000, 1000);
+        drawMoon(moon, graphics);
 
         set_color(Color.WHITE);
         //draw stars

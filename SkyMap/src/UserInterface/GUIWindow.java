@@ -29,6 +29,7 @@ import java.util.*;
 import skymap.AstronomyCalculator;
 import skymap.Planet;
 import skymap.SkyBox;
+import skymap.Moon;
 import skymap.Star;
 import skymap.SpaceObject;
 
@@ -268,6 +269,10 @@ public final class GUIWindow extends JFrame {
                 SkyBox skyBox = SkyBox.getSkyBox();
                 List<Planet> planetList = skyBox.getPlanetList();
                 List<Star> starList = skyBox.getStarList();
+                ac.calculateClosestPhase(year, month, day);
+                Moon moon = skyBox.getMoon();
+
+
                 
                 //for each planet in the Skybox, set the values
                 for (int i = 0; i < planetList.size(); i++) {
@@ -322,6 +327,7 @@ public final class GUIWindow extends JFrame {
                 moonLabel.setIcon(new ImageIcon(moonImage));
                 moonPanel.add(moonLabel);
                 saveBtn.setEnabled(true);
+                astroDraw.drawMoon(moon, mGraphics);
             }
 
         });
