@@ -78,14 +78,10 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawStar(Star star) {
-        if (star.location.x < 0) {
-            return;
-        }
         set_color(Color.WHITE);
-//        int x = (int) (star.location.y * 5000) + 1200;//constants TBD
-//        int y = (int) (star.location.z * 5000) + 1650;//constants TBD
         int magnitude = (int) star.getMagnitude();
-        draw_circle(graphics, (int) (star.location.x * 100), (int) (star.location.y * -100), magnitude);
+        System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
+        draw_circle(graphics, (int) (star.location.x)+1200, (int) (star.location.y * -1)+1650, magnitude);
     }
 
     public void drawMoon(Moon moon, Graphics graphics){
@@ -154,8 +150,8 @@ public class AstroDraw extends JFrame {
             default:
                 break;
         }
-        x = (int) (planet.location.x*8)+1200;
-        y = (int) (planet.location.y*8)+1650;
+        x = (int) (planet.location.x)+1200;
+        y = (int) (planet.location.y*-1)+1650;
         set_color(color);
         draw_circle(graphics, x, y, radius);
     }
@@ -183,12 +179,6 @@ public class AstroDraw extends JFrame {
 
         Moon moon = sBox.getMoon();
         
-        System.out.println(sList.size());
-
-        //testing drawLine function
-        drawLine(graphics, 1, 1, 1000, 1000);
-        drawMoon(moon, graphics);
-
         set_color(Color.WHITE);
         //draw stars
         for (int i = 0; i < sList.size(); i++) {
@@ -203,8 +193,8 @@ public class AstroDraw extends JFrame {
             } else {
                 drawPlanet(p);
                 if (p.isVisible) {
-                    createLabel(p.name, (int) (p.location.x * 8)+1190,
-                            (int) (p.location.y * -8)+1650);
+                    createLabel(p.name, (int) (p.location.x * 1)+1200,
+                            (int) (p.location.y * -1)+1650);
                 }
             }
 

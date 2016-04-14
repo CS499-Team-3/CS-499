@@ -265,26 +265,6 @@ public final class GUIWindow extends JFrame {
                 double exactJulian = ac.calExactJulianDate(year, month, day, hour, minutes);
                 double relativeJulian = ac.calRelativeJulian(year, month, day, hour, minutes, seconds);
 
-                //get a skybox, set the values for planets and stars
-                SkyBox skyBox = SkyBox.getSkyBox();
-                List<Planet> planetList = skyBox.getPlanetList();
-                List<Star> starList = skyBox.getStarList();
-                ac.calculateClosestPhase(year, month, day);
-                Moon moon = skyBox.getMoon();
-
-
-                
-                //for each planet in the Skybox, set the values
-                for (int i = 0; i < planetList.size(); i++) {
-                    ac.usePrecalculatedPlanetElems(planetList.get(i), relativeJulian);
-                    planetList.get(i).location = ac.getPlanetPos(planetList.get(i), relativeJulian);
-                }
-                //for each star in the Skybox, set the values
-                for (int i = 0; i < starList.size(); i++) {
-                    starList.get(i).location
-                            = ac.getPosition(starList.get(i), relativeJulian);
-                }
-
                 if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
                         && latSecCombo.getSelectedIndex() != 0 && lonDegCombo.getSelectedIndex() != 0
                         && latMinCombo.getSelectedIndex() != 0 && latSecCombo.getSelectedIndex() != 0) {
@@ -309,6 +289,28 @@ public final class GUIWindow extends JFrame {
                     System.out.println(lonDeg + " " + lonMin + ":"
                             + lonSec);
                 }
+                double lat = latDeg;
+                double lon = lonDeg;
+                //get a skybox, set the values for planets and stars
+                SkyBox skyBox = SkyBox.getSkyBox();
+                List<Planet> planetList = skyBox.getPlanetList();
+                List<Star> starList = skyBox.getStarList();
+                ac.calculateClosestPhase(year, month, day);
+                Moon moon = skyBox.getMoon();
+                
+                //for each planet in the Skybox, set the values
+                for (int i = 0; i < planetList.size(); i++) {
+                    ac.usePrecalculatedPlanetElems(planetList.get(i), relativeJulian);
+                    planetList.get(i).location = ac.getPlanetPos(lat, lon, 
+                                                        planetList.get(i), 
+                                                        relativeJulian);
+                }
+                //for each star in the Skybox, set the values
+                for (int i = 0; i < starList.size(); i++) {
+                    starList.get(i).location = 
+                            ac.getPosition(lat, lon, starList.get(i), relativeJulian);
+                }
+                
                 // Draw SkyMap    
                 astroDraw.drawSkyMap();
                 skyMapImg = astroDraw.getImage();

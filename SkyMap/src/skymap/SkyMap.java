@@ -29,15 +29,13 @@ public class SkyMap {
         for(int i = 0; i < planetList.size(); i++)
         {
             calc.usePrecalculatedPlanetElems(planetList.get(i), julianDate);
-            planetList.get(i).location = calc.getPlanetPos(planetList.get(i), julianDate);  
+            planetList.get(i).location = calc.getPlanetPos(skyBox.lon, skyBox.lat, planetList.get(i), julianDate);  
         }
         for(int i = 0; i < starList.size(); i++)
         {
             starList.get(i).location = 
-                    calc.getPosition(starList.get(i), julianDate);
+                    calc.getPosition(skyBox.lon, skyBox.lat, starList.get(i), julianDate);
         }
-        AstroDraw ad = new AstroDraw();
-        ad.createOffScreenImage("offscreen.jpg");
         GUIWindow window = new GUIWindow();
     }
 

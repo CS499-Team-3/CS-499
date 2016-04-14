@@ -328,26 +328,24 @@ public class AstronomyCalculator {
         return right_ascension;
     }
 
-    public Coordinate getPosition(Star s, double relativeDate) {
+    public Coordinate getPosition(double lat, double lon, 
+                                  Star s, double relativeDate) {
         Coordinate coord = new Coordinate();
-        Planet earth = new Planet("EARTH");
-        usePrecalculatedPlanetElems(earth, relativeDate);
-        earth.location.x = getRightAscension(earth,relativeDate);
-        earth.location.y = getDeclination(earth,relativeDate);
-        coord.x = s.RA;// - earth.location.x;
-        coord.y = s.dec;// - earth.location.y;
+        coord.x = s.RA  + getAlt(lat, lon, s.RA, s.dec, relativeDate) *DEGS;
+        coord.y = s.dec + getAz(lat, lon, s.RA, s.dec, relativeDate)*DEGS;
         coord.z = 10;
         return coord;
     }
     
-    public Coordinate getPlanetPos(Planet p, double relativeDate) {
+    public Coordinate getPlanetPos(double lat, double lon, 
+                                   Planet p, double relativeDate) {
         Coordinate coord = new Coordinate();
-        Planet earth = new Planet("EARTH");
-        usePrecalculatedPlanetElems(earth, relativeDate);
-        earth.location.x = getRightAscension(earth,relativeDate);
-        earth.location.y = getDeclination(earth,relativeDate);
-        coord.x = getRightAscension(p,relativeDate);// - earth.location.x;
-        coord.y = getDeclination(p,relativeDate);// - earth.location.y;
+        coord.x = getRightAscension(p,relativeDate);// +
+                  //DEGS * getAlt(lat, lon, getRightAscension(p,relativeDate), 
+                  //       getDeclination(p,relativeDate), relativeDate);
+        coord.y = getDeclination(p,relativeDate);// +
+                  //DEGS * getAz(lat, lon, getRightAscension(p,relativeDate), 
+                   //     getDeclination(p,relativeDate), relativeDate);
         coord.z = 10;
         return coord;
     }
@@ -427,11 +425,6 @@ public class AstronomyCalculator {
         return coord;
     }
 
-    private double roundToTwoPlaces(double d) {
-        int temp = (int) (d * 100);
-        return (float) temp / 100.0;
-    }
-
     private void RightAscDegToHrMinSec(double RA, double hr, double min, double sec) {
         hr = (RA / 15.0);
         hr = (int) hr;
@@ -463,7 +456,8 @@ public class AstronomyCalculator {
     }
 
     // test before use
-    private double getAlt(double lat, double lon, double RA, double dec, double az, double alt, double jd) {
+    private double getAlt(double lat, double lon, 
+                          double RA, double dec, double jd) {
         if (lat < 0) {
             lat = lat * -1.0;
         }
@@ -480,13 +474,16 @@ public class AstronomyCalculator {
         double hrRad = hourAngle * (Math.PI / 180.0);
 
         // Calculate altitude in radians
-        double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) + (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
-        alt = Math.abs(sin_alt);
-        return alt;
+        double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) +
+                         (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
+        return Math.abs(sin_alt);
     }
 
     // test before use
-    private double getAz(double lat, double lon, double RA, double dec, double az, double alt, double jd) {
+    private double getAz(double lat, double lon, 
+                         double RA, double dec, double jd) {
+        double az;
+        double alt = getAlt(lat,lon,RA,dec,jd);
         double hourAngle = MeanSiderealTime(jd, lon) - RA;
         if (hourAngle < 0) {
             hourAngle += 360;
@@ -496,7 +493,8 @@ public class AstronomyCalculator {
         double hrRad = hourAngle * (Math.PI / 180.0);
         // Calculate azimuth in radians (handle inside of a try...catch)
         try {
-            double cos_az = (Math.sin(decRad) - Math.sin(alt) * Math.sin(latRad)) / (Math.cos(alt) * Math.cos(latRad));
+            double cos_az = (Math.sin(decRad) - Math.sin(alt) * Math.sin(latRad)) / 
+                            (Math.cos(alt) * Math.cos(latRad));
             az = Math.acos(cos_az);
         } catch (Exception e) {
             az = 0;
