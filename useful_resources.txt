@@ -14,3 +14,6 @@ http://www.fourmilab.ch/cgi-bin/Yoursky
 
 calculate planet/star stuff for Lindsey
 http://www.stjarnhimlen.se/comp/tutorial.html
+
+Online SkyMap
+http://www.astronomes.com/map-of-the-sky/
