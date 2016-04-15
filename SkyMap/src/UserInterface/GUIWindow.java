@@ -76,7 +76,8 @@ public final class GUIWindow extends JFrame {
     Integer lonMin = 0;
     Integer lonSec = 0;
     String[] signs = {"+", "-"};
-    String[] degrees = new String[92];
+    String[] degreesLat = new String[92];
+    String[] degreesLon = new String[182];
     String[] mins = new String[62];
     String[] seconds = new String[62];
     Font comboFont = new Font(Font.DIALOG, Font.PLAIN, 12);
@@ -103,9 +104,13 @@ public final class GUIWindow extends JFrame {
         setLayout(new BorderLayout());
 
         // Create arrays for drop downs
-        degrees[0] = "Degrees";
+        degreesLat[0] = "Degrees";
         for (int i = 1; i <= 91; i++) {
-            degrees[i] = Integer.toString(i - 1);
+            degreesLat[i] = Integer.toString(i - 1);
+        }
+        degreesLon[0] = "Degrees";
+        for (int i = 1; i <= 181; i++) {
+            degreesLon[i] = Integer.toString(i - 1);
         }
         mins[0] = "Minutes";
         seconds[0] = "Seconds";
@@ -161,7 +166,7 @@ public final class GUIWindow extends JFrame {
         latPanel.setPreferredSize(new Dimension(325, 50));
         latPanel.add(latLbl);
         latSignCombo = new JComboBox(signs);
-        latDegCombo = new JComboBox(degrees);
+        latDegCombo = new JComboBox(degreesLat);
         latMinCombo = new JComboBox(mins);
         latSecCombo = new JComboBox(seconds);
         // W = 101, H = 20
@@ -186,7 +191,7 @@ public final class GUIWindow extends JFrame {
         lonPanel.setPreferredSize(new Dimension(325, 50));
         lonPanel.add(lonLbl);
         lonSignCombo = new JComboBox(signs);
-        lonDegCombo = new JComboBox(degrees);
+        lonDegCombo = new JComboBox(degreesLon);
         lonMinCombo = new JComboBox(mins);
         lonSecCombo = new JComboBox(seconds);
 
@@ -216,7 +221,6 @@ public final class GUIWindow extends JFrame {
         btnPanel1.add(makeMoonPanel());
 
         btnPanel2.setLayout(new BoxLayout(btnPanel2, BoxLayout.Y_AXIS));
-        //btnPanel2.setBackground(Color.DARK_GRAY);
         btnPanel2.setPreferredSize(new Dimension(210, 50));
         saveBtn = new JButton("Save");
         generateMapBtn = new JButton("Generate Map");
@@ -227,18 +231,10 @@ public final class GUIWindow extends JFrame {
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
         
-        constellationPanel = new JPanel();
-        
-        constellationCheck = new JCheckBox("Constellations");
-        constellationCheck.setFont(comboFont);
-        constellationPanel.setPreferredSize(new Dimension(30, 20));
-        //constellationPanel.setLayout(new BorderLayout());
-        constellationPanel.add(constellationCheck);
-
         mainBtnPanel.setLayout(new BoxLayout(mainBtnPanel, BoxLayout.X_AXIS));
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(btnPanel2);
-        //mainBtnPanel.add(new JPanel());
+
         return mainBtnPanel;
     }
 
