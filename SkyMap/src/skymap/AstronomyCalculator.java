@@ -331,10 +331,8 @@ public class AstronomyCalculator {
     public Coordinate getPosition(double lat, double lon, 
                                   Star s, double relativeDate) {
         Coordinate coord = new Coordinate();
-        coord.x = s.RA  + getAlt(lat, lon, s.RA, s.dec, relativeDate) *DEGS;
-        coord.x = Mod2Pi(coord.x);
-        coord.y = s.dec + getAz(lat, lon, s.RA, s.dec, relativeDate)*DEGS;
-        coord.y = Mod2Pi(coord.y);
+        coord.x = (Mod2Pi(getAlt(lat, lon, s.RA, s.dec, relativeDate)) *DEGS);
+        coord.y = (Mod2Pi(getAz(lat, lon, s.RA, s.dec, relativeDate))*DEGS)-180;
         coord.z = 10;
         return coord;
     }
@@ -342,12 +340,10 @@ public class AstronomyCalculator {
     public Coordinate getPlanetPos(double lat, double lon, 
                                    Planet p, double relativeDate) {
         Coordinate coord = new Coordinate();
-        coord.x = getRightAscension(p,relativeDate);// +
-                  //DEGS * getAlt(lat, lon, getRightAscension(p,relativeDate), 
-                  //       getDeclination(p,relativeDate), relativeDate);
-        coord.y = getDeclination(p,relativeDate);// +
-                  //DEGS * getAz(lat, lon, getRightAscension(p,relativeDate), 
-                   //     getDeclination(p,relativeDate), relativeDate);
+        coord.x = (DEGS * Mod2Pi(getAlt(lat, lon, getRightAscension(p,relativeDate), 
+                         getDeclination(p,relativeDate), relativeDate)));
+        coord.y = (DEGS * Mod2Pi(getAz(lat, lon, getRightAscension(p,relativeDate), 
+                   getDeclination(p,relativeDate), relativeDate)))-180;
         coord.z = 10;
         return coord;
     }

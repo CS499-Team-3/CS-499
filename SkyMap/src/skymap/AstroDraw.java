@@ -78,10 +78,13 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawStar(Star star) {
-        set_color(Color.WHITE);
-        int magnitude = (int) star.getMagnitude();
-        System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
-        draw_circle(graphics, (int) (star.location.x * 1000), (int) (star.location.y * -1000)+3300, magnitude);
+        if(star.isVisible())
+        {
+            set_color(Color.WHITE);
+            int magnitude = (int) star.getMagnitude();
+            System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
+            draw_circle(graphics, (int) (star.location.x * 10)+1200, (int) ((star.location.y) * -10)+1650, magnitude);
+        }
     }
 
     public void drawMoon(Moon moon, Graphics graphics){
@@ -113,47 +116,50 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawPlanet(Planet planet) {
-        AstronomyCalculator calc = new AstronomyCalculator();
-        Color color = null;
-        int x;
-        int y;
-        int radius = 12;
-        String planetName = planet.name.toLowerCase();
-        switch (planetName) {
-            case "mercury":
-                color = new Color(0xFF6600);
-                break;
-            case "venus":
-                color = new Color(0xFFCC99);
-                break;
-            case "earth/sun":
-                color = new Color(0x009900);
-                break;
-            case "mars":
-                color = new Color(0xCC3300);
-                break;
-            case "jupiter":
-                color = new Color(0xFF9933);
-                break;
-            case "saturn":
-                color = new Color(0xFF3333);
-                break;
-            case "uranus":
-                color = new Color(0x00FF99);
-                break;
-            case "neptune":
-                color = new Color(0x0099CC);
-                break;
-            case "pluto":
-                color = new Color(0x996633);
-                break;
-            default:
-                break;
+        if(planet.isVisible())
+        {
+            AstronomyCalculator calc = new AstronomyCalculator();
+            Color color = null;
+            int x;
+            int y;
+            int radius = 12;
+            String planetName = planet.name.toLowerCase();
+            switch (planetName) {
+                case "mercury":
+                    color = new Color(0xFF6600);
+                    break;
+                case "venus":
+                    color = new Color(0xFFCC99);
+                    break;
+                case "earth/sun":
+                    color = new Color(0x009900);
+                    break;
+                case "mars":
+                    color = new Color(0xCC3300);
+                    break;
+                case "jupiter":
+                    color = new Color(0xFF9933);
+                    break;
+                case "saturn":
+                    color = new Color(0xFF3333);
+                    break;
+                case "uranus":
+                    color = new Color(0x00FF99);
+                    break;
+                case "neptune":
+                    color = new Color(0x0099CC);
+                    break;
+                case "pluto":
+                    color = new Color(0x996633);
+                    break;
+                default:
+                    break;
+            }
+            x = (int) ((planet.location.x*1))+1200;
+            y = (int) ((planet.location.y)*-1)+1650;
+            set_color(color);
+            draw_circle(graphics, x, y, radius);
         }
-        x = (int) (planet.location.x)+1200;
-        y = (int) (planet.location.y*-1)+1650;
-        set_color(color);
-        draw_circle(graphics, x, y, radius);
     }
 
 
@@ -185,12 +191,11 @@ public class AstroDraw extends JFrame {
         }
         for (int i = 0; i < pList.size(); i++) {
             Planet p = pList.get(i);
-            p.isVisible = true;
             if (p.name.toUpperCase().equalsIgnoreCase("EARTH")) {
             } else {
                 drawPlanet(p);
-                if (p.isVisible) {
-                    createLabel(p.name, (int) (p.location.x * 1)+1200,
+                if (p.isVisible()) {
+                    createLabel(p.name, (int) ((p.location.x) * 1)+1200,
                             (int) (p.location.y * -1)+1650);
                 }
             }

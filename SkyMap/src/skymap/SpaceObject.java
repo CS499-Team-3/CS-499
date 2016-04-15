@@ -16,7 +16,7 @@ public class SpaceObject {
     String name;
     float magnitude;
     public Coordinate location;
-    boolean isVisible;
+    boolean visible;
     
     public SpaceObject()
     {
@@ -24,7 +24,7 @@ public class SpaceObject {
         this.magnitude = 0;
       //  this.location.x = -1;
       //  this.location.y = -1;
-        this.isVisible = false;
+        this.visible = false;
         location = new Coordinate();
     }
     
@@ -34,8 +34,19 @@ public class SpaceObject {
         this.magnitude = 0;
        // this.location.x = -1;
         //this.location.y = -1;
-        this.isVisible = false;
+        this.visible = false;
         location = new Coordinate();
+    }
+    
+    public boolean isVisible(){
+        if((location.x < -90) || (location.x > 90) ||
+           (location.y < 0) || (location.y > 105)) {
+            visible = false;
+        }
+        else {
+            visible = true;
+        }
+        return visible;
     }
 }
 
