@@ -332,7 +332,9 @@ public class AstronomyCalculator {
                                   Star s, double relativeDate) {
         Coordinate coord = new Coordinate();
         coord.x = s.RA  + getAlt(lat, lon, s.RA, s.dec, relativeDate) *DEGS;
+        coord.x = Mod2Pi(coord.x);
         coord.y = s.dec + getAz(lat, lon, s.RA, s.dec, relativeDate)*DEGS;
+        coord.y = Mod2Pi(coord.y);
         coord.z = 10;
         return coord;
     }
