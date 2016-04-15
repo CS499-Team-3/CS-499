@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -31,7 +32,6 @@ import skymap.Planet;
 import skymap.SkyBox;
 import skymap.Moon;
 import skymap.Star;
-import skymap.SpaceObject;
 
 /**
  *
@@ -43,8 +43,9 @@ public final class GUIWindow extends JFrame {
     BufferedImage skyMapImg;
     BufferedImage moonImage;
     Graphics2D mGraphics;
+    JCheckBox constellationCheck;
     JLabel label;
-    JPanel jpegPanel;
+    JPanel jpegPanel, constellationPanel;
     JPanel timePanel = new JPanel();
     JPanel latPanel = new JPanel();
     JPanel lonPanel = new JPanel();
@@ -80,7 +81,9 @@ public final class GUIWindow extends JFrame {
     String[] seconds = new String[62];
     Font comboFont = new Font(Font.DIALOG, Font.PLAIN, 12);
     Date date = null;
-
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    // w = 1366, h = 768
+    
     public GUIWindow() {
         // Look & Feel
         try {
@@ -95,8 +98,7 @@ public final class GUIWindow extends JFrame {
         }
         // Set window properties
         setExtendedState(Frame.MAXIMIZED_BOTH);
-        setTitle("SkyMap");
-        setMinimumSize(new Dimension(1200, 500));
+        setTitle("SkyMap");        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -112,26 +114,21 @@ public final class GUIWindow extends JFrame {
             seconds[i] = String.valueOf(i - 1);
         }
 
-        // Temporary Splash Screen
-        //BufferedImage splashScreen = new BufferedImage(1345, 635, BufferedImage.TYPE_INT_ARGB);              
-        //Graphics2D g = splashScreen.createGraphics();
-// ImageIcon icon = new ImageIcon(myImg);
-        /*g.setColor(Color.darkGray);
-         g.fillRect(0, 0, splashScreen.getWidth(), splashScreen.getHeight());
-         g.setColor(Color.WHITE);
-         g.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
-         g.drawString("SkyMap", 630, 300);        
-         skyMapImg = splashScreen;*/
+        
+        
         jpegPanel = new JPanel();
-        label = new JLabel(new ImageIcon(this.getClass().getResource("/Images/8bit-starwars-resized.jpg")));
+        ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("/Images/8bit-starwars-resized-labeled.jpg"));
+        imgIcon.setImage(imgIcon.getImage().getScaledInstance((int)(screenSize.width * 0.98), (int)(screenSize.height * 0.85), 0));
+        label = new JLabel(imgIcon);
         jpegPanel.add(label);
         skyMapScrollPane = new JScrollPane(jpegPanel);
-
+        
         // Add scroll pane and main panel to window 
         add(skyMapScrollPane, BorderLayout.CENTER);
         add(makeMainPanel(), BorderLayout.SOUTH);
-        addListeners();
+        addListeners();        
         setVisible(true);
+        setMinimumSize(new Dimension(1200, 500));
         saveBtn.setEnabled(false);
     }
 
@@ -229,6 +226,14 @@ public final class GUIWindow extends JFrame {
         saveBtn.setPreferredSize(new Dimension(77, 20));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
+        
+        constellationPanel = new JPanel();
+        
+        constellationCheck = new JCheckBox("Constellations");
+        constellationCheck.setFont(comboFont);
+        constellationPanel.setPreferredSize(new Dimension(30, 20));
+        //constellationPanel.setLayout(new BorderLayout());
+        constellationPanel.add(constellationCheck);
 
         mainBtnPanel.setLayout(new BoxLayout(mainBtnPanel, BoxLayout.X_AXIS));
         mainBtnPanel.add(btnPanel1);
