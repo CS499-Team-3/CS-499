@@ -76,7 +76,7 @@ public final class GUIWindow extends JFrame {
     Integer lonMin = 0;
     Integer lonSec = 0;
     String[] signs = {"+", "-"};
-    String[] degrees = new String[182];
+    String[] degrees = new String[92];
     String[] mins = new String[62];
     String[] seconds = new String[62];
     Font comboFont = new Font(Font.DIALOG, Font.PLAIN, 12);
@@ -104,7 +104,7 @@ public final class GUIWindow extends JFrame {
 
         // Create arrays for drop downs
         degrees[0] = "Degrees";
-        for (int i = 1; i <= 181; i++) {
+        for (int i = 1; i <= 91; i++) {
             degrees[i] = Integer.toString(i - 1);
         }
         mins[0] = "Minutes";
