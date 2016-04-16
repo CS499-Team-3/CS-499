@@ -481,7 +481,7 @@ public class AstronomyCalculator {
     private double getAz(double lat, double lon, 
                          double RA, double dec, double jd) {
         double az;
-        double alt = getAlt(lat,lon,RA,dec,jd);
+        double alt = getAlt(lat,lon,RA * DEGS,dec,jd);
         //double hourAngle = MeanSiderealTime(jd, lon) - RA;
         double hourAngle = mst - RA;
         if (hourAngle < 0) {
@@ -505,7 +505,7 @@ public class AstronomyCalculator {
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
         }
-        System.out.println("AZ:" + az);
+        //System.out.println("AZ:" + az);
         return az;
     }
 
@@ -536,6 +536,9 @@ public class AstronomyCalculator {
         double a = 0;
         double c = 0;
         double d = 0;
+        if (lon < 0) {            
+            lon = lon * -1.0;
+        }
 
         if (month <= 2) {
             year--;
