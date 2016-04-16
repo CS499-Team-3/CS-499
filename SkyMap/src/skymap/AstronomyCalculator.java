@@ -343,7 +343,7 @@ public class AstronomyCalculator {
         coord.x = (DEGS * Mod2Pi(getAlt(lat, lon, getRightAscension(p,relativeDate), 
                          getDeclination(p,relativeDate), relativeDate)));
         coord.y = (DEGS * Mod2Pi(getAz(lat, lon, getRightAscension(p,relativeDate), 
-                   getDeclination(p,relativeDate), relativeDate)))-180;
+                   getDeclination(p,relativeDate), relativeDate)));
         coord.z = 10;
         return coord;
     }
