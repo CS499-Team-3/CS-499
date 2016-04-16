@@ -78,12 +78,11 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawStar(Star star) {
-        if(star.isVisible())
-        {
             set_color(Color.WHITE);
             int magnitude = (int) star.getMagnitude();
-            //System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
-            draw_circle(graphics, (int) (star.location.x * 10)+1200, (int) ((star.location.y) * -10)+1650, magnitude);
+            System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
+        if(star.isVisible()) {
+            draw_circle(graphics, (int) (star.location.x * 10) + 1200, (int) ((star.location.y) * -10) + 1650, magnitude);
         }
     }
 

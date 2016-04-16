@@ -333,7 +333,6 @@ public class AstronomyCalculator {
         Coordinate coord = new Coordinate();
         coord.x = (Mod2Pi(getAz(lat, lon, s.RA * DEGS, s.dec, relativeDate)*RADS) *DEGS);
         coord.y =  (Mod2Pi(getAlt(lat, lon, s.RA * DEGS, s.dec, relativeDate)*RADS) *DEGS);
-
         coord.z = 10;
         return coord;
     }
@@ -493,8 +492,8 @@ public class AstronomyCalculator {
         double hrRad = hourAngle * RADS;
         // Calculate azimuth in radians (handle inside of a try...catch)
         try {
-            double cos_az = (Math.sin(decRad) - Math.sin(alt) * Math.sin(latRad)) / 
-                            (Math.cos(alt) * Math.cos(latRad));
+            double cos_az = (Math.sin(decRad) - Math.sin(alt*RADS) * Math.sin(latRad)) /
+                            (Math.cos(alt*RADS) * Math.cos(latRad));
             az = Math.acos(cos_az);
         } catch (Exception e) {
             az = 0;
@@ -506,6 +505,7 @@ public class AstronomyCalculator {
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
         }
+        System.out.println("AZ:" + az);
         return az;
     }
 
