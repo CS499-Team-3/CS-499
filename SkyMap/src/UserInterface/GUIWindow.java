@@ -274,8 +274,18 @@ public final class GUIWindow extends JFrame {
                     lonMin = Integer.parseInt((String) lonMinCombo.getSelectedItem());
                     lonSec = Integer.parseInt((String) lonSecCombo.getSelectedItem());
                 }
+                
+                //calculate the lat and long with their minutes and seconds
                 double lat = latDeg;
+                double lmin = ((double)latMin) / 60;
+                double lSec = ((double)latSec)/ 3600;
+                lat = lat + lmin + lSec;
+                
                 double lon = lonDeg;
+                double loMin = ((double)lonMin) / 60;
+                double loSec = ((double)latSec)/ 3600;
+                lon = lon + loMin + loSec;
+                
                 ac.calculateMST(year, month, day, hour, minutes, seconds, lon);
                 //get a skybox, set the values for planets and stars
                 SkyBox skyBox = SkyBox.getSkyBox();
