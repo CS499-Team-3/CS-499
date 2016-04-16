@@ -24,7 +24,7 @@ public class Star extends SpaceObject {
     private double HR;
     private String gliese;
     private String bayFlamsteed;
-    private String properName;
+    public String properName;
     private double distance;
     private double absMag;
     private String spectrum;

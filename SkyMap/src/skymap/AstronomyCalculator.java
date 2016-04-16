@@ -13,9 +13,9 @@ public class AstronomyCalculator {
 
     public static final double RADS = Math.PI / 180;
     public static final double DEGS = 180 / Math.PI;
-
+    private double mst = 0.0;
     public AstronomyCalculator() {
-
+        
     }
 
     //function that converts a time with AM/PM to military time
@@ -331,8 +331,8 @@ public class AstronomyCalculator {
     public Coordinate getPosition(double lat, double lon, 
                                   Star s, double relativeDate) {
         Coordinate coord = new Coordinate();
-        coord.x = (Mod2Pi(getAz(lat, lon, s.RA, s.dec, relativeDate)*RADS) *DEGS);
-        coord.y =  (Mod2Pi(getAlt(lat, lon, s.RA, s.dec, relativeDate)*RADS) *DEGS);
+        coord.x = (Mod2Pi(getAz(lat, lon, s.RA * DEGS, s.dec, relativeDate)*RADS) *DEGS);
+        coord.y =  (Mod2Pi(getAlt(lat, lon, s.RA * DEGS, s.dec, relativeDate)*RADS) *DEGS);
 
         coord.z = 10;
         return coord;
@@ -464,7 +464,7 @@ public class AstronomyCalculator {
             lon = lon * -1.0;
         }
 
-        double hourAngle = MeanSiderealTime(jd, lon) - RA;
+        double hourAngle = mst - RA;
         if (hourAngle < 0) {
             hourAngle += 360;
         }
@@ -483,7 +483,8 @@ public class AstronomyCalculator {
                          double RA, double dec, double jd) {
         double az;
         double alt = getAlt(lat,lon,RA,dec,jd);
-        double hourAngle = MeanSiderealTime(jd, lon) - RA;
+        //double hourAngle = MeanSiderealTime(jd, lon) - RA;
+        double hourAngle = mst - RA;
         if (hourAngle < 0) {
             hourAngle += 360;
         }
@@ -508,7 +509,7 @@ public class AstronomyCalculator {
         return az;
     }
 
-    private double MeanSiderealTime(double jd, double lon) {
+    /*private double MeanSiderealTime(double jd, double lon) {
         // Get Julian centuries since J2000.0
         double jt = jd / 36525.0;
         // Calculate initial Mean Sidereal Time (mst)
@@ -525,5 +526,48 @@ public class AstronomyCalculator {
         }
         // Result is Mean Sidereal Time for the location given by Lat, Lon
         return mst;
+    }*/
+    
+    //Pass in day as just the day value, not as a decimal
+    public void calculateMST(int year, int month, double day, double hours,
+            double minutes, double seconds, double lon) {
+        //variables needed
+        double b = 0;
+        double a = 0;
+        double c = 0;
+        double d = 0;
+
+        if (month <= 2) {
+            year--;
+            month=+12;
+        }
+        a = Math.floor(year / 100.0);
+        b = (2 - a + Math.floor(a / 4));
+        c = Math.floor(365.25 * year);
+        d = Math.floor(30.6001 * (month + 1));
+        
+        // Get days since J2000.0
+        double jd = b + c + d - 730550.5 + day + 
+                (hours + minutes/60 + seconds/3600) / 24;
+        
+        // Get Julian centuries since J2000.0
+        double jt = jd / 36525.0;
+        
+        // Calculate initial MST
+        mst = 280.46061837 + (360.98564736629 * jd) + 
+                (0.000387933 * Math.pow(jt, 2) 
+                - (Math.pow(jt, 3)/38710000) + lon);
+        
+        //Clip mst to range 0.0 to 360.0
+        if (mst > 0.0) {
+            while (mst > 360.0) {
+                mst -= 360.0;
+            }           
+        } else {
+            while (mst < 0.0) {
+                mst += 360.0;
+            }
+        }
     }
+
 }
