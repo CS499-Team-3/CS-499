@@ -88,8 +88,6 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawMoon(Moon moon, Graphics graphics){
-        //int x = (int)(moon.location.y* 5000) + 1200;
-        //int y = (int)(moon.location.z * 5000) + 1650;
         //moon.setPhase(lunar_phase.LAST_QUARTER);
         int diameter = 20;
         if(moon.phase == lunar_phase.NEW_MOON){
