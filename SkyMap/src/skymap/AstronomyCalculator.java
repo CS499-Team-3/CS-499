@@ -467,14 +467,14 @@ public class AstronomyCalculator {
         if (hourAngle < 0) {
             hourAngle += 360;
         }
-        double decRad = dec * (Math.PI / 180.0);
-        double latRad = lat * (Math.PI / 180.0);
-        double hrRad = hourAngle * (Math.PI / 180.0);
+        double decRad = dec * RADS;
+        double latRad = lat * RADS;
+        double hrRad = hourAngle * RADS;
 
         // Calculate altitude in radians
         double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) +
                          (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
-        return Math.abs(sin_alt);
+        return (Math.asin(sin_alt) * DEGS);
     }
 
     // test before use
