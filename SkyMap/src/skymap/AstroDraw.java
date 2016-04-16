@@ -31,7 +31,7 @@ public class AstroDraw extends JFrame {
     Graphics2D offscreenGraphics;
     boolean drawOffScreenImage;
     BufferedImage offscreenImage;
-    final int SCALE = 50;
+    final int SCALE = 25;
 
     public AstroDraw() {
         drawOffScreenImage = false;
