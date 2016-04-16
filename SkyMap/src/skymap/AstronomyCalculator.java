@@ -487,9 +487,9 @@ public class AstronomyCalculator {
         if (hourAngle < 0) {
             hourAngle += 360;
         }
-        double decRad = dec * (Math.PI / 180.0);
-        double latRad = lat * (Math.PI / 180.0);
-        double hrRad = hourAngle * (Math.PI / 180.0);
+        double decRad = dec * RADS;
+        double latRad = lat * RADS;
+        double hrRad = hourAngle * RADS;
         // Calculate azimuth in radians (handle inside of a try...catch)
         try {
             double cos_az = (Math.sin(decRad) - Math.sin(alt*RADS) * Math.sin(latRad)) /
@@ -500,7 +500,7 @@ public class AstronomyCalculator {
         }
 
         // Convert azimuth to degrees
-        az = az * (180.0 / Math.PI);
+        az = az * DEGS;
 
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
