@@ -81,9 +81,9 @@ public class AstroDraw extends JFrame {
             set_color(Color.WHITE);
             int magnitude = (int) star.getMagnitude();
             System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
-        if(star.isVisible()) {
+        //if(star.isVisible()) {
             draw_circle(graphics, (int) (star.location.x * 10) + 1200, (int) ((star.location.y) * -10) + 1650, magnitude);
-        }
+        //}
     }
 
     public void drawMoon(Moon moon, Graphics graphics){
@@ -185,8 +185,8 @@ public class AstroDraw extends JFrame {
             Star s = sList.get(i);            
             drawStar(s);
             if (s.isVisible() && s.properName != null) {
-                createLabel(s.properName, (int) ((s.location.x) * 1)+1200,
-                                (int) (s.location.y * -1)+1650);
+                createLabel(s.properName, (int) ((s.location.x) * 10)+1200,
+                                (int) (s.location.y * -10)+1650);
             }
             //System.out.println("star x: "+s.location.x +"\nstar y: "+s.location.y);
         }
