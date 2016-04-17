@@ -31,7 +31,9 @@ public class AstroDraw extends JFrame {
     Graphics2D offscreenGraphics;
     boolean drawOffScreenImage;
     BufferedImage offscreenImage;
-    final int SCALE = 50;
+    final int SCALE = 5;
+    final int YSHIFT = 1650;
+    final int XSHIFT = 0;
 
     public AstroDraw() {
         drawOffScreenImage = false;
@@ -83,7 +85,7 @@ public class AstroDraw extends JFrame {
             int magnitude = 7 - (int) star.getMagnitude();
             System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
         if(star.isVisible()) {
-            draw_circle(graphics, (int) (star.location.x * SCALE), (int) ((star.location.y) * -1 * SCALE) + 3300, magnitude);
+            draw_circle(graphics, (int) (star.location.x * SCALE) + XSHIFT, (int) ((star.location.y) * -1 * SCALE) + YSHIFT, magnitude);
         }
     }
 
@@ -114,8 +116,6 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawPlanet(Planet planet) {
-        if(planet.isVisible())
-        {
             AstronomyCalculator calc = new AstronomyCalculator();
             Color color = null;
             int x;
@@ -124,13 +124,13 @@ public class AstroDraw extends JFrame {
             String planetName = planet.name.toLowerCase();
             switch (planetName) {
                 case "mercury":
-                    color = new Color(0xFF6600);
+                    color = new Color(0xB0B0B0);
                     break;
                 case "venus":
                     color = new Color(0xFFCC99);
                     break;
-                case "earth/sun":
-                    color = new Color(0x009900);
+                case "sun":
+                    color = new Color(0xFEF708);
                     break;
                 case "mars":
                     color = new Color(0xCC3300);
@@ -153,11 +153,10 @@ public class AstroDraw extends JFrame {
                 default:
                     break;
             }
-            x = (int) ((planet.location.x*SCALE));
-            y = (int) ((planet.location.y)*-1 * SCALE)+3300;
+            x = (int) ((planet.location.x*SCALE))+XSHIFT;
+            y = (int) ((planet.location.y)*-1 * SCALE)+YSHIFT;
             set_color(color);
             draw_circle(graphics, x, y, radius);
-        }
     }
 
 
@@ -186,8 +185,8 @@ public class AstroDraw extends JFrame {
             Star s = sList.get(i);            
             drawStar(s);
             if (s.isVisible() && s.properName != null) {
-                createLabel(s.properName, (int) ((s.location.x) * SCALE),
-                                (int) (s.location.y * -1 * SCALE)+3300);
+                createLabel(s.properName, (int) ((s.location.x) * SCALE)+XSHIFT,
+                                (int) (s.location.y * -1 * SCALE)+YSHIFT);
             }
             //System.out.println("star x: "+s.location.x +"\nstar y: "+s.location.y);
         }
@@ -196,10 +195,8 @@ public class AstroDraw extends JFrame {
             if (p.name.toUpperCase().equalsIgnoreCase("EARTH")) {
             } else {
                 drawPlanet(p);
-                if (p.isVisible()) {
-                    createLabel(p.name, (int) ((p.location.x) * SCALE),
-                            (int) (p.location.y * -1 * SCALE)+3300);
-                }
+                    createLabel(p.name, (int) ((p.location.x) * SCALE)+XSHIFT,
+                            (int) (p.location.y * -1 * SCALE)+YSHIFT);
             }
 
         }
