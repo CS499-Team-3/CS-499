@@ -77,7 +77,6 @@ public final class GUIWindow extends JFrame {
     String[] seconds = new String[62];
     Font comboFont = new Font(Font.DIALOG, Font.PLAIN, 12);
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    // w = 1366, h = 768
 
     public GUIWindow() {
         // Look & Feel
@@ -91,12 +90,14 @@ public final class GUIWindow extends JFrame {
         } catch (Exception e) {
 
         }
+        
         // Set window properties
         setExtendedState(Frame.MAXIMIZED_BOTH);
         setTitle("SkyMap");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-
+        setFont(UIManager.getFont(Font.DIALOG));
+        
         // Create arrays for drop downs
         degreesLat[0] = "Degrees";
         for (int i = 1; i <= 91; i++) {
@@ -255,16 +256,23 @@ public final class GUIWindow extends JFrame {
                 //calculate exact Julian and Relative Julian dates
                 double exactJulian = ac.calExactJulianDate(year, month, day, hour, minutes);
                 double relativeJulian = ac.calRelativeJulian(year, month, day, hour, minutes, seconds);
-
-                if (latDegCombo.getSelectedIndex() != 0 && latMinCombo.getSelectedIndex() != 0
-                        && latSecCombo.getSelectedIndex() != 0 && lonDegCombo.getSelectedIndex() != 0
-                        && latMinCombo.getSelectedIndex() != 0 && latSecCombo.getSelectedIndex() != 0) {
+        
+                if (latDegCombo.getSelectedIndex() != 0) {
                     latDeg = Integer.parseInt((String) latDegCombo.getSelectedItem());
+                }
+                if (latMinCombo.getSelectedIndex() != 0) {
                     latMin = Integer.parseInt((String) latMinCombo.getSelectedItem());
+                }
+                if (latSecCombo.getSelectedIndex() != 0) {
                     latSec = Integer.parseInt((String) latSecCombo.getSelectedItem());
-
+                }
+                if (lonDegCombo.getSelectedIndex() != 0) {
                     lonDeg = Integer.parseInt((String) lonDegCombo.getSelectedItem());
+                }
+                if (lonMinCombo.getSelectedIndex() != 0) {
                     lonMin = Integer.parseInt((String) lonMinCombo.getSelectedItem());
+                }
+                if(lonSecCombo.getSelectedIndex() != 0) {
                     lonSec = Integer.parseInt((String) lonSecCombo.getSelectedItem());
                 }
 
@@ -273,11 +281,13 @@ public final class GUIWindow extends JFrame {
                 double lmin = ((double) latMin) / 60;
                 double lSec = ((double) latSec) / 3600;
                 lat = lat + lmin + lSec;
+                System.out.println("Latitude: " + latDeg + " " + latMin + " " + latSec);
 
                 double lon = lonDeg;
                 double loMin = ((double) lonMin) / 60;
                 double loSec = ((double) latSec) / 3600;
                 lon = lon + loMin + loSec;
+                System.out.println("Longitude: " + lonDeg + " " + lonMin + " " + lonSec);
 
                 //change the sign to negative if neccessary
                 if (latSignCombo.getSelectedItem().equals("-")) {
