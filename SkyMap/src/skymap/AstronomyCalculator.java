@@ -458,41 +458,6 @@ public class AstronomyCalculator {
         return V;
     }
 
-    // test before use
-   /* private double getAlt(double lat, double lon, 
-                          double RA, double dec, double jd) {
-<<<<<<< Updated upstream
-        
-
-        // Calculate altitude in radians
-        
-    }*/
-
-    // test before use
-   /* private double getAz(double lat, double lon, 
-                         double RA, double dec, double jd) {
-        double az;
-        double alt = getAlt(lat,lon,RA * DEGS,dec,jd);
-        //double hourAngle = MeanSiderealTime(jd, lon) - RA;
-        double hourAngle = mst - RA;
-        System.out.println(hourAngle + "Azimuth");
-        if (hourAngle < 0) {
-            hourAngle += 360;
-        }
-        double decRad = dec * RADS;
-        double latRad = lat * RADS;
-        double hrRad = hourAngle * RADS;
-        // Calculate azimuth in radians (handle inside of a try...catch)
-        
-
-        // Convert azimuth to degrees
-        az = az * DEGS;
-
-        
-        //System.out.println("AZ:" + az);
-        return az;
-    }*/
-    
     private double[] getAltAndAz(double lat, double lon, 
                          double RA, double dec, double jd) {
         double[] altAndAz = {0,0};
@@ -508,17 +473,16 @@ public class AstronomyCalculator {
         double hrRad = hourAngle * RADS;
         double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) +
                          (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
-        alt = Math.asin(sin_alt);
+        alt = Math.toDegrees(Math.asin(sin_alt));
         
         try {
             double cos_az = (Math.sin(decRad) - Math.sin(alt*RADS) * Math.sin(latRad)) /
                             (Math.cos(alt*RADS) * Math.cos(latRad));
-            az = Math.acos(cos_az);
+            az = Math.toDegrees(Math.acos(cos_az));
         } catch (Exception e) {
             az = 0;
         }
-        alt*=DEGS;
-        az*=DEGS;
+
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
         }
@@ -554,9 +518,6 @@ public class AstronomyCalculator {
         double a = 0;
         double c = 0;
         double d = 0;
-        if (lon < 0) {            
-            lon = lon * -1.0;
-        }
 
         if (month <= 2) {
             year--;

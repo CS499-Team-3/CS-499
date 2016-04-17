@@ -31,7 +31,7 @@ public class AstroDraw extends JFrame {
     Graphics2D offscreenGraphics;
     boolean drawOffScreenImage;
     BufferedImage offscreenImage;
-    final int SCALE = 50;
+    final int SCALE = 1;
     final int YSHIFT = 3300;
     final int XSHIFT = 0;
 
@@ -86,7 +86,7 @@ public class AstroDraw extends JFrame {
             //System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
         if(star.isVisible()) {
             draw_circle(graphics, (int) (star.location.x * SCALE) + XSHIFT, (int) ((star.location.y) * -1 * SCALE) + YSHIFT, magnitude);
-        }
+       }
     }
 
     public void drawMoon(Moon moon, Graphics graphics){
@@ -153,7 +153,7 @@ public class AstroDraw extends JFrame {
                 default:
                     break;
             }
-            x = (int) ((planet.location.x))+XSHIFT;
+            x = (int) ((planet.location.x) * SCALE)+XSHIFT;
             y = (int) ((planet.location.y)*-1 * SCALE)+YSHIFT;
             set_color(color);
             draw_circle(graphics, x, y, radius);
@@ -195,7 +195,7 @@ public class AstroDraw extends JFrame {
             if (p.name.toUpperCase().equalsIgnoreCase("EARTH")) {
             } else {
                 drawPlanet(p);
-                    createLabel(p.name, (int) ((p.location.x))+XSHIFT,
+                    createLabel(p.name, (int) ((p.location.x)*SCALE)+XSHIFT,
                             (int) (p.location.y * -1 * SCALE)+YSHIFT);
             }
 
