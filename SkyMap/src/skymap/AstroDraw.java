@@ -31,7 +31,7 @@ public class AstroDraw extends JFrame {
     Graphics2D offscreenGraphics;
     boolean drawOffScreenImage;
     BufferedImage offscreenImage;
-    final int SCALE = 25;
+    final int SCALE = 50;
 
     public AstroDraw() {
         drawOffScreenImage = false;
@@ -80,7 +80,7 @@ public class AstroDraw extends JFrame {
 
     public void drawStar(Star star) {
             set_color(Color.WHITE);
-            int magnitude = (int) star.getMagnitude();
+            int magnitude = 7 - (int) star.getMagnitude();
             System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
         if(star.isVisible()) {
             draw_circle(graphics, (int) (star.location.x * SCALE), (int) ((star.location.y) * -1 * SCALE) + 3300, magnitude);
@@ -186,8 +186,8 @@ public class AstroDraw extends JFrame {
             Star s = sList.get(i);            
             drawStar(s);
             if (s.isVisible() && s.properName != null) {
-                createLabel(s.properName, (int) ((s.location.x) * 10)+1200,
-                                (int) (s.location.y * -1 * SCALE)+1650);
+                createLabel(s.properName, (int) ((s.location.x) * SCALE),
+                                (int) (s.location.y * -1 * SCALE)+3300);
             }
             //System.out.println("star x: "+s.location.x +"\nstar y: "+s.location.y);
         }
@@ -197,8 +197,8 @@ public class AstroDraw extends JFrame {
             } else {
                 drawPlanet(p);
                 if (p.isVisible()) {
-                    createLabel(p.name, (int) ((p.location.x) * SCALE)+1200,
-                            (int) (p.location.y * -1 * SCALE)+1650);
+                    createLabel(p.name, (int) ((p.location.x) * SCALE),
+                            (int) (p.location.y * -1 * SCALE)+3300);
                 }
             }
 
