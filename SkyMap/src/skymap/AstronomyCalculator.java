@@ -461,6 +461,7 @@ public class AstronomyCalculator {
     // test before use
    /* private double getAlt(double lat, double lon, 
                           double RA, double dec, double jd) {
+<<<<<<< Updated upstream
         
 
         // Calculate altitude in radians
@@ -497,12 +498,7 @@ public class AstronomyCalculator {
         double[] altAndAz = {0,0};
         double alt;
         double az;
-        if (lat < 0) {
-            lat = lat * -1.0;
-        }
-        if (lon < 0) {
-            lon = lon * -1.0;
-        }
+
         double hourAngle = mst - RA;       
         if (hourAngle < 0) {
             hourAngle += 360;
