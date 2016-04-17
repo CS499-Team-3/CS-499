@@ -331,8 +331,9 @@ public class AstronomyCalculator {
     public Coordinate getPosition(double lat, double lon, 
                                   Star s, double relativeDate) {
         Coordinate coord = new Coordinate();
-        coord.x = (Mod2Pi(getAz(lat, lon, s.RA * DEGS, s.dec, relativeDate)*RADS) *DEGS);
-        coord.y = (Mod2Pi(getAlt(lat, lon, s.RA * DEGS, s.dec, relativeDate)*RADS) *DEGS);
+        double[] altAz = getAltAndAz(lat, lon, s.RA * DEGS, s.dec, relativeDate);
+        coord.x = (Mod2Pi(altAz[1]*RADS)*DEGS);        
+        coord.y = (Mod2Pi(altAz[0]*RADS)*DEGS);
         coord.z = 10;
         return coord;
     }
@@ -340,10 +341,14 @@ public class AstronomyCalculator {
     public Coordinate getPlanetPos(double lat, double lon, 
                                    Planet p, double relativeDate) {
         Coordinate coord = new Coordinate();
-        coord.x = (DEGS * Mod2Pi(getAlt(lat, lon, getRightAscension(p,relativeDate), 
-                         getDeclination(p,relativeDate), relativeDate)));
-        coord.y = (DEGS * Mod2Pi(getAz(lat, lon, getRightAscension(p,relativeDate), 
-                   getDeclination(p,relativeDate), relativeDate)));
+        double[] altAz = getAltAndAz(lat, lon, getRightAscension(p,relativeDate), 
+                         getDeclination(p,relativeDate), relativeDate);
+        //coord.x = (DEGS * Mod2Pi(getAz(lat, lon, getRightAscension(p,relativeDate), 
+                         //getDeclination(p,relativeDate), relativeDate)));
+        coord.x = (DEGS * Mod2Pi(altAz[1]));
+        
+        coord.y = (DEGS * Mod2Pi(altAz[0]));
+
         coord.z = 10;
         return coord;
     }
@@ -454,36 +459,22 @@ public class AstronomyCalculator {
     }
 
     // test before use
-    private double getAlt(double lat, double lon, 
+   /* private double getAlt(double lat, double lon, 
                           double RA, double dec, double jd) {
-        if (lat < 0) {
-            lat = lat * -1.0;
-        }
-        if (lon < 0) {
-            lon = lon * -1.0;
-        }
-
-        double hourAngle = mst - RA;
-        if (hourAngle < 0) {
-            hourAngle += 360;
-        }
-        double decRad = dec * RADS;
-        double latRad = lat * RADS;
-        double hrRad = hourAngle * RADS;
+        
 
         // Calculate altitude in radians
-        double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) +
-                         (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
-        return (Math.asin(sin_alt) * DEGS);
-    }
+        
+    }*/
 
     // test before use
-    private double getAz(double lat, double lon, 
+   /* private double getAz(double lat, double lon, 
                          double RA, double dec, double jd) {
         double az;
         double alt = getAlt(lat,lon,RA * DEGS,dec,jd);
         //double hourAngle = MeanSiderealTime(jd, lon) - RA;
         double hourAngle = mst - RA;
+        System.out.println(hourAngle + "Azimuth");
         if (hourAngle < 0) {
             hourAngle += 360;
         }
@@ -491,6 +482,38 @@ public class AstronomyCalculator {
         double latRad = lat * RADS;
         double hrRad = hourAngle * RADS;
         // Calculate azimuth in radians (handle inside of a try...catch)
+        
+
+        // Convert azimuth to degrees
+        az = az * DEGS;
+
+        
+        //System.out.println("AZ:" + az);
+        return az;
+    }*/
+    
+    private double[] getAltAndAz(double lat, double lon, 
+                         double RA, double dec, double jd) {
+        double[] altAndAz = {0,0};
+        double alt;
+        double az;
+        if (lat < 0) {
+            lat = lat * -1.0;
+        }
+        if (lon < 0) {
+            lon = lon * -1.0;
+        }
+        double hourAngle = mst - RA;       
+        if (hourAngle < 0) {
+            hourAngle += 360;
+        }
+        double decRad = dec * RADS;
+        double latRad = lat * RADS;
+        double hrRad = hourAngle * RADS;
+        double sin_alt = (Math.sin(decRad) * Math.sin(latRad)) +
+                         (Math.cos(decRad) * Math.cos(latRad) * Math.cos(hrRad));
+        alt = Math.asin(sin_alt);
+        
         try {
             double cos_az = (Math.sin(decRad) - Math.sin(alt*RADS) * Math.sin(latRad)) /
                             (Math.cos(alt*RADS) * Math.cos(latRad));
@@ -498,15 +521,14 @@ public class AstronomyCalculator {
         } catch (Exception e) {
             az = 0;
         }
-
-        // Convert azimuth to degrees
-        az = az * DEGS;
-
+        alt*=DEGS;
+        az*=DEGS;
         if (Math.sin(hrRad) > 0.0) {
             az = 360.0 - az;
         }
-        //System.out.println("AZ:" + az);
-        return az;
+        altAndAz[0] = alt;
+        altAndAz[1] = az;
+        return altAndAz;
     }
 
     /*private double MeanSiderealTime(double jd, double lon) {
@@ -571,6 +593,7 @@ public class AstronomyCalculator {
                 mst += 360.0;
             }
         }
+        
     }
 
 }

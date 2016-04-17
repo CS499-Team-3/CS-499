@@ -281,13 +281,13 @@ public final class GUIWindow extends JFrame {
                 double lmin = ((double) latMin) / 60;
                 double lSec = ((double) latSec) / 3600;
                 lat = lat + lmin + lSec;
-                System.out.println("Latitude: " + latDeg + " " + latMin + " " + latSec);
+                
 
                 double lon = lonDeg;
                 double loMin = ((double) lonMin) / 60;
                 double loSec = ((double) latSec) / 3600;
                 lon = lon + loMin + loSec;
-                System.out.println("Longitude: " + lonDeg + " " + lonMin + " " + lonSec);
+                
 
                 //change the sign to negative if neccessary
                 if (latSignCombo.getSelectedItem().equals("-")) {
@@ -297,7 +297,9 @@ public final class GUIWindow extends JFrame {
                 if (lonSignCombo.getSelectedItem().equals("-")) {
                     lon *= -1;
                 }
-
+                System.out.println("Latitude: " + lat + latDeg + " " + latMin + " " + latSec);
+                System.out.println("Longitude: " + lon + lonDeg + " " + lonMin + " " + lonSec);
+                
                 ac.calculateMST(year, month, day, hour, minutes, seconds, lon);
                 //get a skybox, set the values for planets and stars
                 SkyBox skyBox = SkyBox.getSkyBox();
