@@ -51,7 +51,7 @@ public final class GUIWindow extends JFrame {
     JPanel moonPanel = new JPanel();
     JScrollPane skyMapScrollPane;
     JTextField dayField, monthField, yearField;
-    JSpinner dateSpin, monthSpin, yearSpin,hourSpinner, minuteSpinner, secondSpinner;
+    JSpinner dateSpin, monthSpin, yearSpin, hourSpinner, minuteSpinner, secondSpinner;
     SpinnerDateModel hourModel, minuteModel, secondModel, spinnerModel;
     JLabel dateLbl, backslashLbl1, backslashLbl2;
     JPanel btnPanel1 = new JPanel();
@@ -66,7 +66,7 @@ public final class GUIWindow extends JFrame {
     Date date = null;
     Integer latDeg = 0;
     Integer latMin = 0;
-    Integer latSec = 0;    
+    Integer latSec = 0;
     Integer lonDeg = 0;
     Integer lonMin = 0;
     Integer lonSec = 0;
@@ -78,7 +78,7 @@ public final class GUIWindow extends JFrame {
     Font comboFont = new Font(Font.DIALOG, Font.PLAIN, 12);
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     // w = 1366, h = 768
-    
+
     public GUIWindow() {
         // Look & Feel
         try {
@@ -93,7 +93,7 @@ public final class GUIWindow extends JFrame {
         }
         // Set window properties
         setExtendedState(Frame.MAXIMIZED_BOTH);
-        setTitle("SkyMap");        
+        setTitle("SkyMap");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -115,16 +115,16 @@ public final class GUIWindow extends JFrame {
 
         jpegPanel = new JPanel();
         ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("/Images/8bit-starwars-resized-labeled.jpg"));
-        imgIcon.setImage(imgIcon.getImage().getScaledInstance((int)(screenSize.width * 0.98), (int)(screenSize.height * 0.85), 0));
+        imgIcon.setImage(imgIcon.getImage().getScaledInstance((int) (screenSize.width * 0.98), (int) (screenSize.height * 0.85), 0));
         label = new JLabel(imgIcon);
         jpegPanel.add(label);
         skyMapScrollPane = new JScrollPane(jpegPanel);
-        
+
         // Add scroll pane and main panel to window 
         add(skyMapScrollPane, BorderLayout.CENTER);
         add(makeMainPanel(), BorderLayout.SOUTH);
         pack();
-        addListeners();        
+        addListeners();
         setVisible(true);
         setMinimumSize(new Dimension(1200, 500));
         saveBtn.setEnabled(false);
@@ -220,7 +220,7 @@ public final class GUIWindow extends JFrame {
         saveBtn.setPreferredSize(new Dimension(77, 20));
         btnPanel2.add(generateMapBtn);
         btnPanel2.add(saveBtn);
-        
+
         mainBtnPanel.setLayout(new BoxLayout(mainBtnPanel, BoxLayout.X_AXIS));
         mainBtnPanel.add(btnPanel1);
         mainBtnPanel.add(btnPanel2);
@@ -249,7 +249,7 @@ public final class GUIWindow extends JFrame {
                 String am_pm = dateList.get(6);
 
                 //convert hours to military time
-                AstronomyCalculator ac = new AstronomyCalculator();                
+                AstronomyCalculator ac = new AstronomyCalculator();
                 hour = ac.time2Milarary(hour, am_pm);
 
                 //calculate exact Julian and Relative Julian dates
@@ -260,32 +260,34 @@ public final class GUIWindow extends JFrame {
                         && latSecCombo.getSelectedIndex() != 0 && lonDegCombo.getSelectedIndex() != 0
                         && latMinCombo.getSelectedIndex() != 0 && latSecCombo.getSelectedIndex() != 0) {
                     latDeg = Integer.parseInt((String) latDegCombo.getSelectedItem());
-                    if (latSignCombo.getSelectedItem().equals("-")) {
-                        latDeg *= -1;
-                    }
                     latMin = Integer.parseInt((String) latMinCombo.getSelectedItem());
                     latSec = Integer.parseInt((String) latSecCombo.getSelectedItem());
 
                     lonDeg = Integer.parseInt((String) lonDegCombo.getSelectedItem());
-
-                    if (lonSignCombo.getSelectedItem().equals("-")) {
-                        lonDeg *= -1;
-                    }
                     lonMin = Integer.parseInt((String) lonMinCombo.getSelectedItem());
                     lonSec = Integer.parseInt((String) lonSecCombo.getSelectedItem());
                 }
-                
+
                 //calculate the lat and long with their minutes and seconds
                 double lat = latDeg;
-                double lmin = ((double)latMin) / 60;
-                double lSec = ((double)latSec)/ 3600;
+                double lmin = ((double) latMin) / 60;
+                double lSec = ((double) latSec) / 3600;
                 lat = lat + lmin + lSec;
-                
+
                 double lon = lonDeg;
-                double loMin = ((double)lonMin) / 60;
-                double loSec = ((double)latSec)/ 3600;
+                double loMin = ((double) lonMin) / 60;
+                double loSec = ((double) latSec) / 3600;
                 lon = lon + loMin + loSec;
-                
+
+                //change the sign to negative if neccessary
+                if (latSignCombo.getSelectedItem().equals("-")) {
+                    lat *= -1;
+                }
+
+                if (lonSignCombo.getSelectedItem().equals("-")) {
+                    lon *= -1;
+                }
+
                 ac.calculateMST(year, month, day, hour, minutes, seconds, lon);
                 //get a skybox, set the values for planets and stars
                 SkyBox skyBox = SkyBox.getSkyBox();
@@ -293,20 +295,20 @@ public final class GUIWindow extends JFrame {
                 List<Star> starList = skyBox.getStarList();
                 ac.calculateClosestPhase(year, month, day);
                 Moon moon = skyBox.getMoon();
-                
+
                 //for each planet in the Skybox, set the values
                 for (int i = 0; i < planetList.size(); i++) {
                     ac.usePrecalculatedPlanetElems(planetList.get(i), relativeJulian);
-                    planetList.get(i).location = ac.getPlanetPos(lat, lon, 
-                                                        planetList.get(i), 
-                                                        relativeJulian);
+                    planetList.get(i).location = ac.getPlanetPos(lat, lon,
+                            planetList.get(i),
+                            relativeJulian);
                 }
                 //for each star in the Skybox, set the values
                 for (int i = 0; i < starList.size(); i++) {
-                    starList.get(i).location = 
-                            ac.getPosition(lat, lon, starList.get(i), exactJulian);
+                    starList.get(i).location
+                            = ac.getPosition(lat, lon, starList.get(i), exactJulian);
                 }
-                
+
                 // Draw SkyMap    
                 astroDraw.drawSkyMap();
                 skyMapImg = astroDraw.getImage();
