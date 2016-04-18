@@ -76,7 +76,7 @@ public class AstroDraw extends JFrame {
     }
 
     public void createLabel(String label, int x, int y) {
-        graphics.drawString(label, x, y + 15);
+        graphics.drawString(label, x, y + 20);
     }
 
     public void drawStar(Star star) {
