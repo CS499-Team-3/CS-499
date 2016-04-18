@@ -6,7 +6,6 @@
 package skymap;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
@@ -31,8 +30,8 @@ public class AstroDraw extends JFrame {
     Graphics2D offscreenGraphics;
     boolean drawOffScreenImage;
     BufferedImage offscreenImage;
-    final int SCALE = 1;
-    final int YSHIFT = 3300;
+    final int SCALE = 45;
+    final int YSHIFT = 0;
     final int XSHIFT = 0;
 
     public AstroDraw() {
@@ -83,9 +82,11 @@ public class AstroDraw extends JFrame {
     public void drawStar(Star star) {
             set_color(Color.WHITE);
             int magnitude = 7 - (int) star.getMagnitude();
-            //System.out.println("x: "+star.location.x+"\ny: "+star.location.y);
+            
         if(star.isVisible()) {
-            draw_circle(graphics, (int) (star.location.x * SCALE) + XSHIFT, (int) ((star.location.y) * -1 * SCALE) + YSHIFT, magnitude);
+            draw_circle(graphics, (int) (star.location.x * SCALE) + XSHIFT, (int) ((star.location.y) * SCALE) + YSHIFT, magnitude);
+            createLabel(star.properName, (int) ((star.location.x) * SCALE)+XSHIFT,
+                                (int) (star.location.y * SCALE)+YSHIFT);
        }
     }
 
@@ -116,7 +117,6 @@ public class AstroDraw extends JFrame {
     }
 
     public void drawPlanet(Planet planet) {
-            AstronomyCalculator calc = new AstronomyCalculator();
             Color color = null;
             int x;
             int y;
@@ -153,15 +153,17 @@ public class AstroDraw extends JFrame {
                 default:
                     break;
             }
-            x = (int) ((planet.location.x) * SCALE)+XSHIFT;
-            y = (int) ((planet.location.y)*-1 * SCALE)+YSHIFT;
+            //scale the planets to fit page
+            x = (int) (planet.location.x) * SCALE/5 - 625;
+            y = (int) (planet.location.y) * SCALE;
             set_color(color);
             draw_circle(graphics, x, y, radius);
+            createLabel(planet.name, x, y);
     }
 
 
-    public void drawSkyMap() {
-
+    public void drawSkyMap()
+    {
         if (drawOffScreenImage == false) {
             image = new BufferedImage(2400, 3300, BufferedImage.TYPE_INT_ARGB);
         } else {
@@ -185,18 +187,13 @@ public class AstroDraw extends JFrame {
             Star s = sList.get(i);            
             drawStar(s);
             if (s.isVisible() && s.properName != null) {
-                createLabel(s.properName, (int) ((s.location.x) * SCALE)+XSHIFT,
-                                (int) (s.location.y * -1 * SCALE)+YSHIFT);
             }
-            //System.out.println("star x: "+s.location.x +"\nstar y: "+s.location.y);
         }
         for (int i = 0; i < pList.size(); i++) {
             Planet p = pList.get(i);
             if (p.name.toUpperCase().equalsIgnoreCase("EARTH")) {
             } else {
                 drawPlanet(p);
-                    createLabel(p.name, (int) ((p.location.x)*SCALE)+XSHIFT,
-                            (int) (p.location.y * -1 * SCALE)+YSHIFT);
             }
 
         }

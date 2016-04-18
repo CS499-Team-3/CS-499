@@ -343,12 +343,8 @@ public class AstronomyCalculator {
         Coordinate coord = new Coordinate();
         double[] altAz = getAltAndAz(lat, lon, getRightAscension(p,relativeDate), 
                          getDeclination(p,relativeDate), relativeDate);
-        //coord.x = (DEGS * Mod2Pi(getAz(lat, lon, getRightAscension(p,relativeDate), 
-                         //getDeclination(p,relativeDate), relativeDate)));
-        coord.x = (DEGS * Mod2Pi(altAz[1]));
-        
-        coord.y = (DEGS * Mod2Pi(altAz[0]));
-
+        coord.x = (DEGS * Mod2Pi(altAz[1]*RADS));
+        coord.y = (DEGS * Mod2Pi(altAz[0]*RADS));
         coord.z = 10;
         return coord;
     }
@@ -363,8 +359,9 @@ public class AstronomyCalculator {
             } else {
                 return 0.0;
             }
+           
         }
-        double declination = Math.atan(coord.z / Math.sqrt((coord.x * coord.x) + (coord.y * coord.y))) * DEGS;
+        double declination = Math.toDegrees(Math.atan(coord.z / Math.sqrt((coord.x * coord.x) + (coord.y * coord.y))));
         return declination;
     }
 
@@ -490,25 +487,6 @@ public class AstronomyCalculator {
         altAndAz[1] = az;
         return altAndAz;
     }
-
-    /*private double MeanSiderealTime(double jd, double lon) {
-        // Get Julian centuries since J2000.0
-        double jt = jd / 36525.0;
-        // Calculate initial Mean Sidereal Time (mst)
-        double mst = 280.46061837 + (360.98564736629 * jd) + (0.000387933 * Math.pow(jt, 2)) - (Math.pow(jt, 3) / 38710000) + lon;
-        // Clip mst to range 0.0 to 360.0
-        if (mst > 0.0) {
-            while (mst > 360.0) {
-                mst -= 360.0;
-            }
-        } else {
-            while (mst < 0.0) {
-                mst += 360.0;
-            }
-        }
-        // Result is Mean Sidereal Time for the location given by Lat, Lon
-        return mst;
-    }*/
     
     //Pass in day as just the day value, not as a decimal
     public void calculateMST(int year, int month, double day, double hours,
